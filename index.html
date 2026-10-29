@@ -28,7 +28,8 @@ html,body{height:100%}
 body{background:var(--ink);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.6;overflow:hidden}
 button{font:inherit;color:inherit}
 #app{height:100%;display:grid;grid-template-columns:minmax(0,1fr)}
-#app.s-lesson:not(.side-off){grid-template-columns:auto minmax(0,1fr)}
+#app.s-lesson{grid-template-columns:minmax(0,1fr) 400px}
+#app.s-lesson.cap-off{grid-template-columns:minmax(0,1fr) 0}
 #app:not(.s-lesson) .tools,#app:not(.s-lesson) .legend,#app:not(.s-lesson) .overview{display:none}
 #app:not(.s-lesson):not(.s-hub) .brand{display:none}
 #app.s-hub #bBack{display:none}
@@ -144,36 +145,65 @@ button{font:inherit;color:inherit}
 
 
 /* ---------- lesson layout (concept A): steps sidebar | 3D stage over caption bar ---------- */
-#side{background:var(--panel);border-right:1px solid var(--line);display:flex;flex-direction:column;min-height:0;width:270px}
-#app:not(.s-lesson) #side,#app.side-off #side{display:none}
-.sidehd{display:flex;align-items:center;gap:8px;padding:12px 10px 10px 16px;border-bottom:1px solid var(--line)}
-.sidehd b{font-family:var(--display);font-size:16px}
-.sidehd span{color:var(--muted);font-size:13px}
-.sidehd button{margin-left:auto;border:1px solid var(--line);background:var(--raise);border-radius:8px;width:34px;height:34px;cursor:pointer;display:grid;place-items:center}
-.sidehd button svg{width:18px;height:18px;fill:currentColor}
-#stepList{list-style:none;margin:0;padding:8px;overflow:auto;flex:1;display:flex;flex-direction:column;gap:2px}
-.st{width:100%;display:flex;align-items:flex-start;gap:10px;text-align:left;border:1px solid transparent;background:none;border-radius:10px;padding:8px 8px;cursor:pointer;font-size:14px;line-height:1.4;color:#c9d5ea}
-.st:hover{background:var(--raise)}
-.st i{font-style:normal;flex:none;width:24px;height:24px;border-radius:7px;display:grid;place-items:center;font-family:var(--mono);font-size:12px;border:1px solid var(--line);background:var(--raise);color:var(--muted)}
-.st.done i{border-color:#3b5a8a;color:var(--new)}
-.st.cur{background:rgba(255,194,75,.1);border-color:rgba(255,194,75,.45);color:var(--fg);font-weight:600}
-.st.cur i{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
-.st.lock{opacity:.45;cursor:not-allowed}
-.st .qmark{margin-left:auto;flex:none;font-size:11.5px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:0 7px}
-.st .qmark.ok{color:#3ddc97;border-color:#3ddc97}
-.st .qmark.bad{color:#ff8f8f;border-color:#ff8f8f}
 #main{display:flex;flex-direction:column;min-width:0;min-height:0}
-#capbar{flex:none;background:var(--panel);border-top:1px solid var(--line);padding-top:10px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:8px;max-height:46%;min-height:0}
-#app:not(.s-lesson) #capbar{display:none}
-.caprow{display:flex;align-items:flex-start;gap:10px;flex-wrap:wrap}
-.caphead{flex:1;min-width:220px}
-.capbtns{display:flex;gap:6px;flex-wrap:wrap}
+/* right panel: step numbers, title, caption, think question, playback controls (concept D) */
+#capbar{background:var(--panel);border-left:1px solid var(--line);display:flex;flex-direction:column;min-height:0;min-width:0;overflow:hidden}
+#app:not(.s-lesson) #capbar,#app.cap-off #capbar{display:none}
+.lp-top{flex:none;padding:12px 18px 10px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:6px}
+.lp-hd{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;color:var(--muted)}
+.iconbtn{width:30px;height:30px;border-radius:8px;border:1px solid var(--line);background:var(--raise);color:var(--muted);display:grid;place-items:center;cursor:pointer;padding:0}
+.iconbtn svg{width:15px;height:15px;fill:currentColor}
+.stepgrid{display:flex;flex-direction:column;gap:6px;align-items:flex-end}
+.stepgrid .srow{display:flex;gap:6px}
+.sn{position:relative;width:34px;height:34px;border-radius:9px;display:grid;place-items:center;font:600 13px var(--mono);border:1px solid var(--line);background:none;color:var(--muted);cursor:pointer;padding:0}
+.sn.done{background:var(--raise);border-color:#3b5a8a;color:var(--new)}
+.sn.cur{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.sn.lock{opacity:.4;cursor:not-allowed}
+.sn .qd{position:absolute;right:-3px;top:-3px;width:10px;height:10px;border-radius:50%;background:var(--muted);border:2px solid var(--panel)}
+.sn .qd.ok{background:#3ddc97}.sn .qd.bad{background:#ff8f8f}
+.lp-body{flex:1;min-height:0;overflow:auto;padding:16px 20px 12px;display:flex;flex-direction:column;gap:10px}
+.lp-num{display:flex;align-items:center;gap:10px}
+.lp-num b{width:40px;height:40px;flex:none;border-radius:11px;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font:700 18px var(--mono)}
+.lp-num span{font-size:13px;color:var(--muted)}
 .checknote{border:1px solid rgba(255,194,75,.5);background:rgba(255,194,75,.1);border-radius:10px;padding:6px 12px;font-size:13.5px;line-height:1.5;color:#ffe3a6}
 .checknote b{color:var(--accent);margin-right:6px}
-.kicker{font-size:12.5px;letter-spacing:.04em;color:var(--accent);font-weight:600}
-#sTitle{font-family:var(--display);font-size:20px;line-height:1.3;margin:0;text-wrap:balance}
-#capText{overflow:auto;min-height:0;max-height:24vh}
-#app.cap-off #capText{display:none}
+#sTitle{font-family:var(--display);font-size:22px;line-height:1.3;margin:0;text-wrap:balance}
+.prose{font-size:15px;line-height:1.7;color:#dbe4f5}
+.lp-links{display:flex;gap:16px;flex-wrap:wrap}
+.lp-links .linkbtn[aria-pressed="true"]{color:#fff}
+.lp-foot{flex:none;padding:10px 18px calc(14px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);display:flex;flex-direction:column;gap:10px}
+.lp-prog{display:flex;align-items:center;gap:10px}
+.lp-btns{display:flex;align-items:center;justify-content:flex-end;gap:8px}
+.btn.round{width:52px;height:52px;border-radius:50%;background:var(--fg);color:var(--ink);border:0}
+.btn.round svg{width:22px;height:22px}
+.btn.primary.big{height:52px;border-radius:14px;padding:0 20px;font-size:16px}
+.panelshow{position:absolute;right:12px;top:calc(56px + env(safe-area-inset-top,0px));z-index:4;display:none}
+#app.s-lesson.cap-off .panelshow{display:flex}
+/* live "who is working now" box (replication step 11) */
+.nowbox{border:1px solid #ffcf33;background:#221d0e;border-radius:14px;padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+.nowbox[hidden]{display:none}
+.nowbox .nk{font-size:12.5px;color:#e9d58a;font-weight:600}
+.nowbox .nm{display:flex;align-items:center;gap:12px}
+.nowbox .nm img{width:70px;height:44px;object-fit:contain;flex:none}
+.nowbox .nm b{font-family:var(--display);font-size:18px;color:#fff;display:block;line-height:1.3}
+.nowbox .nm span{font-size:14px;color:#f1e6c0}
+.nowbox .seqc{display:flex;flex-wrap:wrap;align-items:center;gap:4px}
+.nowbox .seqc i{font-style:normal;color:#5a6c8c;font-size:12px}
+.nowbox .seqc span{padding:3px 8px;border-radius:8px;font-size:12.5px;background:#17243d;color:#7a8aa8}
+.nowbox .seqc span.d{background:#12301f;color:#3ddc97}
+.nowbox .seqc span.n{background:#ffcf33;color:#1c1405;font-weight:700}
+.prose ol.seq{margin:.2em 0 .6em;padding-left:1.3em}
+.prose table.sum{width:100%;border-collapse:collapse;margin:.3em 0 .7em;font-size:14px}
+.prose table.sum th{text-align:left;color:var(--muted);font-weight:500;font-size:12.5px;padding:4px 6px;border-bottom:1px solid var(--line)}
+.prose table.sum td{padding:6px;border-bottom:1px solid #1d2b47;vertical-align:top}
+.prose table.sum td:first-child{font-weight:600;color:#fff;white-space:nowrap}
+.prose table.sum tr.hi td{background:rgba(255,194,75,.14)}
+.prose table.sum tr.hi td:first-child{color:var(--accent)}
+/* countdown before a review question */
+.cdcard{text-align:center;align-items:center}
+.cdring{width:120px;height:120px;position:relative;margin:6px auto}
+.cdring svg{width:120px;height:120px;transform:rotate(-90deg)}
+.cdring b{position:absolute;inset:0;display:grid;place-items:center;font:700 46px var(--mono);color:#14213a}
 .prose p{margin:0 0 .5em}
 .prose p:last-child{margin-bottom:0}
 .prose b{color:#fff;font-weight:600}
@@ -501,10 +531,13 @@ button.bt{cursor:pointer}
 .gbtn[disabled]{opacity:.45;cursor:default}
 @media (max-width:900px){ .kobar{max-width:calc(100% - 24px)} .kocard{width:150px} .kocard img{width:126px;height:80px} }
 @media (max-width:900px){
-  #side{position:absolute;left:0;top:0;bottom:0;z-index:15;width:min(300px,86vw);box-shadow:12px 0 30px rgba(0,0,0,.45)}
-  #app{grid-template-columns:minmax(0,1fr)}
-  #capbar{max-height:52%}
-  #capText{max-height:20vh}
+  #app.s-lesson,#app.s-lesson.cap-off{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) auto}
+  #capbar{border-left:0;border-top:1px solid var(--line);max-height:52vh}
+  .lp-top{padding:8px 14px}
+  .stepgrid{flex-direction:row;flex-wrap:wrap;justify-content:flex-end}
+  .sn{width:30px;height:30px;font-size:12px}
+  .lp-body{padding:10px 14px}
+  #sTitle{font-size:19px}
   .overview{display:none}
   .brand h1{font-size:17px}
   .brand p{font-size:12px}
@@ -529,13 +562,265 @@ button.bt{cursor:pointer}
   .roles{grid-template-columns:minmax(0,1fr)}
   .role{min-height:0}
 }
+
+/* login: password helpers */
+.pwrow{display:flex;gap:6px}
+.pwrow input{flex:1;min-width:0}
+.eye{width:46px;flex:none;border-radius:10px;border:1px solid var(--line);background:var(--raise);color:var(--muted);display:grid;place-items:center;cursor:pointer;padding:0}
+.eye svg{width:20px;height:20px;fill:currentColor}
+.eye[aria-pressed="true"]{color:var(--accent);border-color:var(--accent)}
+.formwarn{color:#ffe3a6 !important;background:rgba(255,194,75,.12);border:1px solid rgba(255,194,75,.55);border-radius:10px;padding:8px 10px;font-size:13.5px !important}
+/* Knockout topic picker */
+.kotopics{pointer-events:auto;position:absolute;inset:0;overflow:auto;display:flex;flex-direction:column;align-items:center;gap:16px;padding:calc(18px + env(safe-area-inset-top,0px)) 16px 24px;background:radial-gradient(120% 90% at 50% 30%,rgba(19,33,59,.92) 0%,rgba(10,17,32,.97) 70%)}
+.kgrid{width:100%;max-width:1080px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:18px}
+.ktopic{border-radius:20px;background:var(--panel);border:1px solid var(--line);overflow:hidden;display:flex;flex-direction:column}
+.ktopic .kimg{height:220px;background:#0d1628;display:grid;place-items:center}
+.ktopic .kimg img{width:100%;height:100%;object-fit:contain}
+.ktopic .kbody{padding:16px 20px 18px;display:flex;flex-direction:column;gap:9px;flex:1}
+.ktopic .kk{font-size:12.5px;letter-spacing:.06em;color:var(--accent);font-weight:600}
+.ktopic h2{margin:0;font-family:var(--display);font-size:24px}
+.ktopic p{margin:0;color:#c9d5ea;font-size:15px}
+.ktopic ul{margin:0;padding-left:18px;color:#dbe4f5;font-size:14px}
+.kflow{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.kflow span{padding:3px 10px;border-radius:8px;background:var(--raise);border:1px solid var(--line);font-size:13px}
+.kflow i{font-style:normal;color:#5a6c8c}
+.kfoot{margin-top:auto;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.kfoot span{flex:1;min-width:180px;font-size:13px;color:var(--muted)}
+.kfoot .cta{height:46px;font-size:16px;padding:0 20px}
+.kfoot .cta[disabled]{background:var(--raise);color:var(--muted);cursor:not-allowed}
+/* Test */
+.qchips span.sent{background:#e6ebf3;border-color:#8a99b3;color:#14213a}
+.warnbox{border-radius:14px;background:#fff8e1;border:1px solid #f0a400;padding:12px 14px;font-size:15px;line-height:1.6}
+.warnbox b{font-family:var(--display);font-size:18px}
+.warnbox ul{margin:6px 0 0;padding-left:20px}
+.tpick button[disabled]{opacity:.65;cursor:default}
+.tpick button.free{border:2px dashed #f0a400;background:#fffaf0}
+/* teacher review page */
+#rev{background:var(--ink);padding:0}
+.revwrap{height:100%;display:flex;flex-direction:column}
+.revhd{flex:none;display:flex;align-items:center;gap:14px;padding:10px 18px;border-bottom:1px solid var(--line);background:var(--panel)}
+.revhd h2{margin:0;font-family:var(--display);font-size:20px}
+.revmain{flex:1;min-height:0;display:flex}
+.revlist{width:230px;flex:none;border-right:1px solid var(--line);background:#0d1628;overflow:auto;padding:10px}
+.rvl{display:flex;flex-direction:column;gap:4px}
+.rvst{display:flex;flex-direction:column;gap:1px;text-align:left;padding:8px 10px;border-radius:10px;border:1px solid transparent;background:none;cursor:pointer}
+.rvst b{font-size:13.5px}
+.rvst>span{display:flex;justify-content:space-between;font-size:12px;color:var(--muted)}
+.rvst.cur{background:#1b2a48;border-color:var(--accent)}
+.revcol{flex:1;min-width:0;display:flex;flex-direction:column}
+.revtop{padding:10px 18px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:8px}
+.revname{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.revname b{font-family:var(--display);font-size:20px}
+.revname span{font-size:13px;color:var(--muted)}
+.rvtabs,.rvchips{display:flex;flex-wrap:wrap;align-items:center;gap:4px}
+.rvtabs{padding:4px;border-radius:12px;background:var(--ink);border:1px solid var(--line);align-self:flex-start}
+.rvtabs button{height:36px;padding:0 14px;border-radius:9px;border:0;background:none;color:#c9d5ea;cursor:pointer;font-size:13.5px}
+.rvtabs button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);font-weight:600}
+.rvchips{margin-top:2px}
+.rvchips>span,.rvchips>small{font-size:12.5px;color:var(--muted);margin:0 4px}
+.rvchips button{height:32px;padding:0 11px;border-radius:8px;border:1px solid var(--line);background:var(--raise);color:#c9d5ea;cursor:pointer;font-size:13px}
+.rvchips button[aria-pressed="true"]{border:2px solid var(--accent);background:#2a2414;color:#fff}
+.rvhead,.rvrow2{display:grid;grid-template-columns:52px 1fr 1.4fr 1.2fr 128px;gap:12px;padding:8px 18px}
+.rvhead{font-size:12px;color:var(--muted);border-bottom:1px solid var(--line);background:var(--panel)}
+.rvhead span:last-child{text-align:center}
+.rvbody{flex:1;min-height:0;overflow:auto}
+.rvrow2{align-items:start;border-bottom:1px solid #1d2b47;font-size:13.5px}
+.rvrow2.ed{background:rgba(255,194,75,.06)}
+.rvrow2 .mono,.mono{font-family:var(--mono)}
+.rvrow2>b{color:var(--muted);font-size:12.5px;padding-top:4px}
+.rvrow2 .q{color:#c9d5ea;line-height:1.45}
+.rvrow2 .a{color:#fff;line-height:1.5;font-size:14px}
+.rvrow2 .a mark{background:rgba(61,220,151,.25);color:#fff;border-radius:3px;padding:0 2px}
+.rvrow2 .sys{display:flex;gap:6px;line-height:1.45;color:#dbe4f5}
+.rvrow2 .sys b{flex:none}
+.rvrow2 .sys.ok b{color:#3ddc97}.rvrow2 .sys.no b{color:#ff8f8f}
+.tgw{display:flex;flex-direction:column;align-items:center;gap:3px}
+.tgw small{color:var(--accent);font-size:11.5px}
+.tg3{display:flex;padding:2px;gap:2px;border-radius:9px;background:var(--ink);border:1px solid var(--line)}
+.rvrow2.ed .tg3{border-color:var(--accent)}
+.tg3 button{min-width:34px;height:30px;border:0;border-radius:7px;background:none;color:#7a8aa8;font:700 14px var(--mono);cursor:pointer}
+.tg3 button[aria-pressed="true"].v0{background:#ff8f8f;color:#0a1120}
+.tg3 button[aria-pressed="true"].v05{background:#ffc24b;color:#0a1120}
+.tg3 button[aria-pressed="true"].v1{background:#3ddc97;color:#0a1120}
+.rvgrp{padding:8px 18px;font-size:13px;font-weight:600;background:#0d1628;border-bottom:1px solid #1d2b47}
+.rvgrp small{font-weight:400;color:var(--muted);margin-left:8px}
+.rvtx{display:flex;flex-wrap:wrap;gap:3px;padding:10px 18px 4px}
+.rvb{display:flex;flex-direction:column;align-items:center;gap:2px;border:0;background:none;padding:0;cursor:pointer}
+.rvb i{font:500 10.5px var(--mono);color:#6b7fa8;font-style:normal}
+.rvb b{width:26px;height:28px;border-radius:5px;display:grid;place-items:center;font:600 13px var(--mono)}
+.rvb.ok b{background:#12301f;border:1px solid #2f8a5c;color:#fff}
+.rvb.no b{background:#3a1a1e;border:2px solid #ff8f8f;color:#ff8f8f}
+.rvb.ed b{outline:2px solid var(--accent);outline-offset:1px}
+.rvb small{font:500 10px var(--mono);color:var(--muted)}
+.rvnote{margin:0;padding:4px 18px 10px;font-size:13px;color:#dbe4f5;border-bottom:1px solid #1d2b47}
+.rvempty{padding:24px 18px;color:var(--muted)}
+.rvfoot{flex:none;display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:10px 18px;border-top:1px solid var(--line);background:var(--panel);font-size:14px}
+.rvfoot .big{font:700 18px var(--mono);color:var(--accent)}
+.rvfoot small{color:var(--muted)}
+.rvfoot .warn{color:#ffc24b}
+.rvfoot .sp{flex:1}
+@media (max-width:900px){ .revlist{display:none} .rvhead{display:none} .rvrow2{grid-template-columns:44px 1fr;} .rvrow2 .a,.rvrow2 .sys,.rvrow2 .tgw{grid-column:2} .tgw{align-items:flex-start} }
+
+/* ---------- Build free mode ---------- */
+#app.free-on #build .qpanel{display:none}
+.freeui{position:absolute;inset:0;pointer-events:none}
+.freeui>*{pointer-events:auto}
+.fhead{position:absolute;top:calc(12px + env(safe-area-inset-top,0px));left:14px;display:flex;align-items:flex-start;gap:12px}
+.fhead h1,.gxtop h1{margin:0;font-family:var(--display);font-size:19px;line-height:1.2}
+.fhead h1 span,.gxtop h1 span{color:var(--accent)}
+.fhead p,.gxtop p{margin:0;color:var(--muted);font-size:12.5px}
+.fmis{position:absolute;top:calc(12px + env(safe-area-inset-top,0px));right:416px;border-color:var(--accent);color:var(--accent)}
+.fempty{position:absolute;left:0;right:400px;top:45%;text-align:center;color:var(--muted);font-size:15px;pointer-events:none}
+.fempty[hidden]{display:none}
+.fpanel{position:absolute;top:0;right:0;bottom:0;width:400px;background:var(--panel);border-left:1px solid var(--line);display:flex;flex-direction:column}
+.ftop{padding:14px 18px 12px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:8px;font-size:12.5px;color:var(--muted)}
+.fseg{display:flex;padding:4px;gap:4px;border-radius:12px;background:var(--ink);border:1px solid var(--line)}
+.fseg button{flex:1;height:36px;border-radius:9px;border:0;background:none;color:#c9d5ea;font:500 13.5px var(--body);cursor:pointer;white-space:nowrap}
+.fseg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);font-weight:600}
+.fbody{flex:1;min-height:0;overflow:auto;padding:12px 16px;display:flex;flex-direction:column;gap:10px}
+.fins{font-size:13.5px;color:#c9d5ea}
+.fcards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.fcard{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 6px 7px;border-radius:12px;background:var(--raise);border:1px solid var(--line);cursor:pointer;color:var(--fg);text-align:center}
+.fcard img{width:100%;height:62px;object-fit:contain}
+.fcard b{font-size:12.5px;line-height:1.25}
+.fcard small{font-size:11px;color:#7a8aa8;line-height:1.3}
+.fcard.placed small{color:#3ddc97}
+.fcard.sel{border:2px solid var(--accent);background:#2a2414}
+.fcard.sel small{color:var(--accent)}
+.fcard.need{border:2px solid #ff6b6b;background:#2b1a1d}
+.fcard.need small{color:#ff9a9a;font-weight:600}
+.fres{border-radius:12px;border:1px solid var(--line);background:#0d1628;padding:10px 12px;display:flex;flex-direction:column;gap:4px;font-size:13.5px}
+.fres b{font-size:13px;color:var(--muted);font-weight:600}
+.fres .ok{color:#3ddc97}.fres .no{color:#ff9a9a;font-weight:600}.fres .nx{color:#7a8aa8}
+.ffoot{padding:12px 18px calc(14px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);display:flex;align-items:center;gap:8px}
+.ffoot span{flex:1;font-size:13px;color:var(--muted)}
+.fhint{position:absolute;left:16px;right:416px;bottom:16px;border-radius:16px;padding:12px 16px;display:flex;gap:14px;align-items:center;box-shadow:0 14px 30px rgba(0,0,0,.45)}
+.fhint[hidden]{display:none}
+.fhint svg{width:26px;height:26px;flex:none}
+.fhint>div{flex:1;display:flex;flex-direction:column;gap:3px}
+.fhint b{font-family:var(--display);font-size:16px;color:#fff}
+.fhint span{font-size:14.5px;line-height:1.55}
+.fhint img{width:64px;height:44px;object-fit:contain;flex:none}
+.fhint button{flex:none;height:42px;padding:0 14px;border-radius:10px;border:0;font:600 14px var(--body);cursor:pointer}
+.fhint.bad{background:#2b1a1d;border:1px solid #ff6b6b;color:#ff9a9a}
+.fhint.bad span{color:#ffe3a6}
+.fhint.bad button{background:#ff6b6b;color:#1c0a0a}
+.fhint.ok{background:#102a1d;border:1px solid #3ddc97;color:#3ddc97}
+.fhint.ok span{color:#dbe4f5}
+.fhint.sel{background:#2a2414;border:1px solid var(--accent)}
+.fhint.sel span{color:#f1e6c0}
+.fhint.sel button{background:var(--accent);color:var(--accent-ink)}
+@media (max-width:900px){ .fpanel{top:auto;width:100%;height:45%;border-left:0;border-top:1px solid var(--line)} .fhint{right:16px;bottom:calc(45% + 12px)} .fmis{right:14px;top:auto;bottom:calc(45% + 12px)} .fempty{right:0} .fcards{grid-template-columns:repeat(4,minmax(0,1fr))} }
+/* ---------- Knockout · gene expression ---------- */
+#gx{padding:0;pointer-events:none}
+#gx>*{pointer-events:auto}
+.gxtop{position:absolute;top:calc(12px + env(safe-area-inset-top,0px));left:14px;display:flex;align-items:flex-start;gap:12px}
+.gxbtn{height:44px;padding:0 16px;border-radius:12px;border:1px solid var(--line);background:var(--raise);color:#7a8aa8;font:600 15px var(--body);display:inline-flex;align-items:center;gap:8px;cursor:pointer;white-space:nowrap}
+.gxbtn.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.gxbtn[disabled]{cursor:default}
+.gxbtn.sm{height:30px;font-size:12.5px;padding:0 10px;border-radius:8px}
+.gxbtn svg{width:18px;height:18px}
+.chartbtn{position:absolute;top:calc(12px + env(safe-area-inset-top,0px));right:14px;background:rgba(16,26,46,.94);border-color:var(--accent);color:var(--accent)}
+.chartbtn[hidden],.gxchart[hidden]{display:none}
+.gxbar{position:absolute;left:0;right:0;bottom:0;min-height:272px;max-height:62%;overflow:auto;box-sizing:border-box;background:var(--panel);border-top:1px solid var(--line);padding:12px 20px calc(14px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:10px}
+.gxchart{position:absolute;top:0;right:0;bottom:272px;width:560px;max-width:100%;overflow:auto;background:#0d1628;border-left:1px solid var(--line);padding:10px 14px;display:flex;flex-direction:column;gap:6px}
+.gxhd{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.gxhd h2{margin:0;font-family:var(--display);font-size:20px}
+.gxhd .sp,.gxact .sp,.gxsumrow .sp{flex:1}
+.gxsep{width:1px;height:20px;background:var(--line)}
+.gxk{font-size:12.5px;color:var(--accent);font-weight:600}
+.gxmeta{font-size:13px;color:var(--muted)}
+.gxmeta.ok{color:#3ddc97}
+.gxstep{display:flex;align-items:center;gap:8px}
+.gxstep>span{display:flex;align-items:center;gap:6px;font-size:13px;color:#7a8aa8}
+.gxstep>span i{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font:700 12px var(--mono);font-style:normal;border:1px solid var(--line)}
+.gxstep>span.c{color:#fff}.gxstep>span.c i{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.gxstep>span.d{color:#3ddc97}.gxstep>span.d i{background:#12301f;border-color:#12301f;color:#3ddc97}
+.gxstep>b{width:18px;height:1px;background:#34476a}
+.gxp{margin:0;font-size:14px;color:#c9d5ea}
+.gxp b{color:#fff}
+.gxrow,.gxcods{display:grid;grid-template-columns:92px 22px minmax(0,1fr) 22px;align-items:center;gap:3px}
+.gxl{font-size:13px;color:var(--muted)}
+.gxe{font:600 12px var(--mono);color:var(--muted);text-align:center}
+.gxcells{display:grid;grid-template-columns:repeat(30,minmax(0,1fr));gap:3px}
+.gxc{height:34px;border-radius:6px;display:grid;place-items:center;font:600 15px var(--mono);box-sizing:border-box;min-width:0}
+.gxc.tmpl{background:#12203a;border:1px solid #2c4470;color:#a6d8ff}
+.gxc.ok{background:#12301f;border:1px solid #2f8a5c;color:#fff}
+.gxc.bad{background:#3a1a1e;border:2px solid #ff6b6b;color:#ff9a9a}
+.gxc.cur{background:#2a2414;border:2px solid var(--accent)}
+.gxc.empty{border:1px dashed #34476a}
+.gxc.mrna,.gxc.codA{background:#2b2440;border:1px solid #5b4b8a;color:#e6dcff}
+.gxc.codB{background:#1f2c4a;border:1px solid #3b5a8a;color:#dbe6ff}
+.gxc.dim{background:#151c2c;border:1px solid #222d44;color:#5a6c8c}
+.gxc.pick{background:#3a1a1e;border:2px solid #ff6b6b;color:#fff}
+.gxc[data-j]{cursor:pointer}
+.gxc[data-j]:hover{outline:2px solid var(--accent)}
+.gxact{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.gxmsg{flex:1;min-width:240px;border-radius:10px;padding:8px 12px;font-size:14px;color:#c9d5ea;background:#0d1628;border:1px solid var(--line)}
+.gxmsg.bad{background:#2b1a1d;border-color:#ff6b6b;color:#ffd6d6}
+.gxmsg.ok{background:#102a1d;border-color:#3ddc97;color:#dbe4f5}
+.gxmsg b{color:#fff}.gxmsg .u{color:#ffd166}
+.gxmsg.inline{flex:none}
+.gxkey{width:58px;height:46px;border-radius:12px;border:1px solid var(--line);background:var(--raise);font:700 20px var(--mono);cursor:pointer;color:#c9d5ea}
+.gxkey.kA{color:#3ddc97}.gxkey.kU{color:#ffd166}.gxkey.kG{color:#5b8cff}.gxkey.kC{color:#ff9f43}
+.gxcodrow{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:3px}
+.gxcod{display:flex;flex-direction:column;align-items:center;gap:2px;min-width:0}
+.gxcod span{width:100%;box-sizing:border-box;text-align:center;padding:3px 0;border-radius:6px;font:600 13px var(--mono);background:var(--raise);border:1px solid var(--line)}
+.gxcod span.ok{background:#12301f;border-color:#2f8a5c}
+.gxcod span.cur{background:#2a2414;border:2px solid var(--accent)}
+.gxcod span.dim{opacity:.55}
+.gxcod small{font-size:12px;color:#c9b8ff;font-weight:600}
+.gxcod.pre small{color:#5a6c8c;font-weight:400;padding-top:4px}
+.gxchain{display:flex;align-items:center;gap:3px;flex-wrap:wrap}
+.gxchain>span{font:600 12px var(--mono);color:var(--muted)}
+.gxchain i{font-style:normal;width:40px;height:40px;border-radius:50%;background:#a99af0;display:grid;place-items:center;font:600 11.5px var(--body);color:#0a1120}
+.gxchain i.q{background:none;border:2px dashed var(--accent);color:var(--accent);font-weight:700}
+.gxchain b{width:6px;height:3px;background:#6b7a99}
+.gxasite{font-size:13.5px}
+.gxasite b{font-family:var(--mono);color:var(--accent)}
+.gxopts{display:grid;grid-template-columns:repeat(6,74px);gap:6px}
+.gxo{height:42px;border-radius:11px;border:1px solid var(--line);background:var(--raise);color:#dbe4f5;font:600 15px var(--body);cursor:pointer}
+.gxo.bad{border:2px solid #ff6b6b;background:#2b1a1d;color:#ff9a9a}
+.gxsumrow{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.gxqs{display:flex;gap:14px;align-items:flex-start}
+.gxq{flex:1;min-width:0;display:flex;flex-direction:column;gap:5px}
+.gxq>b{font-size:14px;line-height:1.4}
+.gxq small{font-size:12.5px;color:var(--muted);line-height:1.45}
+.gxqo{text-align:left;padding:7px 12px;border-radius:10px;border:1px solid var(--line);background:var(--raise);color:#dbe4f5;font:500 13.5px var(--body);cursor:pointer}
+.gxqo.ok{border:2px solid #3ddc97;background:#12301f;color:#fff}
+.gxqo.bad{border:2px solid #ff6b6b;background:#2b1a1d;color:#ff9a9a}
+.gxqo[disabled]{cursor:default}
+.gxqgo{align-self:flex-end}
+.cchd{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.cchd b{font-family:var(--display);font-size:16px}
+.cchd small{flex:1;color:var(--muted);font-size:12px}
+.ccgrid{display:grid;grid-template-columns:28px repeat(4,minmax(0,1fr)) 18px;gap:4px}
+.cch{display:grid;place-items:center;border-radius:7px;background:#1b2a48;color:#c9d5ea;font:700 14px var(--mono);min-height:24px}
+.cch.on{background:var(--accent);color:var(--accent-ink)}
+.ccbox{display:grid;grid-template-columns:auto 1fr;grid-template-rows:repeat(4,17px);padding:2px 3px;border-radius:8px;background:#131f36;border:1px solid var(--line)}
+.ccbox.on{background:#22263a;border-color:var(--accent)}
+.cc{grid-column:1;padding:0 3px;font:500 11.5px var(--mono);line-height:17px;color:#dbe4f5;border-radius:4px}
+.cc.now{background:var(--accent);color:var(--accent-ink);font-weight:700}
+.cc.used{color:#3ddc97}.cc.stop{color:#ff8f8f}.cc.start{color:#7ee0b0}
+.ca{grid-column:2;align-self:center;margin-left:2px;padding:0 5px;font:600 12px var(--body);line-height:17px;color:#c9b8ff;border-radius:5px}
+.ca.br{border-left:2px solid #4a5d82}
+.ca.stop{color:#ff8f8f}.ca.start{color:#7ee0b0}
+.ca.now{background:rgba(255,194,75,.18);outline:2px solid var(--accent);color:#fff}
+.cc3{display:grid;grid-template-rows:repeat(4,17px);padding:2px 0}
+.cc3 span{display:grid;place-items:center;font:600 11px var(--mono);color:#7a8aa8;border-radius:4px}
+.cc3 span.on{background:var(--accent);color:var(--accent-ink)}
+.ccleg{border-top:1px solid var(--line);padding-top:6px;display:flex;flex-direction:column;gap:3px}
+.ccleg small{font-size:12px;color:var(--muted)}
+.ccleg>div{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-flow:column;grid-template-rows:repeat(7,auto);gap:1px 6px}
+.ccleg span{display:flex;gap:5px;align-items:baseline;font-size:12px;color:#dbe4f5;padding:0 4px;border-radius:5px;white-space:nowrap}
+.ccleg span.on{background:rgba(255,194,75,.16);outline:1px solid var(--accent)}
+.ccleg span b{width:30px;flex:none;font:600 12px var(--mono);color:#c9b8ff}
+.ccleg span b.start{color:#7ee0b0}.ccleg span b.stop{color:#ff8f8f}
+.ccleg span i{color:#7a8aa8;font-style:normal}
+@media (max-width:900px){ .gxchart{width:100%;bottom:auto;top:0;height:calc(100% - 300px)} .gxopts{grid-template-columns:repeat(3,74px)} .gxqs{flex-direction:column} .gxrow,.gxcods{grid-template-columns:64px 16px minmax(0,1fr) 16px} .gxc{height:28px;font-size:12px;border-radius:4px} .gxcells{gap:2px} .gxcod span{font-size:11px} }
 </style>
 
 <div id="app" class="s-home">
-  <aside id="side" aria-label="ขั้นตอน">
-    <div class="sidehd"><b>ขั้นตอน</b><span id="sideCount"></span><button id="sideX" aria-label="ซ่อนแถบขั้นตอน"><svg viewBox="0 0 24 24"><path d="M15.5 4 7.5 12l8 8 1.5-1.5L10.5 12 17 5.5z"/></svg></button></div>
-    <ol id="stepList"></ol>
-  </aside>
   <div id="main">
   <div id="stage">
     <canvas id="c" aria-label="แบบจำลองสามมิติ"></canvas>
@@ -547,6 +832,7 @@ button.bt{cursor:pointer}
       <button class="chip opt" id="tgBases" aria-pressed="true">สีเบส</button>
       <button class="chip" id="btnCam">มุมกล้องเริ่มต้น</button>
     </div>
+    <button class="chip panelshow" id="panelShow">แสดงแผงขั้นตอน ‹</button>
     <div class="legend" id="legend" aria-label="คำอธิบายสี"></div>
     <div class="overview" id="inset" aria-hidden="true"></div>
     <div class="card" id="card" hidden>
@@ -595,7 +881,8 @@ button.bt{cursor:pointer}
       <form class="formcard" id="loginForm" novalidate>
         <h2>เข้าสู่โหมดครู</h2>
         <p>ใส่รหัสผ่านครูเพื่อดูคะแนนนักเรียน</p>
-        <div class="field"><label for="fPw">รหัสผ่าน</label><input id="fPw" type="password" autocomplete="current-password" required></div>
+        <div class="field"><label for="fPw">รหัสผ่าน</label><div class="pwrow"><input id="fPw" type="password" autocomplete="current-password" autocapitalize="off" spellcheck="false" required><button type="button" class="eye" id="pwEye" aria-label="แสดงรหัสผ่าน" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M12 5C6.5 5 2.7 9.2 1.5 12c1.2 2.8 5 7 10.5 7s9.3-4.2 10.5-7C21.3 9.2 17.5 5 12 5zm0 11.5a4.5 4.5 0 1 1 0-9 4.5 4.5 0 0 1 0 9zm0-2.3a2.2 2.2 0 1 0 0-4.4 2.2 2.2 0 0 0 0 4.4z"/></svg></button></div></div>
+        <p class="formwarn" id="pwWarn" role="status" hidden></p>
         <p class="formerr" id="loginErr" hidden></p>
         <div class="formbtns"><button type="button" class="back" id="loginBack">‹ ย้อนกลับ</button><button type="submit" class="cta" id="loginBtn">เข้าสู่ระบบ</button></div>
       </form>
@@ -665,7 +952,11 @@ button.bt{cursor:pointer}
     </section>
 
     <section class="ov" id="ko" hidden>
-      <div class="kopick" id="koPick">
+      <div class="kotopics" id="koTopics" hidden>
+        <div class="kotop"><button class="back" id="koTopicsBack">‹ เลือกโหมด</button><div><h2>Knockout <span style="color:var(--accent)">Lab</span></h2><p>เลือกเรื่องที่จะทดลอง · แต่ละเรื่องทำได้ 3 ครั้ง ใช้คะแนนครั้งที่ดีที่สุด</p></div></div>
+        <div class="kgrid" id="koTopicsBody"></div>
+      </div>
+      <div class="kopick" id="koPick" hidden>
         <div class="kotop"><button class="back" id="koBack">‹ เลือกโหมด</button><div><h2>Knockout Lab</h2><p id="koHint"></p></div><span class="koprog" id="koProg"></span></div>
         <div class="kofloat" id="koFloat"></div>
         <button class="cta" id="koQuizBtn" hidden>ทำคำถามท้ายการทดลอง (6 ข้อ)</button>
@@ -678,6 +969,17 @@ button.bt{cursor:pointer}
     </section>
 
     <section class="ov" id="build" hidden>
+      <div class="freeui" id="freeUI" hidden>
+        <div class="fhead"><button class="back" id="freeBack">‹ เลือกภารกิจ</button><div><h1>Build <span>โหมดอิสระ</span></h1><p>ลองประกอบเองได้ไม่จำกัด ไม่คิดคะแนน</p></div></div>
+        <button class="chip fmis" id="freeMissions">ไปทำภารกิจ ›</button>
+        <p class="fempty" id="freeEmpty"></p>
+        <div class="fhint" id="freeHint" role="status" hidden></div>
+        <aside class="fpanel" aria-label="ส่วนประกอบ">
+          <div class="ftop"><span>สร้างเรื่อง</span><div class="fseg" id="freeTopics"></div></div>
+          <div class="fbody"><span class="fins">แตะส่วนประกอบ แล้วแตะพื้นที่ภาพ 3D เพื่อวาง ทีละชนิด</span><div class="fcards" id="freeCards"></div><div id="freeRes"></div></div>
+          <div class="ffoot"><span id="freeCount"></span><button class="btn" id="freeClear">ล้างพื้นที่</button><button class="btn primary big" id="freeRun"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>ให้ทำงาน</button></div>
+        </aside>
+      </div>
       <div class="qpanel">
         <div class="qhd"><button class="qback" id="buildBack">‹ ออก</button><span class="t" id="buildT">Build</span><span class="sc" id="buildSc"></span></div>
         <div class="qbody" id="buildBody"></div>
@@ -697,7 +999,29 @@ button.bt{cursor:pointer}
         <div class="tblwrap"><table class="sc" id="dashTbl"></table></div>
         <div class="dgrid">
           <div class="dbox"><h3>ข้อที่ห้องนี้ตอบผิดมากที่สุด</h3><ol id="dashMiss"></ol></div>
-          <div class="dbox"><h3>วิธีคิดคะแนน</h3><p class="dnote">รวม 80 คะแนน: Test 3 เรื่อง เรื่องละ 10 (ใช้ครั้งล่าสุด ไม่นับแบบรวมทุกเรื่อง) + Knockout Lab 20 (ครูตรวจส่วนการทดลอง 14 + คำถาม 6) + Build 30 · Knockout ที่ขึ้น "รอตรวจ" ให้แตะเพื่อตรวจและยืนยันคะแนน นักเรียนจะเห็นคะแนนหลังครูยืนยัน · โหมดเรียนรู้และโหมดทบทวนไม่คิดคะแนน</p></div>
+          <div class="dbox"><h3>วิธีคิดคะแนน</h3><p class="dnote">รวม 80 คะแนน: Test 3 เรื่อง เรื่องละ 10 (ทำได้ครั้งเดียว ส่งทีละข้อ) · Knockout จำลองดีเอ็นเอ 10 (คะแนนดิบ 20 ÷ 2) · Knockout การแสดงออกของยีน 10 (คะแนนดิบ 40 ÷ 4) · Build 6 ภารกิจ ภารกิจละ 5 · Knockout และ Build ทำได้ 3 ครั้ง ใช้ครั้งที่ดีที่สุด · ระบบตรวจทุกข้อให้ก่อน แตะชื่อนักเรียนเพื่อดูคำตอบและแก้คะแนนรายข้อ</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="ov" id="gx" hidden>
+      <div class="gxtop"><button class="back" id="gxBack">‹ เลือกเรื่อง</button><div><h1>Knockout <span>Lab</span></h1><p>การแสดงออกของยีน</p></div></div>
+      <button class="gxbtn chartbtn" id="gxChartBtn" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18" stroke="currentColor" stroke-width="2"/></svg>Codon Chart</button>
+      <aside class="gxchart" id="gxChart" hidden></aside>
+      <section class="gxbar" id="gxBar" aria-label="งานของนักเรียน"></section>
+    </section>
+
+    <section class="ov" id="rev" hidden>
+      <div class="revwrap">
+        <header class="revhd"><button class="back" id="rvBack">‹ Dashboard</button><h2>ตรวจคำตอบนักเรียน</h2></header>
+        <div class="revmain">
+          <aside class="revlist"><div class="rvl" id="rvList"></div></aside>
+          <main class="revcol">
+            <div class="revtop"><div class="revname"><b id="rvName"></b><span id="rvSub"></span></div><div class="rvtabs" id="rvTabs"></div><div id="rvSel"></div></div>
+            <div class="rvhead"><span>ข้อ</span><span>คำถาม</span><span>คำตอบของนักเรียน</span><span>ระบบตรวจอย่างไร</span><span>คะแนน</span></div>
+            <div class="rvbody" id="rvBody"></div>
+            <div class="rvfoot" id="rvFoot"></div>
+          </main>
         </div>
       </div>
     </section>
@@ -706,41 +1030,43 @@ button.bt{cursor:pointer}
     <div class="modal" id="sum" hidden><div class="qcard sumcard" id="sumCard" role="dialog" aria-modal="true"></div></div>
   </div>
 
-  <section id="capbar" aria-label="คำบรรยาย">
-    <div class="checknote" id="checkNote" hidden><b>โหมดทบทวน</b> คำถามท้ายแต่ละขั้นไม่คิดคะแนน ใช้เช็กว่าเข้าใจหรือยัง ตอบครบแล้วจะบอกว่าควรทวนขั้นไหนเพิ่ม</div>
-    <div class="caprow">
-      <div class="caphead">
-        <div class="kicker"><span id="sMod"></span> · ขั้นที่ <span id="sNum">1</span> จาก <span id="sTot">13</span></div>
-        <h2 id="sTitle"></h2>
-      </div>
-      <div class="capbtns">
-        <button class="chip" id="tgSide" aria-pressed="true">ขั้นตอน</button>
-        <button class="chip" id="tgCap" aria-pressed="true">คำบรรยาย</button>
-        <button class="chip" id="btnParts">ส่วนประกอบ</button>
-        <button class="chip" id="btnThink" aria-pressed="false">คำถามชวนคิด</button>
-      </div>
-    </div>
-    <div id="capText" class="prose"><div id="sBody"></div></div>
-    <div class="think" id="think" hidden>
-      <div class="lab">คำถามชวนคิด</div>
-      <p id="qAsk"></p>
-      <button class="linkbtn" id="qBtn">ดูคำตอบ</button>
-      <p class="ans" id="qAns" hidden></p>
-    </div>
-    <div class="donebox" id="doneBox" hidden><b id="doneT"></b><p id="doneP"></p><div class="row" id="doneBtns"></div></div>
-    <div class="ctrl">
-      <button class="btn" id="bPrev" aria-label="ขั้นก่อนหน้า"><svg viewBox="0 0 24 24"><path d="M15.5 4 7.5 12l8 8 1.5-1.5L10.5 12 17 5.5z"/></svg></button>
-      <button class="btn" id="bReplay" aria-label="เล่นขั้นนี้ใหม่"><svg viewBox="0 0 24 24"><path d="M12 5V2L7 6l5 4V7a5 5 0 1 1-5 5H5a7 7 0 1 0 7-7z"/></svg></button>
-      <button class="btn" id="bPlay" aria-label="เล่น/หยุด"><svg viewBox="0 0 24 24" id="icoPlay"><path d="M8 5v14l11-7z"/></svg></button>
-      <button class="btn primary" id="bNext">ขั้นต่อไป <svg viewBox="0 0 24 24"><path d="M8.5 4 7 5.5 13.5 12 7 18.5 8.5 20l8-8z"/></svg></button>
-      <div class="grow">
-        <input type="range" id="prog" min="0" max="1000" value="0" aria-label="ความคืบหน้าของขั้นนี้">
-        <label class="speed" for="spd">ความเร็ว</label>
-        <select id="spd"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option></select>
-      </div>
-    </div>
-  </section>
   </div>
+  <aside id="capbar" aria-label="ขั้นตอนและคำอธิบาย">
+    <div class="lp-top">
+      <div class="lp-hd"><span><span id="sMod"></span> · ขั้นตอน</span><button class="iconbtn" id="tgCap" aria-label="ซ่อนแผง" title="ซ่อนแผง"><svg viewBox="0 0 24 24"><path d="M8.5 4 7 5.5 13.5 12 7 18.5 8.5 20l8-8z"/></svg></button></div>
+      <div class="stepgrid" id="stepList"></div>
+    </div>
+    <div class="lp-body" id="capText">
+      <div class="checknote" id="checkNote" hidden><b>โหมดทบทวน</b> จบแต่ละขั้นจะนับถอยหลัง 5 วินาที แล้วมีคำถามขึ้น ไม่คิดคะแนน ใช้เช็กว่าเข้าใจหรือยัง</div>
+      <div class="lp-num"><b id="sNum">1</b><span>ขั้นที่ <span id="sNum2">1</span> จาก <span id="sTot">13</span></span></div>
+      <h2 id="sTitle"></h2>
+      <div class="nowbox" id="nowBox" hidden></div>
+      <div class="prose" id="sBody"></div>
+      <div class="lp-links">
+        <button class="linkbtn" id="btnParts">ส่วนประกอบในขั้นนี้</button>
+        <button class="linkbtn" id="btnThink" aria-pressed="false">คำถามชวนคิด</button>
+      </div>
+      <div class="think" id="think" hidden>
+        <div class="lab">คำถามชวนคิด</div>
+        <p id="qAsk"></p>
+        <button class="linkbtn" id="qBtn">ดูคำตอบ</button>
+        <p class="ans" id="qAns" hidden></p>
+      </div>
+      <div class="donebox" id="doneBox" hidden><b id="doneT"></b><p id="doneP"></p><div class="row" id="doneBtns"></div></div>
+    </div>
+    <div class="lp-foot">
+      <div class="lp-prog">
+        <input type="range" id="prog" min="0" max="1000" value="0" aria-label="ความคืบหน้าของขั้นนี้">
+        <select id="spd" aria-label="ความเร็ว"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option></select>
+      </div>
+      <div class="lp-btns">
+        <button class="btn" id="bPrev" aria-label="ขั้นก่อนหน้า"><svg viewBox="0 0 24 24"><path d="M15.5 4 7.5 12l8 8 1.5-1.5L10.5 12 17 5.5z"/></svg></button>
+        <button class="btn" id="bReplay" aria-label="เล่นขั้นนี้ใหม่"><svg viewBox="0 0 24 24"><path d="M12 5V2L7 6l5 4V7a5 5 0 1 1-5 5H5a7 7 0 1 0 7-7z"/></svg></button>
+        <button class="btn round" id="bPlay" aria-label="เล่น/หยุด"><svg viewBox="0 0 24 24" id="icoPlay"><path d="M8 5v14l11-7z"/></svg></button>
+        <button class="btn primary big" id="bNext">ขั้นต่อไป <svg viewBox="0 0 24 24"><path d="M8.5 4 7 5.5 13.5 12 7 18.5 8.5 20l8-8z"/></svg></button>
+      </div>
+    </div>
+  </aside>
 </div>
 
 <script type="importmap">
@@ -987,7 +1313,7 @@ function makeRep(){
       ligFlash:0, fragA:0
     };
   }
-  function reset(s){ s.leadGlow.fill(0); s.lagGlow.fill(0); s.ligFlash = 0; s.nickA = 0; }
+  function reset(s){ s.leadGlow.fill(0); s.lagGlow.fill(0); s.ligFlash = 0; s.nickA = 0; s.hi = null; s.now = null; s.ov = 0; }
   function fill(amt, type, from, to, q, ty, fragArr, frag){
     const dir = to >= from ? 1 : -1, n = Math.abs(to-from)+1, f = q*n;
     for(let k=0;k<n;k++){ const i = from + dir*k, a = clamp(f-k,0,1); if(a > amt[i]){ amt[i] = a; type[i] = ty; if(fragArr) fragArr[i] = frag; } }
@@ -1001,6 +1327,24 @@ function makeRep(){
       if(q>0 && q<1) glow[i] = Math.max(glow[i], 1 - Math.min(1, Math.abs(f-k-0.5)/1.3));
     }
     return from + clamp(f, 0, n-1);
+  }
+
+
+  // frozen mid-replication picture: every enzyme busy at once (used by the summary step)
+  function overview(s){
+    s.leadAmt.fill(0); s.lagAmt.fill(0); s.leadType.fill(0); s.lagType.fill(0); s.lagFrag.fill(0); s.lagLig.fill(0);
+    s.fork = 8; s.forkR = N + W + 3; s.extraA = 0; s.sep = SEP0; s.rewind = 0; s.zoom = 1;
+    fill(s.leadAmt, s.leadType, 95, 92, 1, 1); fill(s.leadAmt, s.leadType, 91, 10, 1, 2); replace(s.leadType, s.leadGlow, 92, 95, 1, 2);
+    for(let k=1;k<=3;k++){ const f = FR[k]; fill(s.lagAmt, s.lagType, f.L, f.L+3, 1, 1, s.lagFrag, k); fill(s.lagAmt, s.lagType, f.L+4, f.R, 1, 2, s.lagFrag, k); }
+    replace(s.lagType, s.lagGlow, 78, 81, 1, 2, s.lagFrag, 2);            // frag 1 primer already replaced
+    s.lagLig[81] = 0;                                                      // ligase is sealing this nick now
+    const g = replace(s.lagType, s.lagGlow, 64, 67, 0.5, 2, s.lagFrag, 3); // pol I half-way through frag 2's primer
+    fill(s.lagAmt, s.lagType, 28, 31, 1, 1, s.lagFrag, 4);
+    const f4 = fill(s.lagAmt, s.lagType, 32, 45, 0.6, 2, s.lagFrag, 4);  // pol III growing frag 4
+    s.prim.idx = fill(s.lagAmt, s.lagType, 10, 13, 0.55, 1, s.lagFrag, 5); // primase starting frag 5
+    s.helA = 1; s.topoA = 1; s.ssbA = 1; s.hel2A = 0;
+    s.prim.a = 1; s.prim.str = 1; s.p3L.a = 1; s.p3L.idx = 10.5; s.p3G.a = 1; s.p3G.idx = f4;
+    s.p1.a = 1; s.p1.idx = g + 0.3; s.lig.a = 1; s.lig.idx = 81.5; s.nickA = 0; s.fragA = 1;
   }
 
   const STEPS = [
@@ -1105,52 +1449,73 @@ function makeRep(){
     a:'DNA pol I เติมนิวคลีโอไทด์แทนที่ไพรเมอร์ ส่วนไลเกสไม่เติมนิวคลีโอไทด์ แค่สร้างพันธะปิดรอยขาดระหว่างนิวคลีโอไทด์สองตัวที่อยู่ติดกัน',
     cam:()=>({i:81.5, y:-2.2, d:15}),
     run(s,p){ s.p1.a = 1-eph(p,0,0.15); s.lig.idx = 81.5; s.lig.a = eph(p,0.1,0.3); if(p > 0.6) s.lagLig[81] = 1; s.ligFlash = bump(p,0.55,0.9,0.06); s.nickA = 1 - eph(p,0.6,0.7); } },
-  { t:'วงจรซ้ำจนจำลองตลอดสาย', dur:30,
-    body:`<p>บนสายแลกกิง กระบวนการวนซ้ำทีละชิ้น ไพรเมสสร้างไพรเมอร์ → DNA pol III สร้างชิ้นส่วนโอคาซากิ → DNA pol I แทนที่ไพรเมอร์ ขณะที่สายลีดดิงยาวต่อเนื่องไปพร้อมกัน รอยขาดระหว่างชิ้นจะถูก DNA ligase เชื่อมในขั้นถัดไป</p>
-    <p>ในเซลล์จริง โปรตีนเหล่านี้รวมกันเป็นคอมเพล็กซ์ขนาดใหญ่ DNA pol III 2 โมเลกุลทำงานคู่กันบนสองสาย และแม่แบบสายแลกกิงวนเป็นห่วงผ่านคอมเพล็กซ์ <span class="en">(trombone model)</span> ทั้งสองสายจึงถูกสร้างพร้อมกันในอัตราเดียวกัน</p>
-    <p>ไพรเมอร์ที่ปลายสายลีดดิงตรง origin ก็ถูกแทนที่ด้วยดีเอ็นเอเช่นกัน</p>`,
-    q:'แบบจำลองนี้วาด DNA pol III แยกเป็นสองตัววิ่งไปตามดีเอ็นเอ ของจริงต่างจากนี้อย่างไร',
-    a:'ของจริงโปรตีนรวมเป็นคอมเพล็กซ์เดียว และอาจอยู่กับที่แล้วดึงดีเอ็นเอผ่านเข้าไปแทน โดยแม่แบบสายแลกกิงวนเป็นห่วงคล้ายท่อของทรอมโบน',
-    cam:s=>({i:clamp(s.fork+14, 14, 82), d:28}),
+  { t:'วงจรซ้ำทีละชิ้น จนจำลองตลอดสาย', dur:40,
+    body:`<p>fork เคลื่อนต่อไปทางซ้าย สายลีดดิงยาวต่อเนื่อง ส่วนสายแลกกิงสร้างทีละชิ้น <b>แต่ละชิ้นมีเอนไซม์ทำงานตามลำดับ 4 ตัว</b> ดูได้จากกล่อง “กำลังทำงานตอนนี้” ด้านบน</p>
+    <ol class="seq"><li><b>ไพรเมส</b> สร้างไพรเมอร์ RNA ใกล้ fork</li><li><b>DNA pol III</b> ต่อดีเอ็นเอจากไพรเมอร์ไปทางขวา จนชนไพรเมอร์ของชิ้นก่อนหน้า</li><li><b>DNA pol I</b> แทนที่ไพรเมอร์ของชิ้นก่อนหน้าด้วยดีเอ็นเอ</li><li><b>DNA ligase</b> เชื่อมรอยขาดทันที ชิ้นใหม่ต่อกับชิ้นเก่าเป็นสายเดียว</li></ol>
+    <p>ไลเกส<b>ไม่ได้รอ</b>จนสร้างครบทุกชิ้น แต่ปิดรอยขาดทันทีหลัง DNA pol I ทำงานเสร็จ สายแลกกิงช่วงหลัง fork จึงต่อกันเป็นสายเดียวไปเรื่อย ๆ</p>`,
+    q:'ในการสร้างชิ้นส่วนโอคาซากิ 1 ชิ้น เอนไซม์ทำงานตามลำดับอย่างไร',
+    a:'ไพรเมสสร้างไพรเมอร์ → DNA pol III ต่อสาย → DNA pol I แทนที่ไพรเมอร์ของชิ้นก่อนหน้า → DNA ligase เชื่อมรอยขาด',
+    cam:s=>({i:s.camI ?? clamp(s.fork+14, 14, 82), d:26}),
     run(s,p){
-      const q = ph(p,0,0.8);
+      const q = ph(p,0,0.84);
+      let camI = clamp(lerp(50, -12, q) + 14, 14, 82);
       s.fork = lerp(50, -12, q);
       s.p3L.idx = fill(s.leadAmt, s.leadType, 53, 0, q, 2);
-      s.p3L.a = 1-eph(p,0.82,0.9); s.helA = 1-eph(p,0.8,0.88); s.topoA = 1-eph(p,0.72,0.8);
-      let p1A = 0, p3GA = 0, primA = 0;
+      s.p3L.a = 1-eph(p,0.86,0.92); s.helA = 1-eph(p,0.84,0.9); s.topoA = 1-eph(p,0.76,0.84);
+      let p1A = 0, p3GA = 0, primA = 0, ligA = 0, ligIdx = 81.5;
+      s.now = null;
       for(let k=3;k<=6;k++){
-        const L = FR[k].L, prev = FR[k-1].L, c = 0.8*(58-L)/62;
+        const L = FR[k].L, prev = FR[k-1].L, c = 0.84*(58-L)/62, nk = prev + 3;
+        const w = eph(p,c-0.03,c+0.01)*(1-eph(p,c+0.17,c+0.21)); camI = lerp(camI, L + 11, w);
         fill(s.lagAmt, s.lagType, L, L+3, ph(p,c,c+0.03), 1, s.lagFrag, k);
         let b = bump(p,c-0.01,c+0.04);
         if(b>0){ primA = b; s.prim.str = 1; s.prim.idx = L + clamp((p-c)/0.03,0,1)*3; }
+        if(p >= c-0.01 && p < c+0.035) s.now = {k:'prim', f:k, t:`สร้างไพรเมอร์ RNA ของชิ้นที่ ${k} ใกล้ fork`};
         const f = fill(s.lagAmt, s.lagType, L+4, prev-1, ph(p,c+0.035,c+0.09), 2, s.lagFrag, k);
         b = bump(p,c+0.03,c+0.1);
         if(b>0){ p3GA = b; s.p3G.idx = p < c+0.035 ? L+4 : f; }
-        const g = replace(s.lagType, s.lagGlow, prev, prev+3, ph(p,c+0.095,c+0.115), 2, s.lagFrag, k);
-        b = bump(p,c+0.09,c+0.122);
+        if(p >= c+0.035 && p < c+0.095) s.now = {k:'p3', f:k, t:`ต่อดีเอ็นเอจากไพรเมอร์ของชิ้นที่ ${k} ไปทางขวา`};
+        const g = replace(s.lagType, s.lagGlow, prev, prev+3, ph(p,c+0.1,c+0.125), 2, s.lagFrag, k);
+        b = bump(p,c+0.095,c+0.132);
         if(b>0){ p1A = b; s.p1.idx = g + 0.3; }
+        if(p >= c+0.095 && p < c+0.13) s.now = {k:'p1', f:k, t:`แทนที่ไพรเมอร์ของชิ้นที่ ${k-1} ด้วยดีเอ็นเอ`};
+        b = bump(p,c+0.128,c+0.175);
+        if(b>0){ ligA = b; ligIdx = nk + 0.5; }
+        if(p > c+0.15) s.lagLig[nk] = 1;
+        s.ligFlash = Math.max(s.ligFlash, bump(p,c+0.145,c+0.17,0.01));
+        s.nickA = Math.max(s.nickA, bump(p,c+0.12,c+0.152,0.005));
+        if(p >= c+0.13 && p < c+0.175) s.now = {k:'lig', f:k, t:`เชื่อมรอยขาดระหว่างชิ้นที่ ${k} กับชิ้นที่ ${k-1} ทันที`};
       }
-      s.lig.a = 1-eph(p,0,0.05); s.nickA = eph(p,0.85,0.95); s.p1.a = p1A; s.p3G.a = p3GA; s.prim.a = primA;
-      replace(s.leadType, s.leadGlow, 92, 95, ph(p,0.85,0.97), 2);
+      s.p1.a = p1A; s.p3G.a = p3GA; s.prim.a = primA; s.lig.a = ligA; s.lig.idx = ligIdx; s.camI = camI;
+      if(s.now) s.hi = s.now.k;
+      replace(s.leadType, s.leadGlow, 92, 95, ph(p,0.88,0.97), 2);
+      if(p >= 0.88 && p < 0.97) s.now = {k:'p1', f:0, t:'แทนที่ไพรเมอร์ของสายลีดดิงตรง origin'};
+      s.fragA = 1 - eph(p,0.92,1);
     } },
-  { t:'DNA ligase ไล่เชื่อมรอยขาดตลอดสาย', dur:16,
-    body:`<p>เมื่อ DNA pol I แทนที่ไพรเมอร์ครบแล้ว สายแลกกิงยังมี<b>รอยขาด</b> ระหว่างชิ้นส่วนโอคาซากิทุกชิ้น <b>DNA ligase</b> (สีทอง) เคลื่อนไปตามสาย แล้วสร้างพันธะฟอสโฟไดเอสเทอร์ปิดรอยขาดทีละจุด ทุกครั้งที่เชื่อมจะมีแสงวาบ และหมายเลขชิ้นหายไปเมื่อเชื่อมครบ</p>
-    <p>เมื่อเชื่อมครบทุกจุด สายแลกกิงจึงเป็นดีเอ็นเอสายยาวต่อเนื่องเหมือนสายลีดดิง</p>`,
-    q:'ถ้า DNA ligase ทำงานผิดปกติ สายแลกกิงจะเป็นอย่างไร',
-    a:'ชิ้นส่วนโอคาซากิจะไม่ถูกเชื่อมกัน สายแลกกิงขาดเป็นช่วง ๆ ดีเอ็นเอจึงไม่สมบูรณ์และแตกหักได้ง่าย',
-    cam:s=>({i:s.lig.idx, y:-2.2, d:19}),
+  { t:'ภาพรวมและสรุป: ใครทำอะไรที่ replication fork', dur:24,
+    body:`<p>ภาพนี้หยุดเวลาไว้กลางการจำลอง เพื่อให้เห็น<b>ทุกเอนไซม์ทำงานพร้อมกัน</b> ที่ fork เดียว จากนั้นกล้องจะซูมไล่ดูทีละตัวตามลำดับในตาราง</p>
+    <table class="sum"><tr><th>ส่วนประกอบ</th><th>หน้าที่</th></tr>
+    <tr data-k="topo"><td>โทโพไอโซเมอเรส</td><td>ลดแรงบิดด้านหน้า fork</td></tr>
+    <tr data-k="hel"><td>เฮลิเคส</td><td>คลายเกลียว แยกสายที่ fork</td></tr>
+    <tr data-k="ssb"><td>SSB</td><td>เกาะสายเดี่ยวไม่ให้จับคู่กลับ</td></tr>
+    <tr data-k="prim"><td>ไพรเมส</td><td>สร้างไพรเมอร์ RNA</td></tr>
+    <tr data-k="p3"><td>DNA pol III + clamp</td><td>ต่อสายใหม่ทิศ 5′→3′</td></tr>
+    <tr data-k="p1"><td>DNA pol I</td><td>แทนที่ไพรเมอร์ด้วยดีเอ็นเอ</td></tr>
+    <tr data-k="lig"><td>DNA ligase</td><td>เชื่อมรอยขาดระหว่างชิ้น</td></tr></table>
+    <p>สรุป: สายลีดดิงสร้าง<b>ต่อเนื่อง</b> ใช้ไพรเมอร์อันเดียว สายแลกกิงสร้าง<b>เป็นชิ้น</b> แต่ละชิ้นใช้ไพรเมอร์ของตัวเอง แล้วถูกเชื่อมทันทีจนเป็นสายเดียว</p>`,
+    q:'ถ้าเรียงเอนไซม์ที่ทำงานบนสายแลกกิงตามลำดับ จะได้อย่างไร',
+    a:'เฮลิเคส (+โทโพไอโซเมอเรส, SSB) → ไพรเมส → DNA pol III → DNA pol I → DNA ligase',
+    cam:s=>({i:s.camI ?? 46, d:s.camD ?? 76}),
     run(s,p){
-      const NK = [67, 49, 31, 13], seg = 1/NK.length;
-      s.nickA = 1; s.lig.a = 1;
-      let idx = 81.5;
-      NK.forEach((n, j) => {
-        const a0 = j*seg, from = j ? NK[j-1] + 0.5 : 81.5;
-        if(p >= a0) idx = lerp(from, n + 0.5, eph(p, a0, a0 + seg*0.5));
-        if(p > a0 + seg*0.7) s.lagLig[n] = 1;
-        s.ligFlash = Math.max(s.ligFlash, bump(p, a0 + seg*0.62, a0 + seg*0.95, 0.02));
-      });
-      s.lig.idx = idx;
-      s.fragA = 1 - eph(p,0.9,1);
+      if(snapping) return;   // the snapshot after this step keeps the finished molecule
+      overview(s);
+      // wide shot → visit each enzyme in order → wide shot again
+      const T = [[null,46,76],['topo',-2,22],['hel',8,20],['ssb',18,20],['prim',11,18],['p3',40,22],['p1',66,18],['lig',81.5,18],[null,46,76]];
+      const segW = 0.1, j = p < 0.1 ? 0 : p >= 0.8 ? 8 : 1 + Math.floor((p - 0.1)/segW);
+      const t0 = j === 0 ? 0 : j === 8 ? 0.8 : 0.1 + (j-1)*segW, k = sm(clamp((p - t0)/0.035, 0, 1));
+      const a = T[Math.max(0, j-1)], b = T[j];
+      s.camI = lerp(a[1], b[1], j ? k : 1); s.camD = lerp(a[2], b[2], j ? k : 1);
+      s.hi = b[0]; s.ov = 1;
     } },
   { t:'ผลลัพธ์: ดีเอ็นเอ 2 โมเลกุลแบบกึ่งอนุรักษ์', dur:8,
     body:`<p>เมื่อจำลองเสร็จ จะได้ดีเอ็นเอสายคู่ 2 โมเลกุลที่มีลำดับเบสเหมือนกันทุกประการ แต่ละโมเลกุลประกอบด้วย<b>สายเดิม 1 สาย</b> (น้ำเงินเข้ม) กับ<b>สายใหม่ 1 สาย</b> (ฟ้า) จึงเรียกว่าการจำลองแบบกึ่งอนุรักษ์ ซึ่งการทดลองของ Meselson และ Stahl ยืนยันไว้</p>
@@ -1160,6 +1525,7 @@ function makeRep(){
     cam:()=>({i:47.5, d:60}),
     run(s,p){
       const f = 1-eph(p,0,0.15);
+      s.hi = null;
       s.helA = 0; s.topoA = 0; s.ssbA *= f; s.p3L.a *= f; s.p3G.a *= f; s.p1.a *= f; s.lig.a *= f; s.prim.a *= f;
       s.fragA = 1-eph(p,0,0.2);
       replace(s.lagType, s.lagGlow, 0, 3, ph(p,0,0.2), 2, s.lagFrag, 6);
@@ -1286,7 +1652,7 @@ function makeRep(){
         if(on < 0.01) return;
         const f = 1 - sm(on), p = BB[str][i], dir = str ? -1 : 1;
         for(let j=-1;j<=1;j++){ tmpA.set(p.x + j*0.36*(1 + f) - 3*f, p.y*0.98 - dir*0.25 + dir*7*f, p.z + 0.45 + 6*f); setSph(ssbMesh, n++, tmpA, 0.3*Math.min(1, on*4)); }
-        if(on > 0.9 && ssbPts.length < 1 && i > cur.fork + 6) ssbPts.push(p.clone());
+        if(on > 0.9 && ssbPts.length < 1 && i > cur.fork + (cur.ov ? 8 : 6) && (!cur.ov || str === 1)) ssbPts.push(p.clone());
     });
     for(;n<NSSB;n++) ssbMesh.setMatrixAt(n, ZERO);
     ssbMesh.instanceMatrix.needsUpdate = true; ssbMesh.visible = cur.ssbA > 0.01;
@@ -1298,20 +1664,20 @@ function makeRep(){
         sparkCore.scale.setScalar(0.12 + 0.18*fl); sparkCore.material.opacity = 0.9*fl; } }
     // proteins
     const v = V3();
-    setProt(P.hel, cur.helA * (cur.fork > -1.5 ? 1 : 0), v.set(X(cur.fork - 0.4), 0, 0), selKey==='hel');
-    setProt(P.hel2, cur.hel2A * (cur.forkR < N + 1 ? 1 : 0), v.set(X(cur.forkR + 0.4), 0, 0), selKey==='hel');
+    setProt(P.hel, cur.helA * (cur.fork > -1.5 ? 1 : 0), v.set(X(cur.fork - 0.4), 0, 0), (selKey==='hel' || cur.hi==='hel'));
+    setProt(P.hel2, cur.hel2A * (cur.forkR < N + 1 ? 1 : 0), v.set(X(cur.forkR + 0.4), 0, 0), (selKey==='hel' || cur.hi==='hel'));
     P.hel2.rotation.x = -perfNow*0.002;
     P.hel.rotation.x = perfNow*0.002;
-    setProt(P.topo, cur.topoA * (cur.fork > -1.5 ? 1 : 0), v.set(X(cur.fork - 10), 0, 0), selKey==='topo');
+    setProt(P.topo, cur.topoA * (cur.fork > -1.5 ? 1 : 0), v.set(X(cur.fork - 10), 0, 0), (selKey==='topo' || cur.hi==='topo'));
     P.topo.rotation.x = Math.sin(perfNow*0.003)*0.35;
-    strandAt(cur.prim.str, cur.prim.idx, R*0.4, true, v); v.z += 0.9; setProt(P.prim, cur.prim.a, v, selKey==='prim');
-    setProt(P.p3L, cur.p3L.a, axisAt(0, cur.p3L.idx, v), selKey==='p3');
-    setProt(P.clL, cur.p3L.a, axisAt(0, cur.p3L.idx + 1.4, v), selKey==='clamp');
-    setProt(P.p3G, cur.p3G.a, axisAt(1, cur.p3G.idx, v), selKey==='p3');
-    setProt(P.clG, cur.p3G.a, axisAt(1, cur.p3G.idx - 1.4, v), selKey==='clamp');
-    setProt(P.p1, cur.p1.a, axisAt(1, cur.p1.idx, v), selKey==='p1');
+    strandAt(cur.prim.str, cur.prim.idx, R*0.4, true, v); v.z += 0.9; setProt(P.prim, cur.prim.a, v, (selKey==='prim' || cur.hi==='prim'));
+    setProt(P.p3L, cur.p3L.a, axisAt(0, cur.p3L.idx, v), (selKey==='p3' || cur.hi==='p3'));
+    setProt(P.clL, cur.p3L.a, axisAt(0, cur.p3L.idx + 1.4, v), (selKey==='clamp' || cur.hi==='p3'));
+    setProt(P.p3G, cur.p3G.a, axisAt(1, cur.p3G.idx, v), (selKey==='p3' || cur.hi==='p3'));
+    setProt(P.clG, cur.p3G.a, axisAt(1, cur.p3G.idx - 1.4, v), (selKey==='clamp' || cur.hi==='p3'));
+    setProt(P.p1, cur.p1.a, axisAt(1, cur.p1.idx, v), (selKey==='p1' || cur.hi==='p1'));
     P.lig.userData.flash = cur.ligFlash*1.4;
-    setProt(P.lig, cur.lig.a, axisAt(1, cur.lig.idx, v), selKey==='lig');
+    setProt(P.lig, cur.lig.a, axisAt(1, cur.lig.idx, v), (selKey==='lig' || cur.hi==='lig'));
   }
 
   function segments(amt, linked){
@@ -1327,6 +1693,18 @@ function makeRep(){
     const v = V3();
     if(showLabels){
       const up = (g, dy) => v.copy(g.position).add(V3(0, dy, 0));
+      if(cur.ov){
+        const W_ = !cur.hi, o = (key, id, full, short, pos) => tag(id, 'p', W_ ? short : full, pos, {key, a:(W_ || cur.hi === key) ? 1 : 0.35, hi:cur.hi === key});
+        o('topo','r_topo','Topoisomerase (โทโพไอโซเมอเรส)','Topo', up(P.topo, 2.4));
+        o('hel','r_hel','Helicase (เฮลิเคส)','Helicase', up(P.hel, -2.6).add(V3(W_ ? -2.2 : 0, 0, 0)));
+        if(ssbPts.length) o('ssb','r_ssb','SSB (โปรตีนจับดีเอ็นเอสายเดี่ยว)','SSB', v.copy(ssbPts[0]).add(V3(W_ ? 3 : 0, -1.8, 0)));
+        o('prim','r_prim','Primase (ไพรเมส)','Primase', up(P.prim, W_ ? -4.4 : -2.2).add(V3(W_ ? 1.5 : 0, 0, 0)));
+        o('p3','r_p3L','DNA polymerase III + clamp (สายลีดดิง)','pol III', up(P.p3L, 2.6).add(V3(W_ ? 2.5 : 0, 0, 0)));
+        o('p3','r_p3G','DNA polymerase III + clamp (สายแลกกิง)','pol III', up(P.p3G, -2.6));
+        o('p1','r_p1','DNA polymerase I (ดีเอ็นเอพอลิเมอเรส I)','pol I', up(P.p1, -2.4));
+        o('lig','r_lig','DNA ligase (ดีเอ็นเอไลเกส)','Ligase', up(P.lig, W_ ? 2.6 : -2.4));
+        return;
+      }
       if(cur.helA > 0.3 && cur.fork > -2) tag('r_hel','p','Helicase (เฮลิเคส)', up(P.hel, 2.6), {key:'hel', a:cur.helA});
       if(cur.topoA > 0.3 && cur.fork > -2) tag('r_topo','p','Topoisomerase (โทโพไอโซเมอเรส)', up(P.topo, -2.6), {key:'topo', a:cur.topoA});
       if(cur.ssbA > 0.3 && ssbPts.length) tag('r_ssb','p','SSB (โปรตีนจับดีเอ็นเอสายเดี่ยว)', v.copy(ssbPts[0]).add(V3(0, ssbPts[0].y > 0 ? 1.3 : -1.3, 0)), {key:'ssb', a:cur.ssbA});
@@ -1404,7 +1782,9 @@ function makeRep(){
     }
   };
 
+  let snapping = true;
   const SNAP = buildSnaps(init, STEPS, reset);
+  snapping = false;
 
   /* ---------- Knockout Lab: the same fork, replayed with one component missing ----------
      Each scenario replays a run of lesson steps compressed into one clip, then a modifier removes
@@ -1469,6 +1849,8 @@ function makeRep(){
     doneText:{t:'เรียนเรื่องการจำลองดีเอ็นเอจบแล้ว', p:'ลองย้อนดูขั้นที่ชอบ หรือไปเรียนเรื่องการแสดงออกของยีนต่อ'},
     // for home background
     homeState(){ cur = structuredClone(SNAP[0]); },
+    live(){ return { now:cur.now, hi:cur.hi }; },
+    _dbg:{ get cur(){ return cur; }, set cur(v){ cur = v; }, SNAP, STEPS, overview },
     koState, koCam, koDur: ko => ko === 'hel' ? 8 : Math.min(18, koW(ko).reduce((a, b) => a + b, 0)*0.3)
   };
 }
@@ -2434,6 +2816,17 @@ const TEACH_Q = {
 "sec": 40
 },
 {
+"step": 12,
+"q": "ข้อใดจับคู่ส่วนประกอบกับหน้าที่ไม่ถูกต้อง",
+"o": [
+"SSB — คลายเกลียวและแยกสายดีเอ็นเอ",
+"Primase — สร้างไพรเมอร์ RNA",
+"DNA pol I — แทนที่ไพรเมอร์ด้วยดีเอ็นเอ",
+"Topoisomerase — ลดแรงบิดด้านหน้า fork"
+],
+"e": "SSB ไม่ได้คลายเกลียว แต่เกาะสายเดี่ยวไว้ไม่ให้จับคู่กลับ ตัวที่คลายเกลียวและแยกสายคือเฮลิเคส"
+},
+{
 "step": 13,
 "q": "ดีเอ็นเอแต่ละโมเลกุลที่ได้ประกอบด้วยอะไร",
 "o": [
@@ -3183,11 +3576,13 @@ const dbReady = (async () => {
 function pendingCount(){ return lsGet(QKEY, []).length; }
 
 /* rec: {mode, topic, score, max, detail} — student identity is added here */
+const LOGKEY = 'g3d-log-v1';      // every attempt made on this device (attempt limits and resume work offline too)
 function saveAttempt(rec, stu){
   const q = lsGet(QKEY, []);
-  q.push({ name:stu.name, room:stu.room, no:stu.no, mode:rec.mode, topic:rec.topic, score:rec.score, max:rec.max,
-           detail:Object.assign({ at:Date.now() }, rec.detail || {}) });
-  lsSet(QKEY, q);
+  const r = { name:stu.name, room:stu.room, no:stu.no, mode:rec.mode, topic:rec.topic, score:rec.score, max:rec.max,
+              detail:Object.assign({ at:Date.now() }, rec.detail || {}) };
+  q.push(r); lsSet(QKEY, q);
+  const log = lsGet(LOGKEY, []); log.push(r); lsSet(LOGKEY, log.slice(-600));
   return flushQueue();
 }
 let flushing = null;
@@ -3248,24 +3643,9 @@ const KO_INFO = {
   p1:   { en:'DNA polymerase I', th:'ดีเอ็นเอพอลิเมอเรส I', step:9 },
   lig:  { en:'DNA ligase', th:'ดีเอ็นเอไลเกส', step:10 }
 };
-/* key ideas for auto-scoring the written answers (teacher can override in the score summary).
-   Each list holds alternative phrases; any one found in the answer gives the point. */
-const KO_KEYS = {
-  hel:  { h:['ไม่แยก','แยกไม่ได้','ไม่คลาย','คลายไม่ได้','ไม่เปิด','เปิดไม่ได้','ไม่เกิดfork','ไม่มีfork','ไม่จำลอง','จำลองไม่ได้','ไม่เกิดการจำลอง','เกลียวคู่','ติดกัน','ไม่เริ่ม'],
-          o:['ไม่เกิดfork','ไม่มีfork','forkไม่เปิด','ไม่เปิด','ไม่แยก','เกลียวคู่','ไม่เริ่ม','ไม่จำลอง','ไม่เกิดการจำลอง','ไม่มีสายใหม่','ไม่ทำงาน','ทำงานไม่ได้','เข้าไม่ได้'] },
-  topo: { h:['แรงบิด','บิด','แน่น','พันกัน','ตึง','supercoil','ซุปเปอร์คอยล์','ขดแน่น'],
-          o:['บิด','แน่น','หยุด','ไปต่อไม่ได้','เคลื่อนไม่ได้','ไม่เคลื่อน','เคลื่อนต่อไม่ได้','สีแดง','เปลี่ยนสี','ตึง','ช้าลง'] },
-  ssb:  { h:['กลับมาจับ','จับคู่กัน','จับคู่กลับ','กลับมาเกาะ','กลับมาติด','ติดกันใหม่','ประกบ','รวมกัน','เกลียวคู่','ไม่คงตัว','ไม่เสถียร','เข้าคู่กัน'],
-          o:['กลับมาจับ','จับคู่','ประกบ','ติดกัน','รวมกัน','ไม่มีแม่แบบ','ไม่มีสายใหม่','สร้างไม่ได้','ไม่เกิดสายใหม่','เกลียวคู่','เข้าคู่'] },
-  prim: { h:['ไม่มีไพรเมอร์','ไม่มีprimer','ไม่เกิดไพรเมอร์','ไพรเมอร์ไม่','ไม่สร้างไพรเมอร์','เริ่มไม่ได้','ไม่มีจุดเริ่ม','ไม่มีปลาย3','ไม่มีสายใหม่','สร้างสายใหม่ไม่ได้'],
-          o:['ไม่มีปลาย3','ไม่มีสายใหม่','ไม่เกิดสายใหม่','สร้างไม่ได้','เริ่มไม่ได้','ไม่มีไพรเมอร์','ไม่ทำงาน','ทำงานไม่ได้','ต่อไม่ได้','ไม่สร้าง'] },
-  p3:   { h:['ไม่เติม','เติมไม่ได้','ไม่ต่อ','ต่อไม่ได้','ไม่มีสายใหม่','ไม่เกิดสายใหม่','สร้างสายใหม่ไม่ได้','ไม่สร้าง','มีแต่ไพรเมอร์','ไม่ยาว','ไม่ได้dna','ไม่มีdna'],
-          o:['มีแต่ไพรเมอร์','เหลือแต่ไพรเมอร์','มีไพรเมอร์','ไม่มีสายใหม่','ไม่ต่อ','ไม่ยาว','สั้น','ไม่มีdna','ไม่เกิดสาย','ไม่สร้าง'] },
-  p1:   { h:['ไพรเมอร์ค้าง','ไพรเมอร์ยังอยู่','ไพรเมอร์ไม่ถูก','ไพรเมอร์ไม่หาย','rnaค้าง','มีrna','rnaปน','ไม่แทนที่','แทนที่ไม่ได้','ไม่ถูกแทน','ค้าง','ไม่ถูกตัด'],
-          o:['ค้าง','ไพรเมอร์ยัง','สีแดง','มีrna','rnaปน','ไม่ต่อกัน','เชื่อมไม่ได้','ไม่แทน','ยังอยู่','ยังมีไพรเมอร์'] },
-  lig:  { h:['ไม่ต่อกัน','ไม่เชื่อม','เชื่อมไม่ได้','ต่อไม่ได้','รอยขาด','ขาด','เป็นชิ้น','ไม่เป็นสายเดียว','ไม่ต่อเนื่อง','เป็นช่วง','nick'],
-          o:['รอยขาด','ขาด','ไม่ต่อ','ไม่เชื่อม','เป็นชิ้น','ไม่ต่อเนื่อง','เป็นช่วง','ไม่เป็นสายเดียว','แยก'] }
-};
+/* teacher's keywords for auto-scoring the written answers (encoded so they are not readable in the page text).
+   Any one keyword found in the answer gives the point; the teacher can change every point in the review page. */
+const KO_KEYS = JSON.parse(new TextDecoder().decode(Uint8Array.from(atob('eyJoZWwiOiB7ImgiOiBbIuC5hOC4oeC5iOC5geC4ouC4gSIsICLguYHguKLguIHguYTguKHguYjguYTguJTguYkiLCAi4LmE4Lih4LmI4LiE4Lil4Liy4LiiIiwgIuC4hOC4peC4suC4ouC5hOC4oeC5iOC5hOC4lOC5iSIsICLguYTguKHguYjguYDguJvguLTguJQiLCAi4LmA4Lib4Li04LiU4LmE4Lih4LmI4LmE4LiU4LmJIiwgIuC5hOC4oeC5iOC5gOC4geC4tOC4lGZvcmsiLCAi4LmE4Lih4LmI4Lih4Li1Zm9yayIsICLguYTguKHguYjguIjguLPguKXguK3guIciLCAi4LiI4Liz4Lil4Lit4LiH4LmE4Lih4LmI4LmE4LiU4LmJIiwgIuC5hOC4oeC5iOC5gOC4geC4tOC4lOC4geC4suC4o+C4iOC4s+C4peC4reC4hyIsICLguYDguIHguKXguLXguKLguKfguITguLnguYgiLCAi4LiV4Li04LiU4LiB4Lix4LiZIiwgIuC5hOC4oeC5iOC5gOC4o+C4tOC5iOC4oSIsICLguYTguKHguYjguYDguIHguLTguJRyZXBsaWNhdGlvbiBmb3JrIl0sICJvIjogWyLguYTguKHguYjguYHguKLguIEiLCAi4LmB4Lii4LiB4LmE4Lih4LmI4LmE4LiU4LmJIiwgIuC5hOC4oeC5iOC4hOC4peC4suC4oiIsICLguITguKXguLLguKLguYTguKHguYjguYTguJTguYkiLCAi4LmE4Lih4LmI4LmA4Lib4Li04LiUIiwgIuC5gOC4m+C4tOC4lOC5hOC4oeC5iOC5hOC4lOC5iSIsICLguYTguKHguYjguYDguIHguLTguJRmb3JrIiwgIuC5hOC4oeC5iOC4oeC4tWZvcmsiLCAi4LmE4Lih4LmI4LiI4Liz4Lil4Lit4LiHIiwgIuC4iOC4s+C4peC4reC4h+C5hOC4oeC5iOC5hOC4lOC5iSIsICLguYTguKHguYjguYDguIHguLTguJTguIHguLLguKPguIjguLPguKXguK3guIciLCAi4LmA4LiB4Lil4Li14Lii4Lin4LiE4Li54LmIIiwgIuC4leC4tOC4lOC4geC4seC4mSIsICLguYTguKHguYjguYDguKPguLTguYjguKEiLCAi4LmE4Lih4LmI4LmA4LiB4Li04LiUcmVwbGljYXRpb24gZm9yayJdfSwgInRvcG8iOiB7ImgiOiBbIuC5geC4o+C4h+C4muC4tOC4lCIsICLguJrguLTguJQiLCAi4LmB4LiZ4LmI4LiZIiwgIuC4nuC4seC4meC4geC4seC4mSIsICLguJXguLbguIciLCAic3VwZXJjb2lsIiwgIuC4i+C4uOC4m+C5gOC4m+C4reC4o+C5jOC4hOC4reC4ouC4peC5jCIsICLguILguJTguYHguJnguYjguJkiLCAi4LmA4Lib4LmH4LiZ4LmA4LiB4Lil4Li14Lii4LinIiwgIuC4iOC4s+C4peC4reC4h0ROQSDguJXguYjguK3guYTguKHguYjguYTguJTguYkiLCAi4LmE4Lih4LmI4Liq4Liy4Lih4Liy4Lij4LiW4LiI4Liz4Lil4Lit4LiHRE5B4LiV4LmI4Lit4LmE4LiU4LmJIiwgIuC4geC4suC4o+C4iOC4s+C4peC4reC4h0ROQSDguKvguKLguLjguJQiXSwgIm8iOiBbIuC4muC4tOC4lCIsICLguYHguJnguYjguJkiLCAi4Lir4Lii4Li44LiUIiwgIuC5hOC4m+C4leC5iOC4reC5hOC4oeC5iOC5hOC4lOC5iSIsICLguYDguITguKXguLfguYjguK3guJnguYTguKHguYjguYTguJTguYkiLCAi4LmE4Lih4LmI4LmA4LiE4Lil4Li34LmI4Lit4LiZIiwgIuC5gOC4hOC4peC4t+C5iOC4reC4meC4leC5iOC4reC5hOC4oeC5iOC5hOC4lOC5iSIsICLguKrguLXguYHguJTguIciLCAi4LmA4Lib4Lil4Li14LmI4Lii4LiZ4Liq4Li1IiwgIuC4leC4tuC4hyIsICLguIrguYnguLLguKXguIciLCAi4LiI4Liz4Lil4Lit4LiHRE5BIOC4leC5iOC4reC5hOC4oeC5iOC5hOC4lOC5iSIsICLguYTguKHguYjguKrguLLguKHguLLguKPguJbguIjguLPguKXguK3guIdETkHguJXguYjguK3guYTguJTguYkiLCAi4LiB4Liy4Lij4LiI4Liz4Lil4Lit4LiHRE5BIOC4q+C4ouC4uOC4lCJdfSwgInNzYiI6IHsiaCI6IFsi4LiB4Lil4Lix4Lia4Lih4Liy4LiI4Lix4LiaIiwgIuC4iOC4seC4muC4hOC4ueC5iOC4geC4seC4mSIsICLguIjguLHguJrguITguLnguYjguIHguKXguLHguJoiLCAi4LiB4Lil4Lix4Lia4Lih4Liy4LmA4LiB4Liy4LiwIiwgIuC4geC4peC4seC4muC4oeC4suC4leC4tOC4lCIsICLguJXguLTguJTguIHguLHguJnguYPguKvguKHguYgiLCAi4Lib4Lij4Liw4LiB4LiaIiwgIuC4o+C4p+C4oeC4geC4seC4mSIsICLguYDguIHguKXguLXguKLguKfguITguLnguYgiLCAi4LmE4Lih4LmI4LiE4LiH4LiV4Lix4LinIiwgIuC5hOC4oeC5iOC5gOC4quC4luC4teC4ouC4oyIsICLguYDguILguYnguLLguITguLnguYjguIHguLHguJkiLCAiRE5BIOC5gOC4guC5ieC4suC4hOC4ueC5iOC4geC4seC4meC5gOC4q+C4oeC4t+C4reC4meC5gOC4lOC4tOC4oSIsICLguKrguLLguKLguJ7guK3guKXguLTguJnguLTguKfguITguKXguLXguYLguK3guYTguJfguJTguYzguIHguKXguLHguJrguKHguLLguITguLnguYjguIHguLHguJnguYDguKvguKHguLfguK3guJnguYDguJTguLTguKEiLCAi4Lie4Lit4Lil4Li04LiZ4Li04Lin4LiE4Lil4Li14LmC4Lit4LmE4LiX4LiU4LmM4LmA4LiC4LmJ4Liy4LiE4Li54LmJ4LiB4Lix4LiZIl0sICJvIjogWyLguIHguKXguLHguJrguKHguLLguIjguLHguJoiLCAi4LiI4Lix4Lia4LiE4Li54LmIIiwgIuC4m+C4o+C4sOC4geC4miIsICLguJXguLTguJTguIHguLHguJkiLCAi4Lij4Lin4Lih4LiB4Lix4LiZIiwgIuC5hOC4oeC5iOC4oeC4teC5geC4oeC5iOC5geC4muC4miIsICLguYTguKHguYjguKHguLXguKrguLLguKLguYPguKvguKHguYgiLCAi4Liq4Lij4LmJ4Liy4LiH4LmE4Lih4LmI4LmE4LiU4LmJIiwgIuC5hOC4oeC5iOC5gOC4geC4tOC4lOC4quC4suC4ouC5g+C4q+C4oeC5iCIsICLguYDguIHguKXguLXguKLguKfguITguLnguYgiLCAi4LmA4LiC4LmJ4Liy4LiE4Li54LmIIiwgIkROQSDguYDguILguYnguLLguITguLnguYjguIHguLHguJnguYDguKvguKHguLfguK3guJnguYDguJTguLTguKEiLCAi4Liq4Liy4Lii4Lie4Lit4Lil4Li04LiZ4Li04Lin4LiE4Lil4Li14LmC4Lit4LmE4LiX4LiU4LmM4LiB4Lil4Lix4Lia4Lih4Liy4LiE4Li54LmI4LiB4Lix4LiZ4LmA4Lir4Lih4Li34Lit4LiZ4LmA4LiU4Li04LihIiwgIuC4nuC4reC4peC4tOC4meC4tOC4p+C4hOC4peC4teC5guC4reC5hOC4l+C4lOC5jOC5gOC4guC5ieC4suC4hOC4ueC5ieC4geC4seC4mSJdfSwgInByaW0iOiB7ImgiOiBbIuC5hOC4oeC5iOC4oeC4teC5hOC4nuC4o+C5gOC4oeC4reC4o+C5jCIsICLguYTguKHguYjguKHguLVwcmltZXIiLCAi4LmE4Lih4LmI4LmA4LiB4Li04LiU4LmE4Lie4Lij4LmA4Lih4Lit4Lij4LmMIiwgIuC5hOC4nuC4o+C5gOC4oeC4reC4o+C5jOC5hOC4oeC5iCIsICLguYTguKHguYjguKrguKPguYnguLLguIfguYTguJ7guKPguYDguKHguK3guKPguYwiLCAi4LmA4Lij4Li04LmI4Lih4LmE4Lih4LmI4LmE4LiU4LmJIiwgIuC5hOC4oeC5iOC4oeC4teC4iOC4uOC4lOC5gOC4o+C4tOC5iOC4oSIsICLguYTguKHguYjguKHguLXguJvguKXguLLguKIzIiwgIuC5hOC4oeC5iOC4oeC4teC4quC4suC4ouC5g+C4q+C4oeC5iCIsICLguKrguKPguYnguLLguIfguKrguLLguKLguYPguKvguKHguYjguYTguKHguYjguYTguJTguYkiXSwgIm8iOiBbIuC5hOC4oeC5iOC4oeC4teC4m+C4peC4suC4ojMiLCAi4LmE4Lih4LmI4Lih4Li14Liq4Liy4Lii4LmD4Lir4Lih4LmIIiwgIuC5hOC4oeC5iOC5gOC4geC4tOC4lOC4quC4suC4ouC5g+C4q+C4oeC5iCIsICLguKrguKPguYnguLLguIfguYTguKHguYjguYTguJTguYkiLCAi4LmA4Lij4Li04LmI4Lih4LmE4Lih4LmI4LmE4LiU4LmJIiwgIuC5hOC4oeC5iOC4oeC4teC5hOC4nuC4o+C5gOC4oeC4reC4o+C5jCIsICLguYTguKHguYjguJfguLPguIfguLLguJkiLCAi4LiX4Liz4LiH4Liy4LiZ4LmE4Lih4LmI4LmE4LiU4LmJIiwgIuC4leC5iOC4reC5hOC4oeC5iOC5hOC4lOC5iSIsICLguYTguKHguYjguKrguKPguYnguLLguIciXX0sICJwMyI6IHsiaCI6IFsi4LmE4Lih4LmI4LmA4LiV4Li04LihIiwgIuC5gOC4leC4tOC4oeC5hOC4oeC5iOC5hOC4lOC5iSIsICLguYTguKHguYjguJXguYjguK0iLCAi4LiV4LmI4Lit4LmE4Lih4LmI4LmE4LiU4LmJIiwgIuC5hOC4oeC5iOC4oeC4teC4quC4suC4ouC5g+C4q+C4oeC5iCIsICLguYTguKHguYjguYDguIHguLTguJTguKrguLLguKLguYPguKvguKHguYgiLCAi4Liq4Lij4LmJ4Liy4LiH4Liq4Liy4Lii4LmD4Lir4Lih4LmI4LmE4Lih4LmI4LmE4LiU4LmJIiwgIuC5hOC4oeC5iOC4quC4o+C5ieC4suC4hyIsICLguKHguLXguYHguJXguYjguYTguJ7guKPguYDguKHguK3guKPguYwiLCAi4LmE4Lih4LmI4Lii4Liy4LinIiwgIuC5hOC4oeC5iOC5hOC4lOC5iWRuYSIsICLguYTguKHguYjguKHguLVkbmEiLCAi4LmE4Lih4LmI4Lih4Li14LiB4Liy4Lij4LmA4LiV4Li04Lih4LiZ4Li04Lin4LiE4Lil4Li14LmC4Lit4LmE4LiX4LiU4LmMIiwgIuC5hOC4oeC5iOC5gOC4leC4tOC4oW51Y2xlb3RpZGUiLCAi4LmE4Lih4LmI4Lih4Li1RE5B4Liq4Liy4Lii4LmD4Lir4Lih4LmIIl0sICJvIjogWyLguKHguLXguYHguJXguYjguYTguJ7guKPguYDguKHguK3guKPguYwiLCAi4LmA4Lir4Lil4Li34Lit4LmB4LiV4LmI4LmE4Lie4Lij4LmA4Lih4Lit4Lij4LmMIiwgIuC4oeC4teC5hOC4nuC4o+C5gOC4oeC4reC4o+C5jCIsICLguYTguKHguYjguKHguLXguKrguLLguKLguYPguKvguKHguYgiLCAi4LmE4Lih4LmI4LiV4LmI4LitIiwgIuC5hOC4oeC5iOC4ouC4suC4pyIsICLguKrguLHguYnguJkiLCAi4LmE4Lih4LmI4Lih4Li1ZG5hIiwgIuC5hOC4oeC5iOC5gOC4geC4tOC4lOC4quC4suC4oiIsICLguYTguKHguYjguKrguKPguYnguLLguIciLCAi4LmE4Lih4LmI4Lih4Li14LiB4Liy4Lij4LmA4LiV4Li04Lih4LiZ4Li04Lin4LiE4Lil4Li14LmC4Lit4LmE4LiX4LiU4LmMIiwgIuC5hOC4oeC5iOC5gOC4leC4tOC4oW51Y2xlb3RpZGUiLCAi4LmE4Lih4LmI4Lih4Li1RE5B4Liq4Liy4Lii4LmD4Lir4Lih4LmIIl19LCAicDEiOiB7ImgiOiBbIuC5hOC4nuC4o+C5gOC4oeC4reC4o+C5jOC4hOC5ieC4suC4hyIsICLguYTguJ7guKPguYDguKHguK3guKPguYzguKLguLHguIfguK3guKLguLnguYgiLCAi4LmE4Lie4Lij4LmA4Lih4Lit4Lij4LmM4LmE4Lih4LmI4LiW4Li54LiBIiwgIuC5hOC4nuC4o+C5gOC4oeC4reC4o+C5jOC5hOC4oeC5iOC4q+C4suC4oiIsICJybmHguITguYnguLLguIciLCAi4Lih4Li1cm5hIiwgInJuYeC4m+C4mSIsICLguYTguKHguYjguYHguJfguJnguJfguLXguYgiLCAi4LmB4LiX4LiZ4LiX4Li14LmI4LmE4Lih4LmI4LmE4LiU4LmJIiwgIuC5hOC4oeC5iOC4luC4ueC4geC5geC4l+C4mSIsICLguITguYnguLLguIciLCAi4LmE4Lih4LmI4LiW4Li54LiB4LiV4Lix4LiUIiwgIuC5hOC4nuC4o+C5gOC4oeC4reC4o+C5jOC5hOC4oeC5iOC4q+C4suC4ouC5hOC4myIsICJSTkHguKLguLHguIfguK3guKLguLnguYgiLCAiUk5B4Lib4LiZ4LiB4Lix4LiaRE5BIiwgIuC4oeC4tSBSTkEg4Lib4LiZ4LmD4LiZ4Liq4Liy4LiiIl0sICJvIjogWyLguITguYnguLLguIciLCAi4LmE4Lie4Lij4LmA4Lih4Lit4Lij4LmM4Lii4Lix4LiH4Lit4Lii4Li54LmIIiwgIuC4quC4teC5geC4lOC4hyIsICLguKHguLVybmEiLCAicm5h4Lib4LiZIiwgIuC5hOC4oeC5iOC4leC5iOC4reC4geC4seC4mSIsICLguYDguIrguLfguYjguK3guKHguYTguKHguYjguYTguJTguYkiLCAi4LmE4Lih4LmI4LmB4LiX4LiZIiwgIuC4ouC4seC4h+C4reC4ouC4ueC5iCIsICLguKLguLHguIfguKHguLXguYTguJ7guKPguYDguKHguK3guKPguYwiLCAi4LmE4Lie4Lij4LmA4Lih4Lit4Lij4LmM4LmE4Lih4LmI4Lir4Liy4Lii4LmE4LibIiwgIlJOQeC4ouC4seC4h+C4reC4ouC4ueC5iCIsICJSTkHguJvguJnguIHguLHguJpETkEiLCAi4Lih4Li1IFJOQSDguJvguJnguYPguJnguKrguLLguKIiXX0sICJsaWciOiB7ImgiOiBbIuC5hOC4oeC5iOC4leC5iOC4reC4geC4seC4mSIsICLguYTguKHguYjguYDguIrguLfguYjguK3guKEiLCAi4LmA4LiK4Li34LmI4Lit4Lih4LmE4Lih4LmI4LmE4LiU4LmJIiwgIuC4leC5iOC4reC5hOC4oeC5iOC5hOC4lOC5iSIsICLguKPguK3guKLguILguLLguJQiLCAi4LiC4Liy4LiUIiwgIuC5gOC4m+C5h+C4meC4iuC4tOC5ieC4mSIsICLguYTguKHguYjguYDguJvguYfguJnguKrguLLguKLguYDguJTguLXguKLguKciLCAi4LmE4Lih4LmI4LiV4LmI4Lit4LmA4LiZ4Li34LmI4Lit4LiHIiwgIuC5gOC4m+C5h+C4meC4iuC5iOC4p+C4hyIsICJPa2F6YWtpIOC4iOC4sOC5hOC4oeC5iOC4leC5iOC4reC4geC4seC4mSIsICJETkHguYTguKHguYjguJXguYjguK3guIHguLHguJkiLCAiRE5B4Liq4Liy4Lii4LmD4Lir4Lih4LmI4LmE4Lih4LmI4LiV4LmI4Lit4LiB4Lix4LiZIiwgImxhZ2dpbmcgc3RyYW5kIOC5hOC4oeC5iOC4leC5iOC4reC5gOC4meC4t+C5iOC4reC4hyJdLCAibyI6IFsi4Lij4Lit4Lii4LiC4Liy4LiUIiwgIuC4guC4suC4lCIsICLguYTguKHguYjguJXguYjguK0iLCAi4LmE4Lih4LmI4LmA4LiK4Li34LmI4Lit4LihIiwgIuC5gOC4m+C5h+C4meC4iuC4tOC5ieC4mSIsICLguYTguKHguYjguJXguYjguK3guYDguJnguLfguYjguK3guIciLCAi4LmA4Lib4LmH4LiZ4LiK4LmI4Lin4LiHIiwgIuC5hOC4oeC5iOC5gOC4m+C5h+C4meC4quC4suC4ouC5gOC4lOC4teC4ouC4pyIsICLguYHguKLguIEiLCAiT2themFraSDguIjguLDguYTguKHguYjguJXguYjguK3guIHguLHguJkiLCAiRE5B4LmE4Lih4LmI4LiV4LmI4Lit4LiB4Lix4LiZIiwgIkROQeC4quC4suC4ouC5g+C4q+C4oeC5iOC5hOC4oeC5iOC4leC5iOC4reC4geC4seC4mSIsICJsYWdnaW5nIHN0cmFuZCDguYTguKHguYjguJXguYjguK3guYDguJnguLfguYjguK3guIciXX19'), c => c.charCodeAt(0))));
 const normTxt = s => String(s || '').toLowerCase().replace(/[\s​'′’.,]/g, '');
 function gradeKO(key, which, text){
   const t = normTxt(text);
@@ -3405,36 +3785,37 @@ let screen = 'home', step = 0, prog = 0, playing = false, speed = 1;
 let autoDist = true, focusOverride = null, camAtStart = null, hubTouched = false;
 let LMODE = 'teach';                     // 'teach' (teacher) | 'learn' (student, no questions) | 'check' (student review: pop-up questions, not scored)
 const DIR0 = V3(0, 0.32, 1).normalize();
-const OVS = ['home','reg','login','menu','topics','hub','quiz','ko','build','dash'];
+const OVS = ['home','reg','login','menu','topics','hub','quiz','ko','build','dash','rev','gx'];
 
 /* layout preferences */
-let sideOff = lsGet('g3d-side-off', innerWidth < 900), capOff = lsGet('g3d-cap-off', false);
-function applyPrefs(){
-  app.classList.toggle('side-off', sideOff); app.classList.toggle('cap-off', capOff);
-  $('tgSide').setAttribute('aria-pressed', !sideOff); $('tgCap').setAttribute('aria-pressed', !capOff);
-}
+let capOff = false;
+function applyPrefs(){ app.classList.toggle('cap-off', capOff); }
 
 /* ---------- screens ---------- */
 function go(scr, modId, opts){
   opts = opts || {};
+  if(screen === 'gx' && scr !== 'gx') gxLeave();
+  if(FREE && scr !== 'build') closeFree();
   screen = scr; app.className = 's-' + scr; applyPrefs();
   OVS.forEach(id => { $(id).hidden = scr !== id; });
   stopQPop(); $('sum').hidden = true;
   for(const m of Object.values(MODS)) m.root.visible = false;
   HUB.g.visible = false;
   closeCard(); closeParts();
-  controls.enabled = ['lesson','hub','quiz','ko','build'].includes(scr);
+  controls.enabled = ['lesson','hub','quiz','ko','build','gx'].includes(scr);
   controls.autoRotate = false;
   if(scr === 'lesson'){ M = MODS[modId]; M.root.visible = true; if(opts.mode) LMODE = opts.mode; setupLesson(opts.step || 0); }
   else if(scr === 'hub'){ M = null; HUB.g.visible = true; refreshHub(); hubTouched = false; placeCam(HUB.target, HUB.dist, V3(0.15, 0.25, 1)); }
   else if(scr === 'quiz'){ M = null; startQuiz(opts.topic); }
   else if(scr === 'ko'){ M = MODS.rep; M.root.visible = true; koEnter(); }
   else if(scr === 'build'){ M = null; buildEnter(); }
+  else if(scr === 'gx'){ M = null; gxEnter(); }
   else { M = null; MODS.rep.root.visible = true; MODS.rep.homeState(); }
   if(scr === 'topics'){ refreshTopics(); $('topH').textContent = LMODE === 'check' ? 'โหมดทบทวน · เลือกเรื่อง' : LMODE === 'learn' ? 'โหมดเรียนรู้ · เลือกเรื่อง' : 'เลือกเรื่องที่จะสอน'; }
   if(scr === 'menu') refreshMenu();
   if(scr === 'home') refreshHome();
   if(scr === 'dash') loadDash();
+  if(scr === 'menu' && ROLE === 'stu') refreshMine();
   resize();
 }
 function refreshTopics(){
@@ -3483,7 +3864,7 @@ function refreshMenu(){
 $('roleStu').addEventListener('click', () => { ROLE = 'stu'; if(STU) go('menu'); else { go('reg'); setTimeout(() => $('fName').focus(), 50); } });
 $('roleTea').addEventListener('click', () => {
   if(DB.isTeacher){ ROLE = 'tea'; go('menu'); return; }
-  go('login'); $('loginErr').hidden = true; $('fPw').value = ''; setTimeout(() => $('fPw').focus(), 50);
+  go('login'); $('loginErr').hidden = true; $('fPw').value = ''; pwCheck(); setTimeout(() => $('fPw').focus(), 50);
 });
 $('regBack').addEventListener('click', () => go('home'));
 $('loginBack').addEventListener('click', () => go('home'));
@@ -3497,9 +3878,20 @@ $('regForm').addEventListener('submit', e => {
   STU = { name, room, no:String(+no) }; lsSet('g3d-student', STU); ROLE = 'stu';
   $('regErr').hidden = true; go('menu');
 });
+/* password helpers: warn when the keyboard is in Thai or Caps Lock is on, and let the teacher see what was typed */
+let capsOn = false;
+function pwCheck(){
+  const v = $('fPw').value, th = /[\u0E00-\u0E7F]/.test(v), w = $('pwWarn');
+  const msg = th ? 'แป้นพิมพ์เป็นภาษาไทยอยู่ สลับเป็นภาษาอังกฤษ แล้วลบรหัสที่พิมพ์ไปและพิมพ์ใหม่' : capsOn ? 'Caps Lock เปิดอยู่ ตัวอักษรจะกลายเป็นตัวพิมพ์ใหญ่ทั้งหมด' : '';
+  w.textContent = msg; w.hidden = !msg; return !th;
+}
+['keydown','keyup'].forEach(ev => $('fPw').addEventListener(ev, e => { if(e.getModifierState) capsOn = e.getModifierState('CapsLock'); pwCheck(); }));
+$('fPw').addEventListener('input', pwCheck);
+$('pwEye').addEventListener('click', () => { const i = $('fPw'), on = i.type === 'password'; i.type = on ? 'text' : 'password'; $('pwEye').setAttribute('aria-pressed', on); $('pwEye').setAttribute('aria-label', on ? 'ซ่อนรหัสผ่าน' : 'แสดงรหัสผ่าน'); i.focus(); });
 $('loginForm').addEventListener('submit', async e => {
   e.preventDefault();
   const pw = $('fPw').value; if(!pw) return;
+  if(!pwCheck()){ $('fPw').focus(); return; }
   const btn = $('loginBtn'); btn.disabled = true; btn.textContent = 'กำลังตรวจสอบ…'; $('loginErr').hidden = true;
   try { await teacherLogin(pw); ROLE = 'tea'; $('fPw').value = ''; go('menu'); }
   catch(er){
@@ -3550,7 +3942,7 @@ function onStepEnd(){
   if(!LS) return;
   if(!LS.played[step]){ LS.played[step] = true; persistLS(); }
   const q = qOf(step);
-  if(q && !LS.ans[step]) setTimeout(() => { if(screen === 'lesson' && LS && !LS.ans[step] && $('qpop').hidden) openQPop(q, step); }, 450);
+  if(q && !LS.ans[step]) setTimeout(() => { if(screen === 'lesson' && LS && !LS.ans[step] && $('qpop').hidden) countdownQ(q, step); }, 300);
   renderNav();
 }
 
@@ -3562,14 +3954,20 @@ function setupLesson(start){
   $('checkNote').hidden = LMODE !== 'check' || ROLE !== 'stu';
   $('sMod').textContent = M.name;
   $('legend').innerHTML = M.legend; $('inset').innerHTML = M.inset;
-  $('sTot').textContent = M.steps.length; $('sideCount').textContent = `${M.steps.length} ขั้น`;
+  $('sTot').textContent = M.steps.length;
   $('bBack').textContent = M.back === 'hub' ? '‹ ภาพรวม' : '‹ เลือกเรื่อง';
+  // step numbers in two rows at the top right (13 steps → 7 + 6)
   const list = $('stepList'); list.innerHTML = '';
-  M.steps.forEach((st, k) => {
-    const li = document.createElement('li'), b = document.createElement('button');
-    b.className = 'st'; b.innerHTML = `<i>${k+1}</i><span>${esc(st.t)}</span>`;
-    b.addEventListener('click', () => { if(k <= unlockedTo()){ goStep(k, true); if(innerWidth < 900){ sideOff = true; applyPrefs(); } } });
-    li.appendChild(b); list.appendChild(li);
+  const n = M.steps.length, top = Math.ceil(n/2);
+  [[0, top], [top, n]].forEach(([a, b]) => {
+    const r = document.createElement('div'); r.className = 'srow';
+    for(let k=a;k<b;k++){
+      const btn = document.createElement('button'); btn.className = 'sn'; btn.textContent = k+1; btn.dataset.k = k;
+      btn.title = `ขั้นที่ ${k+1}: ${M.steps[k].t}`; btn.setAttribute('aria-label', btn.title);
+      btn.addEventListener('click', () => { if(k <= unlockedTo()) goStep(k, true); });
+      r.appendChild(btn);
+    }
+    list.appendChild(r);
   });
   if(!M.thumbURL) M.thumbURL = renderThumbs(M.thumbs);
   partsEl.innerHTML = ''; let lastGrp = '';
@@ -3592,14 +3990,15 @@ function setupLesson(start){
 function renderNav(){
   if(screen !== 'lesson') return;
   const up = unlockedTo();
-  [...$('stepList').querySelectorAll('.st')].forEach((b, k) => {
-    b.classList.toggle('cur', k === step); b.classList.toggle('done', LS ? cleared(k) : k < step); b.classList.toggle('lock', k > up);
+  [...$('stepList').querySelectorAll('.sn')].forEach(b => {
+    const k = +b.dataset.k;
+    b.classList.toggle('cur', k === step); b.classList.toggle('done', k !== step && (LS ? cleared(k) : k < step)); b.classList.toggle('lock', k > up);
     b.setAttribute('aria-current', k === step ? 'step' : 'false');
-    let m = b.querySelector('.qmark');
+    let m = b.querySelector('.qd');
     if(LS && qOf(k)){
-      if(!m){ m = document.createElement('span'); m.className = 'qmark'; b.appendChild(m); }
-      const a = LS.ans[k]; m.className = 'qmark' + (a === 'c' ? ' ok' : a ? ' bad' : '');
-      m.textContent = a === 'c' ? 'ถูก' : a === 'w' ? 'ผิด' : a === 't' ? 'หมดเวลา' : 'มีคำถาม';
+      if(!m){ m = document.createElement('i'); b.appendChild(m); }
+      const a = LS.ans[k]; m.className = 'qd' + (a === 'c' ? ' ok' : a ? ' bad' : '');
+      b.title = `ขั้นที่ ${k+1}: ${M.steps[k].t} · ` + (a === 'c' ? 'ตอบถูก' : a === 'w' ? 'ตอบผิด' : a === 't' ? 'หมดเวลา' : 'มีคำถามท้ายขั้น');
     } else if(m) m.remove();
   });
   $('bPrev').disabled = step === 0;
@@ -3608,10 +4007,10 @@ function renderNav(){
 }
 function renderStepUI(){
   const st = M.steps[step];
-  $('sNum').textContent = step+1; $('sTitle').textContent = st.t; $('sBody').innerHTML = st.body;
+  $('sNum').textContent = step+1; $('sNum2').textContent = step+1; $('sTitle').textContent = st.t; $('sBody').innerHTML = st.body;
+  NOWK = ''; $('nowBox').hidden = true; HIK = null;
   $('qAsk').textContent = st.q; $('qAns').textContent = st.a; $('qAns').hidden = true; $('qBtn').textContent = 'ดูคำตอบ';
   $('capText').scrollTop = 0;
-  const cur = $('stepList').children[step]; if(cur) cur.scrollIntoView({block:'nearest'});
   renderNav(); renderDone();
 }
 function renderDone(){
@@ -3642,11 +4041,32 @@ const tg = (id, fn) => $(id).addEventListener('click', e => { const on = e.curre
 tg('tgLabels', on => showLabels = on);
 tg('tgEnds', on => showEnds = on);
 tg('tgBases', on => showBases = on);
-$('tgSide').addEventListener('click', () => { sideOff = !sideOff; lsSet('g3d-side-off', sideOff); applyPrefs(); resize(); });
-$('sideX').addEventListener('click', () => { sideOff = true; lsSet('g3d-side-off', true); applyPrefs(); resize(); });
-$('tgCap').addEventListener('click', () => { capOff = !capOff; lsSet('g3d-cap-off', capOff); applyPrefs(); });
+$('tgCap').addEventListener('click', () => { capOff = true; applyPrefs(); resize(); });
+$('panelShow').addEventListener('click', () => { capOff = false; applyPrefs(); resize(); });
+
+/* live panel extras: "working now" box (replication step 11) and the summary-table highlight (step 12) */
+let NOWK = '', HIK = null;
+const NOW_SEQ = [['prim','ไพรเมส'],['p3','DNA pol III'],['p1','DNA pol I'],['lig','DNA ligase']];
+function updateLive(){
+  if(!M || !M.live) return;
+  const L = M.live(), box = $('nowBox');
+  const key = L.now ? L.now.k + '|' + L.now.f + '|' + L.now.t : '';
+  if(key !== NOWK){
+    NOWK = key; box.hidden = !L.now;
+    if(L.now){
+      if(!M.thumbURL) M.thumbURL = renderThumbs(M.thumbs);
+      const p = M.parts[L.now.k], idx = NOW_SEQ.findIndex(x => x[0] === L.now.k);
+      const chips = L.now.f ? NOW_SEQ.map((x, i) => `<span class="${i < idx ? 'd' : i === idx ? 'n' : ''}">${i < idx ? '✓ ' : i === idx ? '● ' : ''}${x[1]}</span>`).join('<i>›</i>') : '';
+      box.innerHTML = `<span class="nk">กำลังทำงานตอนนี้${L.now.f ? ' · ชิ้นที่ ' + L.now.f : ''}</span>
+        <div class="nm"><img alt="" src="${M.thumbURL[L.now.k] || ''}"><div><b>${esc(p.en)}</b><span>${esc(L.now.t)}</span></div></div>
+        ${chips ? `<div class="seqc">${chips}</div>` : ''}`;
+    }
+  }
+  if(L.hi !== HIK){ HIK = L.hi; $('sBody').querySelectorAll('tr[data-k]').forEach(tr => tr.classList.toggle('hi', tr.dataset.k === HIK)); }
+}
 $('btnThink').addEventListener('click', e => { const t = $('think'); t.hidden = !t.hidden; e.currentTarget.setAttribute('aria-pressed', !t.hidden); });
 $('btnParts').addEventListener('click', () => { const d = $('partsDrawer'); d.hidden = !d.hidden; });
+
 $('partsX').addEventListener('click', closeParts);
 function closeParts(){ $('partsDrawer').hidden = true; }
 $('btnCam').addEventListener('click', resetCam);
@@ -3659,10 +4079,32 @@ addEventListener('keydown', e => {
 
 /* ---------- pop-up question after each step (30 s) ---------- */
 let qTimer = null;
-function stopQPop(){ if(qTimer){ clearInterval(qTimer); qTimer = null; } $('qpop').hidden = true; }
+function stopQPop(){ if(qTimer){ clearInterval(qTimer); qTimer = null; } if(cdTimer){ clearInterval(cdTimer); cdTimer = null; } $('qpop').hidden = true; }
 function optionsHTML(opts){ return opts.map((o, i) => `<button class="qopt" data-i="${i}"><b>${LETTERS[i]}</b><span>${esc(o.t)}</span></button>`).join(''); }
 function markOptions(box, opts, chosen){
   box.querySelectorAll('.qopt').forEach((b, i) => { b.disabled = true; if(opts[i].ok) b.classList.add('right'); else if(i === chosen) b.classList.add('wrong'); });
+}
+/* 5-second countdown so students are ready before the question appears */
+let cdTimer = null;
+function countdownQ(q, k){
+  playing = false; setPlayIcon();
+  const total = 5, C = 2*Math.PI*52, card = $('qpopCard');
+  card.innerHTML = `<div class="cdcard" style="display:flex;flex-direction:column;gap:8px">
+    <span class="k" style="color:#46546e;font-size:14px">จบขั้นที่ ${k+1} แล้ว</span>
+    <h3 id="qpopQ" style="margin:0">คำถามท้ายขั้นกำลังจะขึ้น</h3>
+    <div class="cdring"><svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="52" fill="none" stroke="#e3e8f1" stroke-width="10"/><circle id="cdArc" cx="60" cy="60" r="52" fill="none" stroke="#f0a400" stroke-width="10" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="0"/></svg><b id="cdN" aria-live="polite">${total}</b></div>
+    <p style="margin:0;color:#46546e">เตรียมตัว อ่านคำถามแล้วมีเวลาตอบ 30 วินาที · ไม่คิดคะแนน</p>
+    <div class="qbtns" style="justify-content:center"><button class="pbtn" id="cdGo">พร้อมแล้ว เริ่มเลย</button></div></div>`;
+  $('qpop').hidden = false;
+  const t0 = performance.now();
+  const go = () => { clearInterval(cdTimer); cdTimer = null; if(screen === 'lesson' && LS && !LS.ans[k]) openQPop(q, k); };
+  $('cdGo').addEventListener('click', go);
+  cdTimer = setInterval(() => {
+    const left = Math.max(0, total - (performance.now() - t0)/1000), n = $('cdN'), arc = $('cdArc');
+    if(!n){ clearInterval(cdTimer); cdTimer = null; return; }
+    n.textContent = Math.ceil(left) || 0; arc.setAttribute('stroke-dashoffset', C*(1 - left/total));
+    if(left <= 0) go();
+  }, 100);
 }
 function openQPop(q, k){
   playing = false; setPlayIcon();
@@ -3730,24 +4172,56 @@ function showSummary(o){
   if(o.save) o.save.then(ok => { const s = $('saveSt'); if(s) s.textContent = ok ? 'บันทึกคะแนนส่งครูแล้ว' : 'บันทึกไว้ในเครื่องแล้ว จะส่งให้ครูอัตโนมัติเมื่อเชื่อมต่อได้'; dbStatus(); });
 }
 
-/* ---------- Test mode ---------- */
+/* ---------- Test mode: one try per topic, each answer is sent as soon as it is given ---------- */
 let QZ = null, QM = null, QSTEP = 0, QPROG = 1, QPLAY = 0;
+const tsKey = t => `g3d-test-${sid()}-${t}`;
+function testSession(t){
+  // the student's session for this topic: from this device, or rebuilt from answers already sent
+  let st = lsGet(tsKey(t), null);
+  const sent = myRecs().filter(r => isTest2(r) && r.topic === t);
+  if(sent.length){
+    const first = sent[0].detail.sid, mine = sent.filter(r => r.detail.sid === first);
+    if(!st || st.sid !== first){
+      const ids = TEST_Q[t].map(q => q.id), done = mine.map(r => r.detail.qid);
+      st = { sid:first, order:done.concat(shuffle(ids.filter(id => !done.includes(id)))), ans:{} };
+    }
+    for(const r of mine) if(!st.ans[r.detail.qid]) st.ans[r.detail.qid] = { pick:r.detail.pick, ok:!!r.detail.ok };
+    lsSet(tsKey(t), st);
+  }
+  return st;
+}
 function startQuiz(){
-  QZ = null; $('quizT').textContent = 'Test · แบบฝึก'; $('quizSc').textContent = ''; $('evid').hidden = true;
+  QZ = null; $('quizT').textContent = 'Test'; $('quizSc').textContent = ''; $('evid').hidden = true;
   setBackdrop('rep', 0);
+  const b = $('quizBody'), tea = ROLE === 'tea';
+  const card = t => {
+    const st = tea ? null : testSession(t), n = st ? Object.keys(st.ans).length : 0;
+    const name = { rep:'การจำลองดีเอ็นเอ · DNA replication', tx:'การถอดรหัส · Transcription', tl:'การแปลรหัส · Translation' }[t];
+    const sub = tea ? 'ครูทดลองทำ ไม่บันทึกคะแนน' : n >= 10 ? 'ส่งครบ 10 ข้อแล้ว' : n ? `ทำต่อ · ตอบแล้ว ${n}/10 ข้อ` : '10 ข้อ · ทำได้ 1 ครั้ง';
+    return `<button data-t="${t}" class="${n >= 10 ? 'mdone' : ''}" ${n >= 10 ? 'disabled' : ''}><b>${name}</b><small>${sub}</small></button>`;
+  };
+  b.innerHTML = `<h2>เลือกเรื่องที่จะทำ Test</h2><p style="margin:0;color:#46546e">${tea ? 'โหมดครู: ทดลองทำได้ไม่จำกัด ไม่บันทึกคะแนน' : 'แต่ละเรื่องทำได้ <b>1 ครั้งเท่านั้น</b> · ตอบแล้วระบบส่งคำตอบข้อนั้นให้ครูทันทีและแก้ไม่ได้ · ถ้าหลุดกลับมาทำต่อจากข้อเดิมได้'}</p>
+    <div class="tpick">${['rep','tx','tl'].map(card).join('')}</div>`;
+  b.querySelectorAll('.tpick button:not([disabled])').forEach(x => x.addEventListener('click', () => {
+    const t = x.dataset.t, st = tea ? null : testSession(t);
+    if(tea || (st && Object.keys(st.ans).length)) beginQuiz(t); else confirmTest(t);
+  }));
+}
+function confirmTest(t){
   const b = $('quizBody');
-  b.innerHTML = `<h2>เลือกเรื่องที่จะทำแบบฝึก</h2><p style="margin:0;color:#46546e">ข้อละ 1 คะแนน ตอบแล้วเห็นเฉลยทันที${ROLE === 'tea' ? ' · โหมดครูไม่บันทึกคะแนน' : ''}</p>
-    <div class="tpick">
-      <button data-t="rep"><b>การจำลองดีเอ็นเอ</b><small>10 ข้อ · DNA replication</small></button>
-      <button data-t="tx"><b>การถอดรหัส</b><small>10 ข้อ · Transcription</small></button>
-      <button data-t="tl"><b>การแปลรหัส</b><small>10 ข้อ · Translation</small></button>
-      <button data-t="all"><b>รวมทุกเรื่อง</b><small>สุ่ม 10 ข้อจาก 30 ข้อ</small></button>
-    </div>`;
-  b.querySelectorAll('.tpick button').forEach(x => x.addEventListener('click', () => beginQuiz(x.dataset.t)));
+  b.innerHTML = `<div class="warnbox"><b>Test ทำได้เพียง 1 ครั้งเท่านั้น</b>
+      <ul><li>เรื่อง${TOPIC_NAME[t]} มี 10 ข้อ ข้อละ 1 คะแนน</li><li>ตอบแล้วระบบส่งคำตอบข้อนั้นให้ครูทันที <b>เปลี่ยนคำตอบไม่ได้</b></li><li>ถ้าหลุดหรือปิดแอป เข้ามาใหม่จะทำต่อจากข้อที่ยังไม่ได้ตอบ</li></ul></div>
+    <div class="qbtns"><button class="gbtn" id="tCancel">ยังไม่ทำ</button><button class="pbtn" id="tGo">เข้าใจแล้ว เริ่มทำ</button></div>`;
+  $('tCancel').addEventListener('click', startQuiz);
+  $('tGo').addEventListener('click', () => beginQuiz(t));
 }
 function beginQuiz(topic){
-  const pool = topic === 'all' ? ['rep','tx','tl'].flatMap(t => TEST_Q[t].map(q => ({ q, t }))) : TEST_Q[topic].map(q => ({ q, t:topic }));
-  QZ = { topic, items:shuffle(pool).slice(0, 10), i:0, res:[] };
+  const tea = ROLE === 'tea';
+  let st = tea ? null : testSession(topic);
+  if(!tea && !st){ st = { sid:Date.now().toString(36) + Math.random().toString(36).slice(2, 7), order:shuffle(TEST_Q[topic].map(q => q.id)), ans:{} }; lsSet(tsKey(topic), st); }
+  const order = st ? st.order : shuffle(TEST_Q[topic].map(q => q.id));
+  QZ = { topic, st, items:order.map(id => ({ q:TEST_Q[topic].find(q => q.id === id), t:topic })), res:[], i:0 };
+  if(st){ QZ.res = order.map(id => st.ans[id] ? (st.ans[id].ok ? 'c' : 'w') : undefined); QZ.i = Math.max(0, QZ.res.findIndex(x => !x)); if(QZ.res.every(Boolean)) return finishQuiz(); }
   $('quizT').textContent = 'Test · ' + TOPIC_NAME[topic];
   showQuizItem();
 }
@@ -3760,152 +4234,50 @@ function setBackdrop(t, k){
   controls.autoRotate = true; controls.autoRotateSpeed = 0.35;
 }
 function showQuizItem(){
-  const it = QZ.items[QZ.i], q = it.q, cat = CATS[it.t][q.cat];
+  const it = QZ.items[QZ.i], q = it.q, cat = CATS[it.t][q.cat], tea = ROLE === 'tea';
   setBackdrop(it.t, cat[3]-1);
   $('evid').hidden = false; $('evidT').textContent = `${TOPIC_NAME[it.t]} · ขั้นที่ ${cat[3]}`;
   const opts = shuffle(q.o.map((t, i) => ({ t, ok:i === 0 })));
-  const chips = QZ.items.map((_, i) => `<span class="${i === QZ.i ? 'cur' : QZ.res[i] ? (QZ.res[i] === 'c' ? 'ok' : 'no') : ''}">${i+1}</span>`).join('');
-  $('quizSc').textContent = `${QZ.res.filter(r => r === 'c').length}/${QZ.items.length}`;
+  const chips = QZ.items.map((_, i) => `<span class="${i === QZ.i ? 'cur' : QZ.res[i] ? (tea ? (QZ.res[i] === 'c' ? 'ok' : 'no') : 'sent') : ''}">${i+1}</span>`).join('');
+  $('quizSc').textContent = `${QZ.res.filter(Boolean).length}/${QZ.items.length}`;
   const b = $('quizBody');
   b.innerHTML = `<div class="qchips">${chips}</div>
-    <span class="kind ${q.kind === 'สถานการณ์' ? '' : 'plain'}">${q.kind === 'สถานการณ์' ? 'สถานการณ์สมมติ' : 'คำถาม'}</span>
+    <span class="kind ${q.kind === 'สถานการณ์' ? '' : 'plain'}">ข้อ ${QZ.i+1} · ${q.kind === 'สถานการณ์' ? 'สถานการณ์สมมติ' : 'คำถาม'}</span>
     <h2>${esc(q.q)}</h2><div class="opts" id="tOpts">${optionsHTML(opts)}</div><div id="tRes"></div>`;
   b.scrollTop = 0;
   b.querySelectorAll('#tOpts .qopt').forEach((btn, i) => btn.addEventListener('click', () => {
     if(QZ.res[QZ.i]) return;
-    const r = opts[i].ok ? 'c' : 'w'; QZ.res[QZ.i] = r;
-    markOptions($('tOpts'), opts, i);
-    const last = QZ.i === QZ.items.length-1;
-    $('tRes').innerHTML = `<span class="verdict ${r === 'c' ? 'ok' : 'no'}">${r === 'c' ? 'ถูกต้อง' : 'ยังไม่ถูก'}</span><div class="expl">${esc(q.e)}</div>
-      <div class="qbtns"><span></span><button class="pbtn" id="tNext">${last ? 'ดูผล' : 'ข้อต่อไป'}</button></div>`;
-    $('quizSc').textContent = `${QZ.res.filter(x => x === 'c').length}/${QZ.items.length}`;
-    b.querySelector('.qchips').children[QZ.i].className = r === 'c' ? 'ok' : 'no';
-    $('tNext').addEventListener('click', () => { if(last) finishQuiz(); else { QZ.i++; showQuizItem(); } });
+    const ok = opts[i].ok, r = ok ? 'c' : 'w'; QZ.res[QZ.i] = r;
+    const last = QZ.res.every(Boolean);
+    let p = null;
+    if(!tea){
+      QZ.st.ans[q.id] = { pick:opts[i].t, ok }; lsSet(tsKey(QZ.topic), QZ.st);
+      p = saveAttempt({ mode:'test', topic:QZ.topic, score:ok ? 1 : 0, max:1, detail:{ v:2, qid:q.id, pick:opts[i].t, ok, sid:QZ.st.sid, i:QZ.i } }, STU);
+      b.querySelectorAll('#tOpts .qopt').forEach((x, j) => { x.disabled = true; if(j === i) x.classList.add('sel'); });
+      $('tRes').innerHTML = `<p class="savest" id="tSt">กำลังส่งคำตอบ…</p><div class="qbtns"><span></span><button class="pbtn" id="tNext">${last ? 'ดูผล' : 'ข้อต่อไป'}</button></div>`;
+      p.then(okS => { const e = $('tSt'); if(e) e.textContent = okS ? 'ส่งคำตอบข้อนี้ให้ครูแล้ว' : 'บันทึกไว้ในเครื่องแล้ว จะส่งให้ครูอัตโนมัติเมื่อเชื่อมต่อได้'; dbStatus(); });
+    } else {
+      markOptions($('tOpts'), opts, i);
+      $('tRes').innerHTML = `<span class="verdict ${ok ? 'ok' : 'no'}">${ok ? 'ถูกต้อง' : 'ยังไม่ถูก'}</span><div class="expl">${esc(q.e)}</div>
+        <div class="qbtns"><span></span><button class="pbtn" id="tNext">${last ? 'ดูผล' : 'ข้อต่อไป'}</button></div>`;
+    }
+    $('quizSc').textContent = `${QZ.res.filter(Boolean).length}/${QZ.items.length}`;
+    b.querySelector('.qchips').children[QZ.i].className = tea ? (ok ? 'ok' : 'no') : 'sent';
+    $('tNext').addEventListener('click', () => { if(last) finishQuiz(); else { QZ.i = QZ.res.findIndex(x => !x); showQuizItem(); } });
     $('tNext').scrollIntoView({block:'nearest'});
   }));
 }
 function finishQuiz(){
   const score = QZ.res.filter(r => r === 'c').length, max = QZ.items.length, ans = {};
-  const agg = {};
-  QZ.items.forEach((it, i) => {
-    ans[it.q.id] = QZ.res[i];
-    const k = it.t + '.' + it.q.cat; agg[k] = agg[k] || { t:it.t, c:it.q.cat, ok:0, n:0 }; agg[k].n++; if(QZ.res[i] === 'c') agg[k].ok++;
-  });
-  const good = [], more = [];
-  for(const a of Object.values(agg)){
-    const cat = CATS[a.t][a.c], r = a.ok/a.n;
-    if(r >= 0.8) good.push([`${cat[0]}: ${cat[1]}`]);
-    else if(r < 0.6) more.push([`${cat[0]}: ${cat[2]}`, `ดูขั้นที่ ${cat[3]}`, () => { $('sum').hidden = true; go('lesson', a.t, { mode:'learn', step:cat[3]-1 }); }]);
-  }
-  const p = ROLE === 'stu' ? saveAttempt({ mode:'test', topic:QZ.topic, score, max, detail:{ ans } }, STU) : null;
-  const topic = QZ.topic;
-  showSummary({ title:`ผล Test · ${TOPIC_NAME[topic]}`, score, max, good, more, save:p,
-    btns:[['กลับเมนู', () => go('menu')], ['ทำอีกครั้ง', () => { $('sum').hidden = true; beginQuiz(topic); }]] });
+  QZ.items.forEach((it, i) => { ans[it.q.id] = QZ.res[i]; });
+  const f = testFeedback(ans), topic = QZ.topic;
+  showSummary({ title:`ผล Test · ${TOPIC_NAME[topic]}`, score, max, good:f.good, more:f.more,
+    saveNote:ROLE === 'stu' ? 'ส่งคำตอบครบ 10 ข้อแล้ว · Test เรื่องนี้ทำได้ครั้งเดียว' : 'โหมดครู ไม่บันทึกคะแนน',
+    btns:[['กลับเมนู', () => go('menu')], [ROLE === 'tea' ? 'ทำอีกครั้ง' : 'เลือกเรื่องอื่น', () => { $('sum').hidden = true; ROLE === 'tea' ? beginQuiz(topic) : startQuiz(); }]] });
 }
 $('quizBack').addEventListener('click', () => go('menu'));
 
-/* ---------- teacher dashboard ---------- */
-let DASH = { rows:[], room:null };
-async function loadDash(){
-  $('dashNote').textContent = 'กำลังโหลดคะแนน…'; $('dashTbl').innerHTML = ''; $('dashMiss').innerHTML = ''; $('dashRooms').innerHTML = '';
-  try { DASH.rows = await loadAttempts(); }
-  catch(e){ $('dashNote').textContent = DB.isTeacher ? 'โหลดคะแนนไม่สำเร็จ ตรวจอินเทอร์เน็ตแล้วกด "โหลดใหม่"' : 'ต้องเข้าสู่ระบบครูก่อน'; return; }
-  const rooms = [...new Set(DASH.rows.map(r => r.room))].sort((a, b) => a.localeCompare(b, 'th', { numeric:true }));
-  if(!rooms.includes(DASH.room)) DASH.room = rooms[0] || null;
-  const rb = $('dashRooms');
-  rooms.forEach(rm => { const b = document.createElement('button'); b.textContent = rm; b.setAttribute('aria-pressed', rm === DASH.room); b.addEventListener('click', () => { DASH.room = rm; rb.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b)); renderDash(); }); rb.appendChild(b); });
-  renderDash();
-}
 const tms = r => (r.createdAt && r.createdAt.toMillis ? r.createdAt.toMillis() : 0) || (r.detail && r.detail.at) || 0;
-function studentTable(room){
-  const rows = DASH.rows.filter(r => !room || r.room === room).sort((a, b) => tms(a) - tms(b));
-  const S = {};
-  for(const r of rows){
-    const k = `${r.room}|${r.no}|${(r.name||'').trim()}`;
-    const s = S[k] = S[k] || { name:r.name, room:r.room, no:r.no, teach:{}, test:{}, lab:{}, n:{}, last:0 };
-    const slot = r.mode === 'teach' ? s.teach : r.mode === 'test' ? s.test : null;
-    if(slot) slot[r.topic] = r;
-    if(r.mode === 'ko' || r.mode === 'build') s.lab[r.mode] = r;                      // latest wins (sorted by time)
-    s.n[r.mode] = (s.n[r.mode] || 0) + 1; s.last = Math.max(s.last, tms(r));
-  }
-  return Object.values(S).sort((a, b) => (+a.no || 999) - (+b.no || 999) || a.name.localeCompare(b.name, 'th'));
-}
-const koPending = r => !!(r && r.detail && r.detail.checked === false);
-const fmtN = x => (Math.round(x*10)/10).toString();
-function totalOf(s){
-  // overall score: latest Test of each topic (3 × 10) + Knockout (20) + Build (30) = 80
-  let score = 0, n = 0, pending = false;
-  for(const r of [s.test.rep, s.test.tx, s.test.tl, s.lab.ko, s.lab.build]) if(r){ score += r.score; n++; if(koPending(r)) pending = true; }
-  return { score, n, pending };
-}
-function renderDash(){
-  const list = studentTable(DASH.room), f = r => r ? `${r.score}/${r.max}` : '–';
-  $('dashNote').textContent = DASH.rows.length ? `${DASH.room || ''} · นักเรียน ${list.length} คน · ทั้งหมด ${DASH.rows.length} รายการ` : 'ยังไม่มีคะแนนนักเรียน';
-  const th = `<thead><tr><th>เลขที่</th><th class="l">ชื่อ</th><th class="grp2">Test: DNA</th><th>ถอดรหัส</th><th>แปลรหัส</th><th>รวมเรื่อง</th>
-    <th class="grp2">Knockout</th><th>Build</th><th class="grp2">รวม (80)</th><th class="grp2">ทำ Test (ครั้ง)</th><th class="grp2 l">ล่าสุด</th></tr></thead>`;
-  const body = list.map(s => `<tr><td>${esc(s.no)}</td><td class="l">${esc(s.name)}</td>
-      <td class="grp2">${f(s.test.rep)}</td><td>${f(s.test.tx)}</td><td>${f(s.test.tl)}</td><td>${f(s.test.all)}</td><td class="grp2">${s.lab.ko ? `<button class="kobtn${koPending(s.lab.ko) ? ' wait' : ''}" data-id="${s.lab.ko.id}" title="ดูคำตอบและตรวจคะแนน">${koPending(s.lab.ko) ? 'รอตรวจ' : f(s.lab.ko) + ' ✓'}</button>` : '–'}</td><td>${f(s.lab.build)}</td>
-      <td class="grp2 tot">${(t => t.n ? fmtN(t.score) + (t.pending ? '*' : '') : '–')(totalOf(s))}</td>
-      <td class="grp2 m">${s.n.test || 0}</td>
-      <td class="grp2 l m">${s.last ? new Date(s.last).toLocaleString('th-TH', { dateStyle:'short', timeStyle:'short' }) : ''}</td></tr>`).join('');
-  $('dashTbl').innerHTML = th + '<tbody>' + body + '</tbody>' + (list.some(s => totalOf(s).pending) ? '<caption>* รวมคะแนน Knockout ที่ระบบตรวจเบื้องต้น ยังรอครูตรวจ</caption>' : '');
-  $('dashTbl').querySelectorAll('.kobtn').forEach(b => b.addEventListener('click', () => openKoReview(b.dataset.id)));
-  /* most-missed questions in this room (all attempts) */
-  const miss = {};
-  for(const r of DASH.rows.filter(r => r.room === DASH.room && r.mode !== 'teach')){
-    const a = (r.detail && (r.mode === 'ko' ? r.detail.q : r.detail.ans)) || {};
-    for(const [k, v] of Object.entries(a)){
-      const id = r.mode === 'teach' ? `teach.${r.topic}.${k}` : `${r.mode}.${k}`;
-      const m = miss[id] = miss[id] || { id, mode:r.mode, topic:r.topic, k, bad:0, n:0 }; m.n++; if(v !== 'c') m.bad++;
-    }
-  }
-  const top = Object.values(miss).filter(m => m.bad).sort((a, b) => b.bad/b.n - a.bad/a.n || b.bad - a.bad).slice(0, 6);
-  $('dashMiss').innerHTML = top.length ? top.map(m => {
-    let q;
-    if(m.mode === 'teach') q = (TEACH_Q[m.topic] || []).find(x => x.step === +m.k);
-    else if(m.mode === 'ko') q = KO_Q.find(x => x.id === m.k);
-    else q = ['rep','tx','tl'].map(t => TEST_Q[t].find(x => x.id === m.k)).find(Boolean);
-    const where = m.mode === 'teach' ? `โหมดสอน ${TOPIC_NAME[m.topic]} ขั้นที่ ${m.k}` : m.mode === 'ko' ? `Knockout Lab ข้อ ${m.k}` : `Test ข้อ ${m.k}`;
-    return `<li>${esc(q ? q.q : m.k)}<br><small>${where} · ผิด/ไม่ตอบ ${m.bad} จาก ${m.n} ครั้ง</small></li>`;
-  }).join('') : '<li><small>ยังไม่มีข้อมูล</small></li>';
-}
-function csvDash(){
-  const rows = [['ชั้น','เลขที่','ชื่อ','Test DNA','Test ถอดรหัส','Test แปลรหัส','Test รวมเรื่อง','Knockout','สถานะ Knockout','Build','รวม (80)','ทำ Test (ครั้ง)']];
-  const f = r => r ? `${r.score}/${r.max}` : '';
-  for(const s of studentTable(null).sort((a, b) => a.room.localeCompare(b.room, 'th', { numeric:true }) || (+a.no) - (+b.no)))
-    rows.push([s.room, s.no, s.name, f(s.test.rep), f(s.test.tx), f(s.test.tl), f(s.test.all), f(s.lab.ko), s.lab.ko ? (koPending(s.lab.ko) ? 'รอครูตรวจ' : 'ตรวจแล้ว') : '', f(s.lab.build), totalOf(s).n ? fmtN(totalOf(s).score) : '', s.n.test || 0]);
-  const csv = '﻿' + rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\r\n');
-  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type:'text/csv;charset=utf-8' }));
-  a.download = `คะแนน-Genetics3D-${new Date().toISOString().slice(0,10)}.csv`; document.body.appendChild(a); a.click(); a.remove();
-}
-$('dashBack').addEventListener('click', () => go('menu'));
-/* teacher review of Knockout Lab written answers: auto score first, teacher can change each point */
-function openKoReview(id){
-  const r = DASH.rows.find(x => x.id === id); if(!r) return;
-  const d = r.detail || {}, items = JSON.parse(JSON.stringify(d.items || {})), quiz = d.quiz || 0, nq = Object.keys(d.q || {}).length || 6;
-  const card = $('sumCard');
-  const draw = () => {
-    const sum = Object.values(items).reduce((a, it) => a + (it.hs ? 1 : 0) + (it.os ? 1 : 0), 0);
-    card.innerHTML = `<div class="qtop"><span class="k">Knockout Lab · ${esc(r.name)} (${esc(r.room)} เลขที่ ${esc(r.no)})</span></div>
-      <div class="bigscore"><b>${sum + quiz}</b><span>จาก ${r.max} · การทดลอง ${sum}/14 · คำถาม ${quiz}/${nq}</span></div>
-      <p class="savest">${koPending(r) ? 'ระบบตรวจเบื้องต้นไว้ให้แล้ว (ตัวเลขที่เลือกอยู่) ตรวจแล้วแตะ 0 หรือ 1 เพื่อแก้ แล้วกด "ยืนยันคะแนน" นักเรียนจะเห็นคะแนนหลังครูยืนยัน' : 'ตรวจแล้ว · แก้คะแนนได้ แล้วกดยืนยันอีกครั้ง'}</p>
-      ${KO_ORDER.filter(k => items[k]).map(k => `<div class="rv"><b>${KO_INFO[k].en}</b>
-        ${['h','o'].map(w => `<div class="rvrow"><div><small>${w === 'h' ? 'สมมติฐาน' : 'สิ่งที่สังเกตได้'} · ใจความ: ${esc(KO_DOC[k][w === 'h' ? 'hyp' : 'obs'])}</small><p>${esc(items[k][w]) || '–'}</p></div>
-          <span class="tg2">${[0,1].map(v => `<button data-k="${k}" data-w="${w}s" data-v="${v}" aria-pressed="${(items[k][w+'s'] ? 1 : 0) === v}">${v}</button>`).join('')}</span></div>`).join('')}</div>`).join('')}
-      <p class="savest" id="rvSt"></p><div class="qbtns" id="sumBtns"><button class="gbtn" id="rvX">ปิด</button><button class="pbtn" id="rvSave">ยืนยันคะแนน</button></div>`;
-    card.querySelectorAll('.tg2 button').forEach(b => b.addEventListener('click', () => { items[b.dataset.k][b.dataset.w] = +b.dataset.v; draw(); }));
-    $('rvX').addEventListener('click', () => { $('sum').hidden = true; });
-    $('rvSave').addEventListener('click', async () => {
-      const nd = Object.assign({}, d, { items, ko:sum, checked:true, checkedAt:Date.now() }), ns = sum + quiz;
-      $('rvSt').textContent = 'กำลังบันทึก…';
-      try { await updateAttempt(id, { score:ns, detail:nd }); r.score = ns; r.detail = nd; $('sum').hidden = true; renderDash(); }
-      catch(e){ $('rvSt').textContent = 'บันทึกไม่สำเร็จ ตรวจอินเทอร์เน็ตแล้วลองใหม่'; }
-    });
-  };
-  draw(); $('sum').hidden = false;
-}
-$('dashReload').addEventListener('click', loadDash);
-$('dashCsv').addEventListener('click', () => { if(DASH.rows.length) csvDash(); });
 
 /* ---------- info card ---------- */
 function openCard(key, focus){
@@ -3925,6 +4297,7 @@ $('cardX').addEventListener('click', closeCard);
 const ray = new THREE.Raycaster(), ndc = new THREE.Vector2(); let downAt = null;
 canvas.addEventListener('pointerdown', e => { downAt = [e.clientX, e.clientY]; });
 canvas.addEventListener('pointerup', e => {
+  if(screen === 'build' && FREE && FREE.sel) return;
   if(!['lesson','quiz','ko','build'].includes(screen) || !M || !downAt || Math.hypot(e.clientX-downAt[0], e.clientY-downAt[1]) > 6) return;
   const r = canvas.getBoundingClientRect();
   ndc.set((e.clientX-r.left)/r.width*2-1, -(e.clientY-r.top)/r.height*2+1);
@@ -3945,11 +4318,13 @@ controls.addEventListener('start', () => { camAtStart = camera.position.clone().
 controls.addEventListener('end', () => { if(camAtStart){ const now = camera.position.clone().sub(controls.target); if(now.distanceTo(camAtStart) > camAtStart.length()*0.03) autoDist = false; } camAtStart = null; });
 
 /* ---------- resize & loop ---------- */
-function panelOpen(){ return screen === 'quiz' || screen === 'build' || (screen === 'ko' && !$('koPanel').hidden); }
+function panelOpen(){ return screen === 'quiz' || (screen === 'build' && !FREE) || (screen === 'ko' && !$('koPanel').hidden); }
 function resize(){
   const w = stage.clientWidth, h = stage.clientHeight; renderer.setSize(w, h, false); camera.aspect = w / Math.max(1,h);
   // side panels cover part of the canvas: shift the picture so it stays in the visible area
-  if(screen === 'hub' && w > 900) camera.setViewOffset(w, h, 195, 0, w, h);
+  if(screen === 'gx'){ const bar = $('gxBar').offsetHeight || 272, ch = app.classList.contains('gx-chart') && w > 900 ? $('gxChart').offsetWidth : 0; camera.setViewOffset(w, h, Math.round(ch/2), Math.round(bar/2), w, h); }
+  else if(screen === 'build' && FREE){ const pn = w > 900 ? 400 : 0, bt = w > 900 ? 0 : Math.round(h*0.45); camera.setViewOffset(w, h, Math.round(pn/2), Math.round(bt/2), w, h); }
+  else if(screen === 'hub' && w > 900) camera.setViewOffset(w, h, 195, 0, w, h);
   else if(screen === 'hub') camera.setViewOffset(w, h, 0, Math.round(h*0.2), w, h);
   else if(panelOpen() && w > 900) camera.setViewOffset(w, h, Math.round(Math.min(560, w)/2), 0, w, h);
   else if(panelOpen()) camera.setViewOffset(w, h, 0, Math.round(h*0.3), w, h);
@@ -3966,12 +4341,12 @@ function frame(now){
     if(playing && $('qpop').hidden){ prog = Math.min(1, prog + dt*speed/M.steps[step].dur); if(prog >= 1){ playing = false; setPlayIcon(); onStepEnd(); } }
     $('prog').value = Math.round(prog*1000);
     if(step === M.steps.length-1 && prog >= 1 && $('doneBox').hidden){ markDone(M.id); renderDone(); }
-    M.evalState(step, prog); M.update();
+    M.evalState(step, prog); M.update(); updateLive();
     const d = desiredCam(), before = controls.target.clone();
     controls.target.lerp(d.target, 0.05);
     camera.position.add(V3().subVectors(controls.target, before));
     if(autoDist){ const off = camera.position.clone().sub(controls.target); off.setLength(lerp(off.length(), d.dist, 0.05)); camera.position.copy(controls.target).add(off); }
-  } else if((screen === 'quiz' || screen === 'build') && QM){
+  } else if((screen === 'quiz' || screen === 'build') && QM && !FREE){
     if(QPLAY){ QPROG = Math.min(1, QPROG + dt*QPLAY/QM.steps[QSTEP].dur); if(QPROG >= 1) QPLAY = 0; }
     QM.evalState(QSTEP, QPROG); QM.update();
   } else if(screen === 'ko'){
@@ -3987,6 +4362,10 @@ function frame(now){
       const a = now*0.00007, d = 46*fitScale();
       controls.target.set(0, 0, 0); camera.position.set(Math.sin(a)*d, 8, Math.cos(a)*d);
     }
+  } else if(screen === 'gx'){
+    gxFrame(dt);
+  } else if(screen === 'build' && FREE){
+    freeFrame(dt);
   } else if(screen === 'hub'){
     HUB.update(now);
   } else {
@@ -3997,14 +4376,14 @@ function frame(now){
   controls.update();
   renderer.render(scene, camera);
   if(screen === 'lesson') M.labels();
+  else if(screen === 'build' && FREE) freeLabels();
   else if((screen === 'quiz' || screen === 'build') && QM) QM.labels();
   else if(screen === 'ko' && KOV.ko) MODS.rep.labels();
   else if(screen === 'hub') HUB.labels(txLocked, openLesson);
   endLabels();
   requestAnimationFrame(frame);
 }
-applyPrefs(); resize(); go('home');
-requestAnimationFrame(frame);
+
 
 /* ================= Knockout Lab UI ================= */
 let KOV = { ko:null, view:'ctrl', t:0, play:false, seen:false, phase:'pick' };
@@ -4015,15 +4394,47 @@ function koSave(){ lsSet(koKey(), KOP); }
 function koEnter(){
   koLoad(); KOQ = null;
   if(!KO_THUMBS) KO_THUMBS = renderThumbs(Object.fromEntries(KO_ORDER.map(k => [k, MODS.rep.thumbs[k]])));
-  showKoPick();
+  showKoTopics();
+}
+/* Knockout Lab has two topics; each can be tried up to 3 times and the best try counts */
+let KO_TOPIC_IMG = null;
+const koTries = tp => myRecs().filter(r => tp === 'rep' ? isKoRep(r) : (r.mode === 'ko' && r.topic === 'gene'));
+function showKoTopics(){
+  KOV = { ko:null, view:'ctrl', t:0, play:false, seen:false, phase:'topics' };
+  $('koTopics').hidden = false; $('koPick').hidden = true; $('koPanel').hidden = true; $('koView').hidden = true;
+  MODS.rep.homeState(); resize();
+  if(!KO_TOPIC_IMG) KO_TOPIC_IMG = renderThumbs({ rep:MODS.rep.thumbs.fork, gene:MODS.tl.thumbs.sites || MODS.tl.thumbs.codon });
+  const tea = ROLE === 'tea';
+  const meta = tp => {
+    if(tea) return 'โหมดครู: ทดลองได้ไม่จำกัด ไม่บันทึกคะแนน';
+    const rs = koTries(tp), inprog = tp === 'rep' ? (KOP && !KOP.saved && Object.keys(KOP.items).length) : gxInProgress();
+    if(!rs.length) return inprog ? 'ทำค้างไว้ · ครั้งที่ 1 จาก 3' : 'ยังไม่เริ่ม · ทำได้ 3 ครั้ง ใช้ครั้งที่ดีที่สุด';
+    const best = Math.max(...rs.map(r => r.score/r.max*10));
+    return `ทำแล้ว ${rs.length}/${MAX_TRIES} ครั้ง · ดีที่สุด ${fmt2(best)}/10${inprog ? ' · มีครั้งที่ทำค้างไว้' : ''}`;
+  };
+  const full = tp => !tea && koTries(tp).length >= MAX_TRIES && !(tp === 'rep' ? (KOP && !KOP.saved && Object.keys(KOP.items).length) : gxInProgress());
+  const flow = a => `<div class="kflow">${a.map(x => `<span>${x}</span>`).join('<i>→</i>')}</div>`;
+  const card = (tp, kick, title, desc, steps, bullets) => `<article class="ktopic">
+      <div class="kimg">${KO_TOPIC_IMG[tp] ? `<img src="${KO_TOPIC_IMG[tp]}" alt="">` : ''}</div>
+      <div class="kbody"><span class="kk">${kick}</span><h2>${title}</h2><p>${desc}</p>${flow(steps)}<ul>${bullets.map(b => `<li>${b}</li>`).join('')}</ul>
+      <div class="kfoot"><span>${meta(tp)}</span><button class="cta" data-tp="${tp}" ${full(tp) ? 'disabled' : ''}>${full(tp) ? 'ครบ 3 ครั้งแล้ว' : koTries(tp).length || (tp === 'rep' ? Object.keys(KOP.items).length : gxInProgress()) ? 'ทำต่อ / ทำใหม่' : 'เริ่มทดลอง'}</button></div></div></article>`;
+  $('koTopicsBody').innerHTML = card('rep', 'เรื่องที่ 1', 'การจำลองดีเอ็นเอ', 'ปิดเอนไซม์ทีละตัว ทำนายผลก่อน แล้วดูว่าการจำลองผิดปกติตรงไหน', ['ทำนาย','ปิดเอนไซม์','ดูผล','ตอบคำถาม'],
+      ['เอนไซม์ 7 ตัว เขียนสมมติฐานและสิ่งที่สังเกตได้', 'ปิดท้ายด้วยคำถาม 6 ข้อ · คะแนนเต็ม 10'])
+    + card('gene', 'เรื่องที่ 2', 'การแสดงออกของยีน', 'ถอดรหัสและแปลรหัสต่อเนื่องกัน ลงมือแปลงลำดับเบสเองตั้งแต่ดีเอ็นเอจนได้สายพอลิเพปไทด์', ['DNA','mRNA','พอลิเพปไทด์'],
+      ['ยีนสุ่มใหม่ทุกครั้ง ยาว 10 โคดอน', 'ถอดรหัส แปลรหัสด้วย Codon Chart แล้วตอบคำถาม 3 ข้อ · คะแนนเต็ม 10']);
+  $('koTopicsBody').querySelectorAll('.cta[data-tp]').forEach(b => b.addEventListener('click', () => {
+    if(b.dataset.tp === 'gene'){ go('gx'); return; }
+    if(KOP.saved || (!Object.keys(KOP.items).length)){ KOP = { items:{}, saved:false, t0:Date.now() }; koSave(); }
+    showKoPick();
+  }));
 }
 function koDone(){ return KO_ORDER.filter(k => KOP.items[k] && KOP.items[k].done).length; }
 function showKoPick(){
   KOV = { ko:null, view:'ctrl', t:0, play:false, seen:false, phase:'pick' };
-  $('koPick').hidden = false; $('koPanel').hidden = true; $('koView').hidden = true;
+  $('koTopics').hidden = true; $('koPick').hidden = false; $('koPanel').hidden = true; $('koView').hidden = true;
   MODS.rep.homeState(); resize();
   const n = koDone();
-  $('koProg').textContent = `ทดลองแล้ว ${n} จาก 7`;
+  $('koProg').textContent = `ทดลองแล้ว ${n} จาก 7` + (ROLE === 'stu' ? ` · ครั้งที่ ${koTries('rep').length + 1} จาก ${MAX_TRIES}` : '');
   $('koFloat').innerHTML = KO_ORDER.map((k, i) => {
     const it = KOP.items[k], d = it && it.done;
     return `<button class="kocard${d ? ' done' : ''}" data-k="${k}" style="--d:${(i*0.41).toFixed(2)}s"><img src="${KO_THUMBS[k]}" alt=""><b>${KO_INFO[k].en}</b><small>${KO_INFO[k].th}</small>${d ? '<span class="ks">ส่งคำตอบแล้ว</span>' : '<span class="ks go">แตะเพื่อทดลอง</span>'}</button>`;
@@ -4077,11 +4488,11 @@ function renderKoPanel(){
       KOV.phase = 'graded'; renderKoPanel();
     });
   } else {
-    // written answers are scored by the teacher: the auto-score is kept for the teacher only, nothing is revealed here
-    b.innerHTML = `${head}<div class="okbig sent">ส่งคำตอบแล้ว รอผลคะแนนจากคุณครู</div>
+    // written answers are scored with the teacher's keywords; the keywords and per-answer marks are never shown here
+    b.innerHTML = `${head}<div class="okbig sent">บันทึกคำตอบแล้ว</div>
       <div class="kobox"><small>สมมติฐานของฉัน</small><p>${esc(it.h)}</p></div>
       <div class="kobox"><small>สิ่งที่สังเกตได้</small><p>${esc(it.o)}</p></div>
-      <p class="savest">ดูผลคะแนนได้ที่เมนู "คะแนนของฉัน" หลังคุณครูตรวจแล้ว</p>
+      <p class="savest">ทดลองครบ 7 ตัวและตอบคำถามท้ายการทดลองแล้ว จึงจะเห็นคะแนนของครั้งนี้</p>
       <div class="qbtns"><button class="gbtn" id="koLearn">ดูขั้นที่ ${info.step} ในโหมดเรียนรู้</button><button class="pbtn" id="koNext">${koDone() < 7 ? 'ทดลองตัวต่อไป' : 'ไปทำคำถามท้ายการทดลอง'}</button></div>`;
     $('koNext').addEventListener('click', () => { if(koDone() < 7) showKoPick(); else startKoQuiz(); });
     $('koLearn').addEventListener('click', () => go('lesson', 'rep', { mode:'learn', step:info.step-1 }));
@@ -4090,7 +4501,7 @@ function renderKoPanel(){
 function startKoQuiz(){
   KOV = { ko:null, view:'ctrl', t:0, play:false, seen:false, phase:'quiz' };
   $('koPick').hidden = true; $('koPanel').hidden = false; $('koView').hidden = true; resize();
-  KOQ = { items:shuffle(KO_Q).slice(0, KO_NQ), i:0, res:[] };
+  KOQ = { items:shuffle(KO_Q).slice(0, KO_NQ), i:0, res:[], picks:[] };
   $('koT').textContent = 'คำถามท้ายการทดลอง';
   showKoQ();
 }
@@ -4102,7 +4513,7 @@ function showKoQ(){
     <span class="kind">ผลกระทบเมื่อขาดส่วนประกอบ</span><h2>${esc(q.q)}</h2><div class="opts" id="kqOpts">${optionsHTML(opts)}</div><div id="kqRes"></div>`;
   b.querySelectorAll('#kqOpts .qopt').forEach((btn, i) => btn.addEventListener('click', () => {
     if(KOQ.res[KOQ.i]) return;
-    const r = opts[i].ok ? 'c' : 'w'; KOQ.res[KOQ.i] = r; markOptions($('kqOpts'), opts, i);
+    const r = opts[i].ok ? 'c' : 'w'; KOQ.res[KOQ.i] = r; KOQ.picks[KOQ.i] = opts[i].t; markOptions($('kqOpts'), opts, i);
     const last = KOQ.i === KO_NQ-1;
     $('kqRes').innerHTML = `<span class="verdict ${r === 'c' ? 'ok' : 'no'}">${r === 'c' ? 'ถูกต้อง' : 'ยังไม่ถูก'}</span><div class="expl">${esc(q.e)}</div><div class="qbtns"><span></span><button class="pbtn" id="kqNext">${last ? 'ดูสรุปคะแนน' : 'ข้อต่อไป'}</button></div>`;
     $('kqNext').addEventListener('click', () => { if(last) finishKO(); else { KOQ.i++; showKoQ(); } });
@@ -4125,16 +4536,21 @@ function koFeedback(items){
 function finishKO(){
   let s1 = 0; const items = {}, good = [], more = [];
   for(const k of KO_ORDER){ const it = KOP.items[k]; s1 += it.hs + it.os; items[k] = { h:it.h, o:it.o, hs:it.hs, os:it.os }; }
-  const q = {}; let s2 = 0;
-  KOQ.items.forEach((it, i) => { q[it.id] = KOQ.res[i]; if(KOQ.res[i] === 'c') s2++; else more.push([`ผลกระทบเมื่อขาดส่วนประกอบ: ${it.q}`]); });
+  const q = {}, qp = {}; let s2 = 0;
+  KOQ.items.forEach((it, i) => { q[it.id] = KOQ.res[i]; qp[it.id] = KOQ.picks[i] || ''; if(KOQ.res[i] === 'c') s2++; else more.push([`ผลกระทบเมื่อขาดส่วนประกอบ: ${it.q}`]); });
   if(s2 >= KO_NQ - 1) good.push(['ทำนายผลกระทบเมื่อขาดส่วนประกอบได้ดี']);
+  const f = koFeedback(items); good.push(...f.good.slice(0, 2)); more.unshift(...f.more);
   KOP.saved = true; koSave();
-  // score = system draft (auto-scored written answers + quiz); the teacher confirms it in the score summary
-  const p = ROLE === 'stu' ? saveAttempt({ mode:'ko', topic:'rep', score:s1 + s2, max:KO_MAX, detail:{ items, q, ko:s1, quiz:s2, checked:false, secs:Math.round((Date.now()-KOP.t0)/1000) } }, STU) : null;
-  showSummary({ title:'ส่ง Knockout Lab แล้ว', score:s2, max:KO_NQ, note:'คะแนนคำถามท้ายการทดลอง · ส่วนการทดลอง 14 คะแนน รอคุณครูตรวจ', good, more, moreMax:6, save:p,
-    btns:[['กลับเมนู', () => go('menu')], ['เริ่มการทดลองใหม่', () => { $('sum').hidden = true; koEnter(); }]] });
+  const n = koTries('rep').length + 1, raw = s1 + s2;
+  // the system scores everything (written answers by the teacher's keywords); the teacher can change any point later
+  const p = ROLE === 'stu' ? saveAttempt({ mode:'ko', topic:'rep', score:raw, max:KO_MAX, detail:{ v:2, n, items, q, qp, secs:Math.round((Date.now()-KOP.t0)/1000) } }, STU) : null;
+  const left = MAX_TRIES - n;
+  showSummary({ title:`ผล Knockout Lab · การจำลองดีเอ็นเอ${ROLE === 'stu' ? ` · ครั้งที่ ${n}` : ''}`, score:fmt2(raw/2), max:10,
+    note:ROLE === 'stu' ? (left > 0 ? `ทำได้อีก ${left} ครั้ง ใช้ครั้งที่ดีที่สุด` : 'ครบ 3 ครั้งแล้ว') : 'โหมดครู ไม่บันทึกคะแนน', good, more, moreMax:6, save:p,
+    btns:[['กลับเมนู', () => go('menu')], ['Knockout Lab', () => { $('sum').hidden = true; koEnter(); }]] });
 }
-$('koBack').addEventListener('click', () => go('menu'));
+$('koBack').addEventListener('click', showKoTopics);
+$('koTopicsBack').addEventListener('click', () => go('menu'));
 $('koPanelBack').addEventListener('click', () => { if(KOV.phase === 'quiz' && !confirmLeave()) return; showKoPick(); });
 $('koQuizBtn').addEventListener('click', startKoQuiz);
 const confirmLeave = () => true;
@@ -4147,17 +4563,25 @@ function bSave(){ lsSet(bKey(), BP); }
 const mState = m => BP.m[m.id] || (BP.m[m.id] = { task:0, cp:{}, done:false });
 const cpState = (ms, c) => ms.cp[c] || (ms.cp[c] = { s:0, tries:0, hint:false, done:false });
 function buildEnter(){ bLoad(); showMissionList(); }
+const bTries = mid => myRecs().filter(r => r.mode === 'build' && r.topic === mid);
 function showMissionList(){
   BV = null; setBackdrop('rep', 6); QPROG = 1;
   $('buildT').textContent = 'Build · ภารกิจประกอบกระบวนการ';
-  const tot = MISSIONS.reduce((a, m) => a + mScore(m), 0), nDone = MISSIONS.filter(m => mState(m).done).length;
-  $('buildSc').textContent = `${fmt(tot)}/30`;
+  const tea = ROLE === 'tea', S = tea ? null : summarize(myRecs());
+  $('buildSc').textContent = tea ? '' : `${fmt2(S.build.total)}/30`;
+  const sub = m => {
+    const st = mState(m), rs = tea ? [] : bTries(m.id), inprog = st.task > 0 && !st.done;
+    if(tea) return `${TOPIC_NAME[m.topic]} · ${st.done ? `เสร็จแล้ว ${fmt(mScore(m))}/5` : inprog ? 'ทำค้างไว้' : 'ยังไม่ได้ทำ'}`;
+    if(!rs.length) return `${TOPIC_NAME[m.topic]} · ${inprog ? 'ทำค้างไว้ · ครั้งที่ 1/3' : 'ยังไม่ได้ทำ · ทำได้ 3 ครั้ง'}`;
+    return `${TOPIC_NAME[m.topic]} · ทำแล้ว ${rs.length}/${MAX_TRIES} ครั้ง · ดีที่สุด ${fmt2(Math.max(...rs.map(r => r.score)))}/5${inprog ? ' · ทำค้างไว้' : ''}`;
+  };
+  const full = m => !tea && bTries(m.id).length >= MAX_TRIES && !(mState(m).task > 0 && !mState(m).done);
   const b = $('buildBody');
-  b.innerHTML = `<h2>เลือกภารกิจ</h2><p class="koh">ภารกิจละ 5 จุด แต่ละจุดขอคำใบ้ได้ 1 ครั้ง ถูกในครั้งแรกโดยไม่ใช้คำใบ้ได้ 1 คะแนน ใช้คำใบ้หรือถูกในครั้งที่ 2–3 ได้ 0.5 คะแนน${ROLE === 'tea' ? ' · โหมดครูไม่บันทึกคะแนน' : ''}</p>
-    <div class="tpick">${MISSIONS.map((m, i) => { const st = mState(m); return `<button data-i="${i}" class="${st.done ? 'mdone' : ''}"><b>${m.id} · ${m.title}</b><small>${TOPIC_NAME[m.topic]} · ${st.done ? `เสร็จแล้ว ${fmt(mScore(m))}/5 คะแนน` : st.task ? 'ทำค้างไว้' : 'ยังไม่ได้ทำ'}</small></button>`; }).join('')}</div>
-    ${nDone === MISSIONS.length ? '<div class="qbtns"><span></span><button class="pbtn" id="bFinish">ดูสรุปคะแนน</button></div>' : ''}`;
-  b.querySelectorAll('.tpick button').forEach(x => x.addEventListener('click', () => openMission(+x.dataset.i)));
-  if($('bFinish')) $('bFinish').addEventListener('click', finishBuild);
+  b.innerHTML = `<h2>เลือกภารกิจ</h2><p class="koh">ภารกิจละ 5 จุด ถูกในครั้งแรกโดยไม่ใช้คำใบ้ได้ 1 คะแนน ใช้คำใบ้หรือถูกในครั้งที่ 2–3 ได้ 0.5 คะแนน${tea ? ' · โหมดครูไม่บันทึกคะแนน' : ' · แต่ละภารกิจทำได้ 3 ครั้ง ใช้ครั้งที่ดีที่สุด'}</p>
+    <div class="tpick"><button id="bFree" class="free"><b>โหมดอิสระ · ลองประกอบเอง</b><small>วางส่วนประกอบเองได้ไม่จำกัด กดให้ทำงานแล้วดูผล · ไม่คิดคะแนน</small></button>
+    ${MISSIONS.map((m, i) => `<button data-i="${i}" class="${!tea && bTries(m.id).length ? 'mdone' : ''}" ${full(m) ? 'disabled' : ''}><b>${m.id} · ${m.title}</b><small>${full(m) ? 'ครบ 3 ครั้งแล้ว · ' : ''}${sub(m)}</small></button>`).join('')}</div>`;
+  b.querySelectorAll('.tpick button[data-i]:not([disabled])').forEach(x => x.addEventListener('click', () => openMission(+x.dataset.i)));
+  $('bFree').addEventListener('click', () => openFree());
   b.scrollTop = 0;
 }
 const fmt = x => (Math.round(x*10)/10).toString();
@@ -4180,7 +4604,7 @@ function initTask(){
   else BV.val = { sel:null };
 }
 function cpDots(m){
-  const st = mState(m);
+  const st = m._cp ? { cp:Object.fromEntries(Object.entries(m._cp).map(([c, x]) => [c, { s:x.s, done:true }])) } : mState(m);
   return `<div class="cpdots">${Object.keys(m.cps).map(c => { const s = st.cp[c]; const cls = !s || !s.done ? '' : s.s === 1 ? 'ok' : s.s > 0 ? 'half' : 'no'; return `<span class="${cls}" title="${esc(m.cps[c][0])}">${esc(m.cps[c][0])}</span>`; }).join('')}</div>`;
 }
 function renderTask(){
@@ -4270,35 +4694,343 @@ function checkTask(){
 function missionDone(){
   const m = MISSIONS[BV.mi], st = mState(m); st.done = true; bSave();
   QPROG = 0; QPLAY = Math.max(1, QM.steps[QSTEP].dur/8);
-  const i = BV.mi, last = MISSIONS.every(x => mState(x).done);
-  $('buildSc').textContent = `${fmt(mScore(m))}/5`;
-  $('buildBody').innerHTML = `${cpDots(m)}<div class="okbig">✓ กระบวนการทำงานได้ปกติ</div><p class="koh">ดูภาพด้านซ้าย แบบจำลองเล่นกระบวนการที่ประกอบเสร็จให้ดู</p>
-    <div class="fb"><ul>${Object.keys(m.cps).map(c => { const s = cpState(st, c); return `<li><span>${esc(m.cps[c][0])}${s.hint ? ' <small>(ใช้คำใบ้)</small>' : ''}</span><b>${s.s}</b></li>`; }).join('')}</ul></div>
-    <div class="qbtns"><button class="gbtn" id="bList">รายการภารกิจ</button><button class="pbtn" id="bGo">${last ? 'ดูสรุปคะแนน' : 'ภารกิจต่อไป'}</button></div>`;
-  $('bList').addEventListener('click', showMissionList);
-  $('bGo').addEventListener('click', () => { if(last) finishBuild(); else { const n = MISSIONS.findIndex((x, j) => !mState(x).done && j > i); openMission(n >= 0 ? n : MISSIONS.findIndex(x => !mState(x).done)); } });
-}
-function finishBuild(){
-  let score = 0; const cp = {}, good = [], more = [], hinted = [];
-  for(const m of MISSIONS){
-    const st = mState(m); cp[m.id] = {};
-    for(const c of Object.keys(m.cps)){
-      const s = cpState(st, c); score += s.s; cp[m.id][c] = { s:s.s, t:s.tries, h:s.hint ? 1 : 0 };
-      if(s.s === 1) good.push([`${m.id} ทำ "${m.cps[c][0]}" ได้ถูกเอง`]);
-      else if(s.s === 0) more.push([`${m.id} · ${m.cps[c][0]}`, `ดูขั้นที่ ${m.step}`, () => { $('sum').hidden = true; go('lesson', m.topic, { mode:'learn', step:m.step-1 }); }]);
-      else if(s.hint) hinted.push(m.cps[c][0]);
-    }
+  const sc = mScore(m), cp = {};
+  for(const c of Object.keys(m.cps)){ const x = cpState(st, c); cp[c] = { s:x.s, t:x.tries, h:x.hint ? 1 : 0 }; }
+  let p = null, n = 0;
+  if(ROLE === 'stu'){
+    n = bTries(m.id).length + 1;
+    p = saveAttempt({ mode:'build', topic:m.id, score:sc, max:5, detail:{ v:2, n, cp, secs:Math.round((Date.now()-BT0)/1000) } }, STU);
   }
-  if(hinted.length) more.push([`ใช้คำใบ้ช่วยใน ${hinted.length} จุด: ${hinted.slice(0, 4).join(', ')}${hinted.length > 4 ? ' …' : ''}`]);
-  BP.saved = true; bSave();
-  const p = ROLE === 'stu' ? saveAttempt({ mode:'build', topic:'all', score:Math.round(score*10)/10, max:30, detail:{ cp, secs:Math.round((Date.now()-BP.t0)/1000) } }, STU) : null;
-  const pick = a => a.length > 3 ? shuffle(a).slice(0, 3) : a;
-  showSummary({ title:'ผล Build', score:fmt(score), max:30, good:pick(good), more, moreMax:6, save:p,
-    btns:[['กลับเมนู', () => go('menu')], ['เริ่มภารกิจใหม่ทั้งหมด', () => { $('sum').hidden = true; buildEnter(); }]] });
+  $('buildSc').textContent = `${fmt(sc)}/5`;
+  const rows = Object.keys(m.cps).map(c => { const s2 = cpState(st, c); return `<li><span>${esc(m.cps[c][0])}${s2.hint ? ' <small>(ใช้คำใบ้)</small>' : ''}</span><b>${s2.s}</b></li>`; }).join('');
+  delete BP.m[m.id]; bSave();          // this try is saved; opening the mission again starts a new try
+  const left = MAX_TRIES - n;
+  $('buildBody').innerHTML = `${cpDots({ id:m.id, cps:m.cps, _cp:cp })}<div class="okbig">✓ กระบวนการทำงานได้ปกติ</div><p class="koh">ดูภาพด้านซ้าย แบบจำลองเล่นกระบวนการที่ประกอบเสร็จให้ดู</p>
+    <div class="fb"><ul>${rows}</ul></div>
+    <p class="savest" id="bSt">${ROLE === 'stu' ? `ครั้งที่ ${n} · ได้ ${fmt(sc)}/5 · ${left > 0 ? `ทำภารกิจนี้ได้อีก ${left} ครั้ง` : 'ครบ 3 ครั้งแล้ว'} · กำลังบันทึก…` : 'โหมดครู ไม่บันทึกคะแนน'}</p>
+    <div class="qbtns"><button class="gbtn" id="bList">รายการภารกิจ</button><button class="pbtn" id="bGo">ภารกิจต่อไป</button></div>`;
+  if(p) p.then(ok => { const e = $('bSt'); if(e) e.textContent = e.textContent.replace('กำลังบันทึก…', ok ? 'บันทึกส่งครูแล้ว' : 'บันทึกไว้ในเครื่อง จะส่งเมื่อเชื่อมต่อได้'); dbStatus(); });
+  $('bList').addEventListener('click', showMissionList);
+  const nx = MISSIONS.findIndex((x, j) => j > BV.mi && (ROLE === 'tea' || bTries(x.id).length < MAX_TRIES));
+  if(nx < 0) $('bGo').textContent = 'กลับรายการภารกิจ';
+  $('bGo').addEventListener('click', () => { if(nx < 0) showMissionList(); else openMission(nx); });
 }
 $('buildBack').addEventListener('click', () => { if(BV) showMissionList(); else go('menu'); });
 
-/* ================= student: my scores ================= */
+
+/* ================= scoring: attempts, totals and the teacher's review page =================
+   Every scored activity is checked by the system first. Each record keeps the student's answers and how the
+   system scored each item; the teacher can change any item (0 / 0.5 / 1) in the review page. Overrides live in
+   detail.ov = {itemId:value} and the record's score is recomputed from them.
+   Totals (80): Test 3 topics × 10 · Knockout replication (raw 20 → 10) · Knockout gene expression (raw 40 → 10)
+   · Build 6 missions × 5. Knockout and Build: up to 3 tries each (per topic / per mission), the best counts.
+   Test: one try per topic; every answer is sent as soon as it is given. */
+const MAX_TRIES = 3;
+const r2 = x => Math.round(x*100)/100;
+const fmt2 = x => String(r2(x));
+const atOf = r => (r.detail && r.detail.at) || tms(r) || 0;
+const stuKey = r => `${r.room}|${r.no}|${(r.name||'').trim()}`;
+const isMine = r => !!STU && r.name === STU.name && r.room === STU.room && String(r.no) === String(STU.no);
+const isKoRep = r => r.mode === 'ko' && r.topic !== 'gene';
+const isTest2 = r => r.mode === 'test' && r.max === 1 && r.detail && r.detail.qid;
+
+/* ---------- this student's records: server copy (has teacher changes) + this device's log ---------- */
+let MYROWS = null;
+async function refreshMine(){
+  if(ROLE !== 'stu') return [];
+  try { MYROWS = await loadMine(); } catch(e){}
+  return myRecs();
+}
+function myRecs(){
+  const seen = new Set(), out = [];
+  for(const r of (MYROWS || []).concat(lsGet(LOGKEY, []))){
+    if(!isMine(r)) continue;
+    const k = `${r.mode}|${r.topic}|${atOf(r)}`; if(seen.has(k)) continue; seen.add(k); out.push(r);
+  }
+  return out.sort((a, b) => atOf(a) - atOf(b));
+}
+
+/* ---------- items of one record (what the student answered and how the system scored it) ---------- */
+function koKeyHit(k, w, text){
+  const t = normTxt(text);
+  if(t.length < 6) return { ok:0, why:'คำตอบสั้นเกินไป (น้อยกว่า 6 ตัวอักษร)' };
+  const hit = (KO_KEYS[k] && KO_KEYS[k][w] || []).find(x => t.includes(normTxt(x)));
+  return hit ? { ok:1, why:`พบคีย์เวิร์ด “${hit}”`, hit } : { ok:0, why:'ไม่พบคีย์เวิร์ดของข้อนี้' };
+}
+function hlText(text, hit){
+  const s = String(text || '');
+  if(!s) return '–';
+  if(!hit) return esc(s);
+  const i = s.toLowerCase().indexOf(hit.toLowerCase());
+  if(i < 0) return esc(s);
+  return esc(s.slice(0, i)) + '<mark>' + esc(s.slice(i, i + hit.length)) + '</mark>' + esc(s.slice(i + hit.length));
+}
+function itemsOf(r){
+  const d = r.detail || {}, out = [];
+  if(r.mode === 'ko' && r.topic === 'gene'){
+    const m = d.mrna || '', tx = d.tx || '';
+    for(let i=0;i<m.length;i++) out.push({ id:'T'+(i+1), grp:'tx', a:tx[i] || '', right:m[i], tmpl:GX_COMP[m[i]], auto:tx[i] === m[i] ? 1 : 0, opts:[0,1] });
+    const cod = gxCoding(m);
+    cod.forEach((c, j) => {
+      const p = (d.aa || [])[j], right = CODON_AA[c];
+      out.push({ id:'A'+(j+1), grp:'แปลรหัส · กรดอะมิโนละ 1 คะแนน', q:`โคดอนที่ ${j+1} <b class="mono">${c}</b>`, a:esc(p || '–'), auto:p === right ? 1 : 0,
+                 sys:p === right ? 'ตรงกับ Codon Chart' : `ไม่ตรง · เฉลย ${right}`, opts:[0,1] });
+    });
+    (d.qs || []).forEach(x => {
+      const q = GENE_Q.find(z => z.id === x.id);
+      out.push({ id:x.id, grp:'คำถามสรุป', q:q ? esc(q.q) : x.id, a:esc(x.pick || '–'), auto:x.ok ? 1 : 0, sys:x.ok ? 'ตอบถูก' : `ตอบผิด · เฉลย: ${q ? esc(q.o[0]) : ''}`, opts:[0,1] });
+    });
+    return out;
+  }
+  if(r.mode === 'ko'){
+    const it = d.items || {};
+    KO_ORDER.forEach((k, i) => {
+      const x = it[k]; if(!x) return;
+      for(const [w, j, lab] of [['h', 1, 'สมมติฐาน'], ['o', 2, 'สิ่งที่สังเกตได้']]){
+        const g = koKeyHit(k, w, x[w]);
+        out.push({ id:'W' + (2*i + j), grp:'เขียนตอบ · ตรวจด้วยคีย์เวิร์ด', q:`${KO_INFO[k].en} · ${lab}`, a:hlText(x[w], g.hit), auto:x[w + 's'] ? 1 : 0, sys:g.why, opts:[0,1] });
+      }
+    });
+    for(const [id, v] of Object.entries(d.q || {})){
+      const q = KO_Q.find(z => z.id === id);
+      out.push({ id, grp:'ปรนัย', q:q ? esc(q.q) : id, a:esc((d.qp || {})[id] || (v === 'c' ? (q ? q.o[0] : '') : '–')), auto:v === 'c' ? 1 : 0,
+                 sys:v === 'c' ? 'ตอบถูก' : `ตอบผิด · เฉลย: ${q ? esc(q.o[0]) : ''}`, opts:[0,1] });
+    }
+    return out;
+  }
+  if(r.mode === 'build'){
+    const ms = r.topic === 'all' ? MISSIONS : MISSIONS.filter(m => m.id === r.topic);
+    for(const m of ms){
+      const cps = r.topic === 'all' ? ((d.cp || {})[m.id] || {}) : (d.cp || {});
+      for(const c of Object.keys(m.cps)){
+        const x = cps[c] || { s:0, t:0, h:0 };
+        out.push({ id:r.topic === 'all' ? `${m.id}.${c}` : c, grp:`${m.id} · ${m.title}`, q:esc(m.cps[c][0]),
+                   a:`ตอบผิด ${x.t || 0} ครั้ง${x.h ? ' · ใช้คำใบ้' : ''}`, auto:x.s || 0,
+                   sys:x.s === 1 ? 'ถูกตั้งแต่ครั้งแรก ไม่ใช้คำใบ้' : x.s > 0 ? 'ถูกหลังใช้คำใบ้หรือลองใหม่' : 'ผิดครบ 3 ครั้ง ระบบเติมคำตอบให้', opts:[0,0.5,1] });
+      }
+    }
+    return out;
+  }
+  if(r.mode === 'test'){
+    const qOfId = id => ['rep','tx','tl'].map(t => TEST_Q[t].find(x => x.id === id)).find(Boolean);
+    if(isTest2(r)){
+      const q = qOfId(d.qid);
+      out.push({ id:d.qid, grp:'Test', q:q ? esc(q.q) : d.qid, a:esc(d.pick || '–'), auto:d.ok ? 1 : 0, sys:d.ok ? 'ตอบถูก' : `ตอบผิด · เฉลย: ${q ? esc(q.o[0]) : ''}`, opts:[0,1] });
+    } else for(const [id, v] of Object.entries(d.ans || {})){
+      const q = qOfId(id);
+      out.push({ id, grp:'Test', q:q ? esc(q.q) : id, a:'(ระบบเก่าไม่ได้เก็บตัวเลือก)', auto:v === 'c' ? 1 : 0, sys:v === 'c' ? 'ตอบถูก' : `ตอบผิด · เฉลย: ${q ? esc(q.o[0]) : ''}`, opts:[0,1] });
+    }
+  }
+  return out;
+}
+const valOf = (it, ov) => (ov && it.id in ov) ? ov[it.id] : it.auto;
+function rawOf(r, ov){ ov = ov || (r.detail && r.detail.ov) || {}; return r2(itemsOf(r).reduce((a, it) => a + valOf(it, ov), 0)); }
+const nEdited = r => Object.keys((r.detail && r.detail.ov) || {}).length;
+
+/* ---------- totals for one student ---------- */
+function summarize(recs){
+  const S = { test:{}, ko:{}, build:{ per:{}, total:0 }, total:0, edited:0 };
+  recs = recs.slice().sort((a, b) => atOf(a) - atOf(b));
+  for(const r of recs) S.edited += nEdited(r);
+  for(const t of ['rep','tx','tl']){
+    const v2 = recs.filter(r => isTest2(r) && r.topic === t);
+    if(v2.length){
+      const bySid = {}; v2.forEach(r => (bySid[r.detail.sid] = bySid[r.detail.sid] || []).push(r));
+      const sids = Object.keys(bySid).sort((a, b) => atOf(bySid[a][0]) - atOf(bySid[b][0]));
+      const per = {}; for(const r of bySid[sids[0]]) if(!(r.detail.qid in per)) per[r.detail.qid] = r;   // first session, first answer of each question
+      const list = Object.values(per);
+      S.test[t] = { score:r2(list.reduce((a, r) => a + (+r.score || 0), 0)), n:list.length, done:list.length >= 10, recs:list, sessions:sids.length };
+    } else {
+      const leg = recs.filter(r => r.mode === 'test' && r.topic === t && !isTest2(r));
+      if(leg.length){ const r = leg[leg.length-1]; S.test[t] = { score:r.score, n:10, done:true, recs:[r], legacy:true, sessions:1 }; }
+    }
+  }
+  for(const tp of ['rep','gene']){
+    const rs = recs.filter(r => tp === 'rep' ? isKoRep(r) : (r.mode === 'ko' && r.topic === 'gene'));
+    if(!rs.length) continue;
+    const best = rs.reduce((a, b) => (b.score/b.max > a.score/a.max ? b : a));
+    S.ko[tp] = { recs:rs, best, n:rs.length, conv:r2(best.score/best.max*10) };
+  }
+  const leg = recs.filter(r => r.mode === 'build' && r.topic === 'all');
+  for(const m of MISSIONS){
+    const rs = recs.filter(r => r.mode === 'build' && r.topic === m.id);
+    let best = rs.length ? rs.reduce((a, b) => (b.score > a.score ? b : a)) : null, bs = best ? best.score : 0;
+    for(const r of leg){ const cp = (r.detail.cp || {})[m.id] || {}, s = Object.values(cp).reduce((a, x) => a + (x.s || 0), 0); if(s > bs){ bs = s; best = r; } }
+    if(rs.length || leg.length) S.build.per[m.id] = { recs:rs, best, n:rs.length, score:r2(bs) };
+  }
+  S.build.total = r2(Object.values(S.build.per).reduce((a, x) => a + x.score, 0));
+  S.total = r2(['rep','tx','tl'].reduce((a, t) => a + (S.test[t] ? S.test[t].score : 0), 0)
+            + (S.ko.rep ? S.ko.rep.conv : 0) + (S.ko.gene ? S.ko.gene.conv : 0) + S.build.total);
+  return S;
+}
+
+/* ---------- teacher dashboard ---------- */
+let DASH = { rows:[], room:null };
+async function loadDash(){
+  $('dashNote').textContent = 'กำลังโหลดคะแนน…'; $('dashTbl').innerHTML = ''; $('dashMiss').innerHTML = ''; $('dashRooms').innerHTML = '';
+  try { DASH.rows = await loadAttempts(); }
+  catch(e){ $('dashNote').textContent = DB.isTeacher ? 'โหลดคะแนนไม่สำเร็จ ตรวจอินเทอร์เน็ตแล้วกด "โหลดใหม่"' : 'ต้องเข้าสู่ระบบครูก่อน'; return; }
+  const rooms = [...new Set(DASH.rows.map(r => r.room))].sort((a, b) => a.localeCompare(b, 'th', { numeric:true }));
+  if(!rooms.includes(DASH.room)) DASH.room = rooms[0] || null;
+  const rb = $('dashRooms');
+  rooms.forEach(rm => { const b = document.createElement('button'); b.textContent = rm; b.setAttribute('aria-pressed', rm === DASH.room); b.addEventListener('click', () => { DASH.room = rm; rb.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b)); renderDash(); }); rb.appendChild(b); });
+  renderDash();
+}
+function studentList(room){
+  const G = {};
+  for(const r of DASH.rows){
+    if(room && r.room !== room) continue;
+    if(r.mode === 'teach') continue;
+    const k = stuKey(r); (G[k] = G[k] || { key:k, name:r.name, room:r.room, no:r.no, recs:[] }).recs.push(r);
+  }
+  return Object.values(G).map(s => Object.assign(s, { S:summarize(s.recs), last:Math.max(...s.recs.map(atOf)) }))
+    .sort((a, b) => (+a.no || 999) - (+b.no || 999) || a.name.localeCompare(b.name, 'th'));
+}
+function renderDash(){
+  const list = studentList(DASH.room);
+  const t = (S, k) => S.test[k] ? `${fmt2(S.test[k].score)}${S.test[k].done ? '' : `<small> (${S.test[k].n}/10)</small>`}` : '–';
+  const ko = x => x ? `${fmt2(x.conv)}<small> · ${x.n} ครั้ง</small>` : '–';
+  $('dashNote').textContent = DASH.rows.length ? `${DASH.room || ''} · นักเรียน ${list.length} คน · ทั้งหมด ${DASH.rows.length} รายการ · แตะชื่อเพื่อดูคำตอบและแก้คะแนน` : 'ยังไม่มีคะแนนนักเรียน';
+  const th = `<thead><tr><th>เลขที่</th><th class="l">ชื่อ</th><th class="grp2">Test DNA<small>/10</small></th><th>ถอดรหัส<small>/10</small></th><th>แปลรหัส<small>/10</small></th>
+    <th class="grp2">KO จำลอง<small>/10</small></th><th>KO ยีน<small>/10</small></th><th class="grp2">Build<small>/30</small></th><th class="grp2">รวม<small>/80</small></th><th class="grp2">ครูแก้</th><th class="grp2 l">ล่าสุด</th></tr></thead>`;
+  const body = list.map(s => `<tr><td>${esc(s.no)}</td><td class="l"><button class="kobtn" data-k="${esc(s.key)}" title="ดูคำตอบและแก้คะแนน">${esc(s.name)}</button></td>
+      <td class="grp2">${t(s.S, 'rep')}</td><td>${t(s.S, 'tx')}</td><td>${t(s.S, 'tl')}</td>
+      <td class="grp2">${ko(s.S.ko.rep)}</td><td>${ko(s.S.ko.gene)}</td>
+      <td class="grp2">${Object.keys(s.S.build.per).length ? fmt2(s.S.build.total) + `<small> · ${Object.keys(s.S.build.per).length}/6</small>` : '–'}</td>
+      <td class="grp2 tot">${fmt2(s.S.total)}</td><td class="grp2 m">${s.S.edited ? s.S.edited + ' ข้อ' : ''}</td>
+      <td class="grp2 l m">${s.last ? new Date(s.last).toLocaleString('th-TH', { dateStyle:'short', timeStyle:'short' }) : ''}</td></tr>`).join('');
+  $('dashTbl').innerHTML = th + '<tbody>' + body + '</tbody>';
+  $('dashTbl').querySelectorAll('.kobtn').forEach(b => b.addEventListener('click', () => openReview(b.dataset.k)));
+  /* most-missed questions in this room */
+  const miss = {};
+  for(const r of DASH.rows.filter(r => r.room === DASH.room)){
+    for(const it of itemsOf(r)){
+      if(it.grp === 'tx') continue;
+      const key = `${r.mode}.${r.topic === 'gene' ? 'gene' : ''}.${it.id}`;
+      const m = miss[key] = miss[key] || { q:it.q, where:r.mode === 'test' ? 'Test' : r.mode === 'build' ? 'Build' : r.topic === 'gene' ? 'Knockout ยีน' : 'Knockout จำลอง', bad:0, n:0 };
+      m.n++; if(valOf(it, r.detail && r.detail.ov) < 1) m.bad++;
+    }
+  }
+  const top = Object.values(miss).filter(m => m.bad && m.n >= 2).sort((a, b) => b.bad/b.n - a.bad/a.n || b.bad - a.bad).slice(0, 6);
+  $('dashMiss').innerHTML = top.length ? top.map(m => `<li>${m.q}<br><small>${m.where} · ไม่ได้คะแนน ${m.bad} จาก ${m.n} ครั้ง</small></li>`).join('') : '<li><small>ยังไม่มีข้อมูล</small></li>';
+}
+function csvDash(){
+  const rows = [['ชั้น','เลขที่','ชื่อ','Test DNA (10)','Test ถอดรหัส (10)','Test แปลรหัส (10)','Knockout จำลองดีเอ็นเอ (10)','Knockout การแสดงออกของยีน (10)','Build (30)','รวม (80)','ข้อที่ครูแก้']];
+  const v = x => x == null ? '' : fmt2(x);
+  for(const s of studentList(null).sort((a, b) => a.room.localeCompare(b.room, 'th', { numeric:true }) || (+a.no) - (+b.no))){
+    const S = s.S;
+    rows.push([s.room, s.no, s.name, v(S.test.rep && S.test.rep.score), v(S.test.tx && S.test.tx.score), v(S.test.tl && S.test.tl.score),
+      v(S.ko.rep && S.ko.rep.conv), v(S.ko.gene && S.ko.gene.conv), Object.keys(S.build.per).length ? v(S.build.total) : '', v(S.total), S.edited || '']);
+  }
+  const csv = '﻿' + rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\r\n');
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type:'text/csv;charset=utf-8' }));
+  a.download = `คะแนน-Genetics3D-${new Date().toISOString().slice(0,10)}.csv`; document.body.appendChild(a); a.click(); a.remove();
+}
+$('dashBack').addEventListener('click', () => go('menu'));
+$('dashReload').addEventListener('click', loadDash);
+$('dashCsv').addEventListener('click', () => { if(DASH.rows.length) csvDash(); });
+
+/* ---------- teacher review page: every answer, how the system scored it, change any point ---------- */
+const RV_TABS = [['koRep','Knockout: จำลองดีเอ็นเอ'], ['koGene','Knockout: การแสดงออกของยีน'], ['build','Build'], ['test','Test']];
+let RV = null;   // {key, tab, sub, pick, edit:{recId:ov}}
+function openReview(key){ RV = { key, tab:'koRep', sub:null, pick:null, edit:{} }; go('rev'); renderReview(); }
+function rvStudent(){ return studentList(DASH.room).find(s => s.key === RV.key) || studentList(null).find(s => s.key === RV.key); }
+function rvOv(r){ return RV.edit[r.id] || (r.detail && r.detail.ov) || {}; }
+function rvRecords(s){
+  // records shown in the current tab: attempts to choose from, and which ones are on screen
+  const S = s.S;
+  if(RV.tab === 'koRep' || RV.tab === 'koGene'){
+    const x = S.ko[RV.tab === 'koRep' ? 'rep' : 'gene']; if(!x) return { atts:[], shown:[] };
+    const atts = x.recs.map((r, i) => ({ id:r.id, label:`ครั้งที่ ${i+1}`, sc:`${fmt2(rawOf(r, rvOv(r)))}/${r.max}`, best:r === x.best, recs:[r] }));
+    return { atts, shown:(atts.find(a => a.id === RV.pick) || atts.find(a => a.best) || atts[0]).recs };
+  }
+  if(RV.tab === 'build'){
+    const mid = RV.sub || (RV.sub = MISSIONS[0].id), x = S.build.per[mid];
+    const rs = x ? x.recs : [];
+    const legs = s.recs.filter(r => r.mode === 'build' && r.topic === 'all');
+    const atts = rs.map((r, i) => ({ id:r.id, label:`ครั้งที่ ${i+1}`, sc:`${fmt2(rawOf(r, rvOv(r)))}/5`, best:x && r === x.best, recs:[r] }))
+      .concat(legs.map((r, i) => ({ id:r.id, label:`ระบบเก่า ${i+1} (ทุกภารกิจ)`, sc:`${fmt2(rawOf(r, rvOv(r)))}/30`, best:x && r === x.best, recs:[r] })));
+    return { atts, shown:atts.length ? (atts.find(a => a.id === RV.pick) || atts.find(a => a.best) || atts[0]).recs : [] };
+  }
+  const t = RV.sub || (RV.sub = 'rep'), x = S.test[t];
+  if(!x) return { atts:[], shown:[] };
+  return { atts:[{ id:'t', label:x.legacy ? 'ระบบเก่า' : `ตอบแล้ว ${x.n}/10`, sc:`${fmt2(x.recs.reduce((a, r) => a + rawOf(r, rvOv(r)), 0))}/10`, best:true, recs:x.recs }], shown:x.recs };
+}
+function renderReview(){
+  const s = rvStudent(); if(!s){ go('dash'); return; }
+  const list = studentList(DASH.room);
+  $('rvList').innerHTML = list.map(x => `<button class="rvst${x.key === RV.key ? ' cur' : ''}" data-k="${esc(x.key)}"><b>${esc(x.name)}</b><span><span>เลขที่ ${esc(x.no)}</span><span>${fmt2(x.S.total)}/80</span></span></button>`).join('');
+  $('rvList').querySelectorAll('.rvst').forEach(b => b.addEventListener('click', () => { if(rvDirty() && !confirm('ยังไม่ได้บันทึกคะแนนที่แก้ ต้องการทิ้งการแก้ไขหรือไม่')) return; RV = { key:b.dataset.k, tab:RV.tab, sub:RV.sub, pick:null, edit:{} }; renderReview(); }));
+  $('rvName').textContent = s.name; $('rvSub').textContent = `${s.room} เลขที่ ${s.no} · คะแนนรวม ${fmt2(s.S.total)}/80`;
+  $('rvTabs').innerHTML = RV_TABS.map(([k, n]) => `<button data-t="${k}" aria-pressed="${RV.tab === k}">${n}</button>`).join('');
+  $('rvTabs').querySelectorAll('button').forEach(b => b.addEventListener('click', () => { RV.tab = b.dataset.t; RV.sub = null; RV.pick = null; renderReview(); }));
+  let subs = '';
+  if(RV.tab === 'build') subs = MISSIONS.map(m => `<button data-s="${m.id}" aria-pressed="${(RV.sub || MISSIONS[0].id) === m.id}">${m.id}${s.S.build.per[m.id] ? ` · ${fmt2(s.S.build.per[m.id].score)}` : ''}</button>`).join('');
+  if(RV.tab === 'test') subs = ['rep','tx','tl'].map(t => `<button data-s="${t}" aria-pressed="${(RV.sub || 'rep') === t}">${TOPIC_NAME[t]}${s.S.test[t] ? ` · ${fmt2(s.S.test[t].score)}` : ''}</button>`).join('');
+  const R = rvRecords(s);
+  const atts = R.atts.length > 1 || RV.tab !== 'test' ? R.atts.map(a => `<button data-a="${a.id}" aria-pressed="${R.shown === a.recs}">${a.label} · ${a.sc}${a.best ? ' ★' : ''}</button>`).join('') : '';
+  $('rvSel').innerHTML = (subs ? `<div class="rvchips">${subs}</div>` : '') + (atts ? `<div class="rvchips"><span>ครั้งที่ทำ</span>${atts}<small>★ = ครั้งที่ใช้คิดคะแนน (ดีที่สุด)</small></div>` : '');
+  $('rvSel').querySelectorAll('[data-s]').forEach(b => b.addEventListener('click', () => { RV.sub = b.dataset.s; RV.pick = null; renderReview(); }));
+  $('rvSel').querySelectorAll('[data-a]').forEach(b => b.addEventListener('click', () => { RV.pick = b.dataset.a; renderReview(); }));
+  // rows
+  const body = $('rvBody');
+  if(!R.shown.length){ body.innerHTML = `<p class="rvempty">นักเรียนยังไม่ได้ทำส่วนนี้</p>`; }
+  else {
+    let html = '', lastGrp = '';
+    for(const r of R.shown){
+      const ov = rvOv(r), items = itemsOf(r);
+      const tx = items.filter(it => it.grp === 'tx');
+      if(tx.length){
+        const ok = tx.filter(it => valOf(it, ov) > 0).length;
+        html += `<div class="rvgrp">ถอดรหัส · เบสละ 1 คะแนน <small>แถวบน = สายแม่แบบ · กลาง = คำตอบครั้งแรกของนักเรียน · ล่าง = คะแนน · แตะเบสเพื่อแก้คะแนน</small></div>
+          <div class="rvtx">${tx.map(it => { const v = valOf(it, ov), ed = it.id in ov; return `<button class="rvb${v ? ' ok' : ' no'}${ed ? ' ed' : ''}" data-r="${r.id}" data-i="${it.id}" data-v="${v ? 0 : 1}" title="เบสที่ ${it.id.slice(1)}: นักเรียนตอบ ${esc(it.a || '–')} · คำตอบที่ถูก ${it.right}"><i>${it.tmpl}</i><b>${esc(it.a || '·')}</b><small>${v}</small></button>`; }).join('')}</div>
+          <p class="rvnote">ระบบตรวจ: ถูก ${ok} จาก ${tx.length} เบส${tx.filter(it => !it.auto).length ? ' · ' + tx.filter(it => !it.auto).slice(0, 6).map(it => `เบสที่ ${it.id.slice(1)} ตอบ ${esc(it.a || '–')} (ควรเป็น ${it.right})`).join(' · ') : ''}</p>`;
+      }
+      for(const it of items.filter(it => it.grp !== 'tx')){
+        if(it.grp !== lastGrp && RV.tab !== 'test'){ html += `<div class="rvgrp">${esc(it.grp)}</div>`; lastGrp = it.grp; }
+        const v = valOf(it, ov), ed = it.id in ov;
+        html += `<div class="rvrow2${ed ? ' ed' : ''}"><b class="mono">${esc(it.id)}</b><span class="q">${it.q}</span><span class="a">${it.a}</span>
+          <span class="sys ${it.auto > 0 ? 'ok' : 'no'}"><b>${it.auto >= 1 ? '✓' : it.auto > 0 ? '½' : '✗'}</b>${esc(it.sys)}</span>
+          <span class="tgw"><span class="tg3">${it.opts.map(o => `<button data-r="${r.id}" data-i="${it.id}" data-v="${o}" aria-pressed="${v === o}" class="v${String(o).replace('.', '')}">${o === 0.5 ? '½' : o}</button>`).join('')}</span>${ed ? '<small>ครูแก้</small>' : ''}</span></div>`;
+      }
+    }
+    body.innerHTML = html;
+    body.querySelectorAll('[data-r]').forEach(b => b.addEventListener('click', () => {
+      const r = R.shown.find(x => x.id === b.dataset.r); if(!r) return;
+      const ov = Object.assign({}, rvOv(r)), it = itemsOf(r).find(x => x.id === b.dataset.i), v = +b.dataset.v;
+      if(v === it.auto) delete ov[it.id]; else ov[it.id] = v;
+      RV.edit[r.id] = ov; renderReview();
+    }));
+  }
+  // footer
+  const raw = R.shown.reduce((a, r) => a + rawOf(r, rvOv(r)), 0), auto = R.shown.reduce((a, r) => a + rawOf(r, {}), 0);
+  const max = R.shown.reduce((a, r) => a + r.max, 0), edits = R.shown.reduce((a, r) => a + Object.keys(rvOv(r)).length, 0);
+  const conv = RV.tab === 'koRep' || RV.tab === 'koGene' ? ` → คิดเป็น <b class="big">${fmt2(max ? raw/max*10 : 0)}/10</b>` : '';
+  $('rvFoot').innerHTML = R.shown.length ? `<span>คะแนนดิบ <b class="mono">${fmt2(raw)}/${max}</b>${conv}</span>
+    <small>ระบบให้ ${fmt2(auto)}${edits ? ` · ครูแก้ ${edits} ข้อ` : ' · ยังไม่มีการแก้'}${rvDirty() ? ' · <b class="warn">ยังไม่ได้บันทึก</b>' : ''}</small><span class="sp"></span>
+    <button class="btn" id="rvReset">คืนค่าที่ระบบตรวจ</button><button class="btn primary" id="rvSave"${rvDirty() ? '' : ' disabled'}>บันทึกคะแนน</button>` : '';
+  if($('rvReset')) $('rvReset').addEventListener('click', () => { R.shown.forEach(r => { RV.edit[r.id] = {}; }); renderReview(); });
+  if($('rvSave')) $('rvSave').addEventListener('click', rvSave);
+}
+function rvDirty(){
+  return Object.entries(RV.edit).some(([id, ov]) => { const r = DASH.rows.find(x => x.id === id); return r && JSON.stringify(ov) !== JSON.stringify((r.detail && r.detail.ov) || {}); });
+}
+async function rvSave(){
+  const btn = $('rvSave'); btn.disabled = true; btn.textContent = 'กำลังบันทึก…';
+  try {
+    for(const [id, ov] of Object.entries(RV.edit)){
+      const r = DASH.rows.find(x => x.id === id); if(!r) continue;
+      if(JSON.stringify(ov) === JSON.stringify((r.detail && r.detail.ov) || {})) continue;
+      const score = rawOf(r, ov);
+      await updateAttempt(id, { score, 'detail.ov':ov });
+      r.score = score; r.detail = Object.assign({}, r.detail, { ov });
+    }
+    RV.edit = {}; renderReview();
+  } catch(e){ btn.disabled = false; btn.textContent = 'บันทึกไม่สำเร็จ ลองใหม่'; }
+}
+$('rvBack').addEventListener('click', () => { if(rvDirty() && !confirm('ยังไม่ได้บันทึกคะแนนที่แก้ ต้องการทิ้งการแก้ไขหรือไม่')) return; go('dash'); });
+
+/* ---------- student: my scores ---------- */
 function testFeedback(ans){
   const agg = {}, good = [], more = [];
   for(const [id, r] of Object.entries(ans || {})){
@@ -4312,41 +5044,449 @@ function testFeedback(ans){
   }
   return { good, more };
 }
+const testAns = x => Object.fromEntries((x ? x.recs : []).flatMap(r => isTest2(r) ? [[r.detail.qid, r.score >= 1 ? 'c' : 'w']] : Object.entries(r.detail.ans || {})));
 async function openMyScores(){
   const card = $('sumCard'); $('sum').hidden = false;
   card.innerHTML = `<div class="qtop"><span class="k">คะแนนของฉัน · ${esc(STU.name)}</span></div><p class="savest">กำลังโหลดคะแนน…</p>`;
-  let rows = [], note = '';
-  try { rows = await loadMine(); } catch(e){ note = 'ยังเชื่อมต่อฐานข้อมูลไม่ได้ แสดงเฉพาะคะแนนที่รอส่งจากเครื่องนี้'; }
-  const mine = r => r.name === STU.name && r.room === STU.room && String(r.no) === String(STU.no);
-  const all = rows.concat(lsGet(QKEY, []).filter(mine).map(r => Object.assign({ unsent:true }, r))).sort((a, b) => tms(a) - tms(b));
-  const L = {};
-  for(const r of all){ if(r.mode === 'test' && r.topic !== 'all') L['test.' + r.topic] = r; if(r.mode === 'ko' || r.mode === 'build') L[r.mode] = r; }
-  let total = 0; const good = [], more = [];
-  const line = (name, r, max, extra) => {
-    if(!r) return `<li><span>${name}</span><span class="pend" style="color:#46546e;font-weight:400">ยังไม่ได้ทำ</span></li>`;
-    if(r.mode === 'ko' && koPending(r)) return `<li><span>${name}</span><span class="pend">รอครูตรวจ · คำถาม ${r.detail.quiz}/${Object.keys(r.detail.q || {}).length}</span></li>`;
-    total += r.score;
-    return `<li><span>${name}${r.unsent ? ' <small>(รอส่ง)</small>' : ''}</span><b>${fmtN(r.score)}/${max}</b></li>`;
-  };
+  let note = '';
+  const before = MYROWS; await refreshMine(); if(MYROWS === before && !MYROWS) note = 'ยังเชื่อมต่อฐานข้อมูลไม่ได้ แสดงคะแนนที่ทำจากเครื่องนี้';
+  const S = summarize(myRecs()), good = [], more = [];
+  const row = (name, val, max, extra) => `<li><span>${name}${extra ? ` <small>${extra}</small>` : ''}</span>${val == null ? '<span class="pend" style="color:#46546e;font-weight:400">ยังไม่ได้ทำ</span>' : `<b>${fmt2(val)}/${max}</b>`}</li>`;
   const html = [
-    line('Test · การจำลองดีเอ็นเอ', L['test.rep'], 10), line('Test · การถอดรหัส', L['test.tx'], 10), line('Test · การแปลรหัส', L['test.tl'], 10),
-    line('Knockout Lab', L.ko, 20), line('Build', L.build, 30)
+    ...['rep','tx','tl'].map(t => row(`Test · ${TOPIC_NAME[t]}`, S.test[t] ? S.test[t].score : null, 10, S.test[t] && !S.test[t].done ? `(ตอบแล้ว ${S.test[t].n}/10)` : '')),
+    row('Knockout · การจำลองดีเอ็นเอ', S.ko.rep ? S.ko.rep.conv : null, 10, S.ko.rep ? `(ทำ ${S.ko.rep.n}/${MAX_TRIES} ครั้ง ใช้ครั้งที่ดีที่สุด)` : ''),
+    row('Knockout · การแสดงออกของยีน', S.ko.gene ? S.ko.gene.conv : null, 10, S.ko.gene ? `(ทำ ${S.ko.gene.n}/${MAX_TRIES} ครั้ง)` : ''),
+    row('Build', Object.keys(S.build.per).length ? S.build.total : null, 30, Object.keys(S.build.per).length ? `(ทำแล้ว ${Object.keys(S.build.per).length}/6 ภารกิจ)` : '')
   ].join('');
-  for(const t of ['rep','tx','tl']) if(L['test.' + t]){ const f = testFeedback(L['test.' + t].detail && L['test.' + t].detail.ans); good.push(...f.good); more.push(...f.more); }
-  if(L.ko && !koPending(L.ko)){ const f = koFeedback(L.ko.detail.items || {}); good.push(...f.good); more.push(...f.more); }
-  if(L.build) for(const m of MISSIONS){ const cps = (L.build.detail.cp || {})[m.id] || {}; for(const [c, v] of Object.entries(cps)) if(v.s === 0) more.push([`Build ${m.id} · ${m.cps[c][0]}`, `ดูขั้นที่ ${m.step}`, () => { $('sum').hidden = true; go('lesson', m.topic, { mode:'learn', step:m.step-1 }); }]); }
+  for(const t of ['rep','tx','tl']) if(S.test[t]){ const f = testFeedback(testAns(S.test[t])); good.push(...f.good); more.push(...f.more); }
+  if(S.ko.rep){ const f = koFeedback(S.ko.rep.best.detail.items || {}); good.push(...f.good); more.push(...f.more); }
+  for(const m of MISSIONS){ const x = S.build.per[m.id]; if(x && x.best && x.best.topic === m.id) for(const [c, v] of Object.entries(x.best.detail.cp || {})) if(v.s === 0) more.push([`Build ${m.id} · ${m.cps[c][0]}`, `ดูขั้นที่ ${m.step}`, () => { $('sum').hidden = true; go('lesson', m.topic, { mode:'learn', step:m.step-1 }); }]); }
   const li = (x, i, k) => `<li><span>${esc(x[0])}</span>${x[1] ? `<button class="gbtn" data-k="${k}" data-i="${i}">${esc(x[1])}</button>` : ''}</li>`;
   const g = good.slice(0, 4), m = more.slice(0, 6);
   card.innerHTML = `<div class="qtop"><span class="k">คะแนนของฉัน · ${esc(STU.name)} (${esc(STU.room)} เลขที่ ${esc(STU.no)})</span></div>
-    <div class="bigscore"><b>${fmtN(total)}</b><span>จาก 80 คะแนน${L.ko && koPending(L.ko) ? ' · ยังไม่รวม Knockout ที่รอครูตรวจ' : ''}</span></div>
+    <div class="bigscore"><b>${fmt2(S.total)}</b><span>จาก 80 คะแนน</span></div>
     <div class="fb mine"><ul>${html}</ul></div>
     ${g.length ? `<div class="fb"><h4 class="g">จุดดี</h4><ul>${g.map((x, i) => li(x, i, 'g')).join('')}</ul></div>` : ''}
     ${m.length ? `<div class="fb"><h4 class="r">จุดที่ต้องอ่านเพิ่ม</h4><ul>${m.map((x, i) => li(x, i, 'm')).join('')}</ul></div>` : ''}
-    <p class="savest">${note || 'แสดงคะแนนครั้งล่าสุดของแต่ละโหมดที่ทำจากเครื่องนี้'}</p>
+    <p class="savest">${note || 'คะแนนอาจเปลี่ยนได้ถ้าคุณครูตรวจและแก้คะแนนบางข้อ'}</p>
     <div class="qbtns" id="sumBtns"><span></span><button class="pbtn" id="mineX">ปิด</button></div>`;
   card.querySelectorAll('.gbtn[data-k="m"]').forEach(b => b.addEventListener('click', () => m[+b.dataset.i][2]()));
   $('mineX').addEventListener('click', () => { $('sum').hidden = true; });
 }
+
+/* ================= Knockout Lab · gene expression (transcription → export → translation) =================
+   A new 10-codon gene is drawn for every try: a decoy codon, AUG + 6 more amino-acid codons, a stop codon and a
+   decoy codon after it. Scoring (raw 40 → 10): transcription 30 bases (first answer of each base), translation
+   7 amino acids (first pick of each codon), 3 summary questions drawn from GENE_Q. The 3D model is only a backdrop. */
+const GX_COMP = { A:'T', U:'A', G:'C', C:'G' };            // mRNA base → template DNA base
+const CODON_AA = {};
+(() => {
+  const B = 'UCAG', aa = ('Phe Phe Leu Leu Ser Ser Ser Ser Tyr Tyr หยุด หยุด Cys Cys หยุด Trp ' +
+    'Leu Leu Leu Leu Pro Pro Pro Pro His His Gln Gln Arg Arg Arg Arg ' +
+    'Ile Ile Ile Met Thr Thr Thr Thr Asn Asn Lys Lys Ser Ser Arg Arg ' +
+    'Val Val Val Val Ala Ala Ala Ala Asp Asp Glu Glu Gly Gly Gly Gly').split(' ');
+  for(const a of B) for(const b of B) for(const c of B) CODON_AA[a + b + c] = aa[B.indexOf(a)*16 + B.indexOf(b)*4 + B.indexOf(c)];
+})();
+const AA_FULL = [['Met','เมไทโอนีน','เริ่ม'],['Phe','ฟีนิลอะลานีน'],['Leu','ลิวซีน'],['Ser','ซีรีน'],['Tyr','ไทโรซีน'],['Cys','ซิสเทอีน'],['Trp','ทริปโตเฟน'],
+  ['Pro','โพรลีน'],['His','ฮิสทิดีน'],['Gln','กลูตามีน'],['Arg','อาร์จินีน'],['Ile','ไอโซลิวซีน'],['Thr','ทรีโอนีน'],['Asn','แอสพาราจีน'],
+  ['Lys','ไลซีน'],['Val','วาลีน'],['Ala','อะลานีน'],['Asp','กรดแอสพาร์ติก'],['Glu','กรดกลูตามิก'],['Gly','ไกลซีน'],['หยุด','รหัสหยุด','UAA UAG UGA']];
+const GENE_Q = [
+  { id:'G1', q:'ทำไมเบส 3 ตัวแรกของ mRNA จึงไม่ถูกแปลเป็นกรดอะมิโน', o:['เพราะอยู่ก่อนโคดอนเริ่ม AUG','เพราะเป็นโคดอนหยุด','เพราะไรโบโซมอ่านจาก 3′ ไป 5′','เพราะเป็นหาง poly-A'], e:'ไรโบโซมเริ่มแปลรหัสที่โคดอนเริ่ม AUG ส่วนที่อยู่ก่อนหน้าจึงไม่ถูกแปล' },
+  { id:'G2', q:'หลังโคดอนหยุดยังมีเบสอีก 3 ตัว ทำไมจึงไม่ถูกแปล', o:['ไรโบโซมปล่อยสายพอลิเพปไทด์และแยกตัวที่โคดอนหยุด','เบสชุดนั้นไม่มีใน Codon Chart','tRNA หมด','ถูกตัดทิ้งก่อนออกจากนิวเคลียส'], e:'เมื่อโคดอนหยุดเข้าสู่ A site ไรโบโซมจะปล่อยสายพอลิเพปไทด์ การแปลรหัสจึงจบตรงนั้น' },
+  { id:'G3', q:'สายแม่แบบ DNA 3′-TAC-5′ จะได้ mRNA เป็นอะไร', o:['5′-AUG-3′','5′-ATG-3′','5′-UAC-3′','5′-TAC-3′'], e:'T บนแม่แบบคู่กับ A, A คู่กับ U (RNA ไม่มี T), C คู่กับ G และ mRNA สร้างจาก 5′ ไป 3′' },
+  { id:'G4', q:'โคดอนหยุดไม่มี tRNA มาจับ ไรโบโซมหยุดได้อย่างไร', o:['release factor มาจับที่ A site','tRNA พิเศษนำกรดอะมิโนหยุดมา','mRNA หมดสายพอดี','DNA ligase ตัดสาย'], e:'โปรตีน release factor เข้าจับโคดอนหยุดที่ A site แล้วทำให้สายพอลิเพปไทด์หลุดออก' },
+  { id:'G5', q:'mRNA ยาว 30 เบส โคดอนเริ่มอยู่ที่เบสที่ 4–6 โคดอนหยุดอยู่ที่เบสที่ 25–27 จะได้กรดอะมิโนกี่ตัว', o:['7','8','9','10'], e:'นับโคดอนตั้งแต่ AUG (เบส 4) ถึงก่อนโคดอนหยุด (เบส 24) ได้ 21 เบส = 7 โคดอน = 7 กรดอะมิโน' },
+  { id:'G6', q:'anticodon ของ tRNA ที่จับกับโคดอน 5′-GGC-3′ คือ', o:['3′-CCG-5′','3′-GGC-5′','3′-CCT-5′','3′-GCC-5′'], e:'anticodon จับคู่แบบสวนทางกับโคดอน G คู่ C และ C คู่ G' },
+  { id:'G7', q:'ในเซลล์ยูแคริโอต การถอดรหัสและการแปลรหัสเกิดที่ใด', o:['ถอดรหัสในนิวเคลียส แปลรหัสในไซโทพลาซึม','ทั้งคู่เกิดในนิวเคลียส','ถอดรหัสในไซโทพลาซึม แปลรหัสในนิวเคลียส','ทั้งคู่เกิดในไซโทพลาซึม'], e:'mRNA สร้างในนิวเคลียสแล้วออกทางรูนิวเคลียสไปให้ไรโบโซมในไซโทพลาซึมแปลรหัส' },
+  { id:'G8', q:'ถ้าโคดอน UUU เปลี่ยนเป็น UUC กรดอะมิโนจะเป็นอย่างไร', o:['ยังเป็น Phe เพราะหลายโคดอนแปลเป็นกรดอะมิโนเดียวกันได้','เปลี่ยนเป็น Leu','กลายเป็นโคดอนหยุด','ไรโบโซมอ่านต่อไม่ได้'], e:'ทั้ง UUU และ UUC แปลเป็น Phe รหัสพันธุกรรมจึงมีหลายโคดอนต่อกรดอะมิโนหนึ่งชนิด' }
+];
+const GX_NQ = 3, GX_MAX = 40;
+const gxCoding = m => [0,1,2,3,4,5,6].map(j => m.slice(3 + 3*j, 6 + 3*j));
+function gxNewGene(){
+  const all = Object.keys(CODON_AA), sense = all.filter(c => CODON_AA[c] !== 'หยุด' && c !== 'AUG'), stops = ['UAA','UAG','UGA'];
+  const pick = a => a[Math.floor(Math.random()*a.length)];
+  for(let tries=0; tries<500; tries++){
+    const m = pick(sense) + 'AUG' + [0,1,2,3,4,5].map(() => pick(sense)).join('') + pick(stops) + pick(all.filter(c => c !== 'AUG'));
+    if(m.indexOf('AUG') === 3 && m.indexOf('AUG', 4) < 0) return m;    // only one AUG anywhere, so the start is unambiguous
+  }
+  return 'CGAAUGUGGUUUGGCUCAAAGGACUAAGCU';
+}
+
+/* ---------- state ---------- */
+let GX = null, GX3 = null, GX_SAVEDBASES = null;
+const gxKey = () => 'g3d-gx-' + (ROLE === 'tea' ? 'teacher' : sid());
+function gxInProgress(){ const o = lsGet(gxKey(), null); return !!(o && !o.saved && (o.cur || '').length > 0); }
+function gxSave(){ lsSet(gxKey(), GX); }
+function gxEnter(){
+  const o = lsGet(gxKey(), null);
+  if(o && !o.saved && o.mrna) GX = o;
+  else GX = { mrna:gxNewGene(), tx:'', cur:'', phase:'tx', startTries:0, aa:[], tli:0, chain:[], qids:shuffle(GENE_Q.map(q => q.id)).slice(0, GX_NQ), qs:[], t0:Date.now(), saved:false, chart:false };
+  gxSave();
+  if(GX_SAVEDBASES === null){ GX_SAVEDBASES = { b:showBases, l:showLabels }; }
+  showBases = false; showLabels = false;       // the 3D model is a backdrop: its own sequence and labels are not shown
+  gxRender();
+}
+function gxLeave(){ if(GX_SAVEDBASES !== null){ showBases = GX_SAVEDBASES.b; showLabels = GX_SAVEDBASES.l; GX_SAVEDBASES = null; } GX3 = null; }
+function gx3(m, k, loop){ GX3 = { m:MODS[m], k, p:loop ? loop[0] : 0, loop }; MODS.tx.root.visible = m === 'tx'; MODS.tl.root.visible = m === 'tl'; MODS.rep.root.visible = false;
+  GX3.m.evalState(k, GX3.p); const c = GX3.m.cam(k); autoDist = true; placeCam(V3(c.x, c.y || 0, 0), c.d); }
+function gxFrame(dt){
+  if(!GX3) return;
+  const d = GX3.m.steps[GX3.k].dur;
+  GX3.p += dt/d;
+  if(GX3.loop){ if(GX3.p > GX3.loop[1]) GX3.p = GX3.loop[0]; } else GX3.p = Math.min(1, GX3.p);
+  GX3.m.evalState(GX3.k, GX3.p); GX3.m.update();
+  const c = GX3.m.cam(GX3.k), tg = V3(c.x, c.y || 0, 0), before = controls.target.clone();
+  controls.target.lerp(tg, 0.05); camera.position.add(V3().subVectors(controls.target, before));
+  if(autoDist){ const off = camera.position.clone().sub(controls.target); off.setLength(lerp(off.length(), c.d*fitScale(), 0.05)); camera.position.copy(controls.target).add(off); }
+}
+
+/* ---------- Codon Chart (drawn here, not an image) ---------- */
+function codonChart(cur){
+  const B = 'UCAG', done = new Set(GX.phase === 'tl' ? gxCoding(GX.mrna).slice(0, GX.tli) : []);
+  const hd = (t, on) => `<span class="cch${on ? ' on' : ''}">${t}</span>`;
+  let h = '<span></span>' + [...B].map(b => hd(b, cur && cur[1] === b)).join('') + '<span></span>';
+  for(const a of B){
+    h += hd(a, cur && cur[0] === a);
+    for(const b of B){
+      const cods = [...B].map(c => a + b + c), groups = [];
+      cods.forEach((c, i) => { const x = CODON_AA[c]; if(groups.length && groups[groups.length-1][0] === x) groups[groups.length-1][2]++; else groups.push([x, i, 1]); });
+      const box = cur && cur[0] === a && cur[1] === b;
+      h += `<div class="ccbox${box ? ' on' : ''}">` + cods.map((c, i) => `<span class="cc${c === cur ? ' now' : done.has(c) ? ' used' : CODON_AA[c] === 'หยุด' ? ' stop' : c === 'AUG' ? ' start' : ''}" style="grid-row:${i+1}">${c}</span>`).join('')
+        + groups.map(([x, i, n]) => `<span class="ca${n > 1 ? ' br' : ''}${cur && cods.slice(i, i+n).includes(cur) ? ' now' : ''}${x === 'หยุด' ? ' stop' : x === 'Met' ? ' start' : ''}" style="grid-row:${i+1} / span ${n}">${x}</span>`).join('') + '</div>';
+    }
+    h += `<div class="cc3">${[...B].map(c => `<span class="${cur && cur[0] === a && cur[2] === c ? 'on' : ''}">${c}</span>`).join('')}</div>`;
+  }
+  const hi = cur ? CODON_AA[cur] : null;
+  return `<div class="cchd"><b>Codon Chart</b><small>เบสที่ 1 = แถว · เบสที่ 2 = คอลัมน์ · เบสที่ 3 = บรรทัด</small><button class="gxbtn sm on" id="gxChartX">Codon Chart ✕</button></div>
+    <div class="ccgrid">${h}</div>
+    <div class="ccleg"><small>ชื่อเต็มของกรดอะมิโน (เรียงจากรหัสเริ่มถึงรหัสหยุด)</small><div>${AA_FULL.map(([ab, th, note]) => `<span class="${ab === hi ? 'on' : ''}"><b class="${ab === 'Met' ? 'start' : ab === 'หยุด' ? 'stop' : ''}">${ab}</b>${th}${note ? ` <i>(${note})</i>` : ''}</span>`).join('')}</div></div>`;
+}
+
+/* ---------- render ---------- */
+const GX_STAGES = ['ถอดรหัส','แปลรหัส','สรุป'];
+function gxStepper(cur){
+  return `<div class="gxstep">${GX_STAGES.map((s, i) => `<span class="${i+1 < cur ? 'd' : i+1 === cur ? 'c' : ''}"><i>${i+1 < cur ? '✓' : i+1}</i>${s}</span>`).join('<b></b>')}</div>`;
+}
+const gxCell = (ch, cls, extra) => `<span class="gxc ${cls}"${extra || ''}>${ch || ''}</span>`;
+function gxRow(label, l, cells, r){ return `<div class="gxrow"><span class="gxl">${label}</span><span class="gxe">${l}</span><div class="gxcells">${cells.join('')}</div><span class="gxe">${r}</span></div>`; }
+function gxRender(){
+  const ph = GX.phase, m = GX.mrna, tm = [...m].map(b => GX_COMP[b]);
+  $('gxChart').hidden = !(GX.chart && (ph === 'start' || ph === 'tl'));
+  $('gxChartBtn').hidden = !(ph === 'start' || ph === 'tl') || GX.chart;
+  if($('gxChart').hidden === false){ $('gxChart').innerHTML = codonChart(ph === 'tl' ? gxCoding(m).concat([m.slice(24, 27)])[GX.tli] : null); $('gxChartX').addEventListener('click', () => { GX.chart = false; gxSave(); gxRender(); resize(); }); }
+  app.classList.toggle('gx-chart', !$('gxChart').hidden);
+  const bar = $('gxBar'), tea = ROLE === 'tea', tries = tea ? 0 : koTries('gene').length;
+  const head = (n, kick, title, right) => `<div class="gxhd">${gxStepper(n)}<span class="gxsep"></span><span class="gxk">${kick}</span><h2>${title}</h2><span class="sp"></span>${right || ''}</div>`;
+  if(ph === 'tx'){
+    if(!GX3 || GX3.m !== MODS.tx || GX3.k !== 4) gx3('tx', 4, [0.12, 0.92]);
+    const i = GX.cur.length, wrong = GX.wrong;
+    const rna = [...m].map((b, j) => j < i ? gxCell(GX.cur[j], 'ok') : j === i ? gxCell(wrong || '', wrong ? 'bad' : 'cur') : gxCell('', 'empty'));
+    const msg = wrong ? (wrong === 'T' ? `<b>T ไม่มีใน RNA</b> เบส A บนสายแม่แบบจับคู่กับ <b class="u">U</b> แตะเบสใหม่เพื่อแก้` : `<b>ยังไม่ใช่</b> เบส ${tm[i]} บนสายแม่แบบจับคู่กับเบสอะไรใน RNA ลองใหม่`) : '';
+    bar.innerHTML = head(1, 'ขั้นที่ 1 จาก 3', 'ถอดรหัส: DNA → mRNA', `<span class="gxmeta">เติมแล้ว ${i} จาก 30 เบส${tea ? ' · โหมดครู' : ` · ครั้งที่ ${tries + 1} จาก ${MAX_TRIES}`}</span>`)
+      + `<p class="gxp">RNA polymerase อ่านสายแม่แบบจาก 3′ ไป 5′ แล้วสร้าง mRNA จาก 5′ ไป 3′ แตะเบสด้านล่างเพื่อเติม mRNA ให้เป็นคู่กับสายแม่แบบทีละตัว</p>`
+      + gxRow('สายแม่แบบ DNA', '3′', tm.map(b => gxCell(b, 'tmpl')), '5′') + gxRow('mRNA ที่สร้าง', '5′', rna, '3′')
+      + `<div class="gxact"><div class="gxmsg${msg ? ' bad' : ''}" role="status">${msg || 'คู่เบส DNA → RNA: A→U · T→A · G→C · C→G'}</div>
+        ${['A','U','G','C'].map(b => `<button class="gxkey k${b}" data-b="${b}">${b}</button>`).join('')}<button class="gxkey" data-b="⌫" aria-label="ลบ">⌫</button>
+        <button class="gxbtn" disabled>ถอดรหัสเสร็จ ›</button></div>`;
+    bar.querySelectorAll('.gxkey').forEach(k => k.addEventListener('click', () => gxKeyIn(k.dataset.b)));
+  } else if(ph === 'export'){
+    if(!GX3 || GX3.k !== 8) gx3('tx', 8, null);
+    bar.innerHTML = head(1, 'ขั้นที่ 1 จาก 3', 'ถอดรหัสเสร็จแล้ว', '<span class="gxmeta ok">ครบ 30 จาก 30 เบส</span>')
+      + gxRow('สายแม่แบบ DNA', '3′', tm.map(b => gxCell(b, 'tmpl')), '5′') + gxRow('mRNA ที่สร้าง', '5′', [...m].map(b => gxCell(b, 'ok')), '3′')
+      + `<div class="gxact"><div class="gxmsg ok"><b>mRNA ครบแล้ว</b> ได้รับ 5′ cap และหาง poly-A แล้วกำลังออกทางรูนิวเคลียสไปไซโทพลาซึม (ดูภาพ)</div><button class="gxbtn on" id="gxGoTl">ไปแปลรหัส ›</button></div>`;
+    $('gxGoTl').addEventListener('click', () => { GX.phase = 'start'; gxSave(); gxRender(); });
+  } else if(ph === 'start'){
+    if(!GX3 || GX3.m !== MODS.tl) gx3('tl', 7, [0.05, 0.75]);
+    const bad = GX.startBad;
+    bar.innerHTML = head(2, 'ขั้นที่ 2 จาก 3', 'แปลรหัส: หาจุดเริ่ม', '<span class="gxmeta">แตะเบสบน mRNA เพื่อเลือกจุดเริ่ม</span>')
+      + `<p class="gxp">นี่คือ mRNA ที่ถอดรหัสได้ ไรโบโซมจะเริ่มแปลรหัสที่โคดอนไหน <b>แตะเบสตัวแรกของโคดอนนั้น</b></p>`
+      + gxRow('mRNA', '5′', [...m].map((b, j) => gxCell(b, j === bad ? 'pick' : 'mrna', ` data-j="${j}" role="button" tabindex="0"`)), '3′')
+      + `<div class="gxact"><div class="gxmsg${bad != null ? ' bad' : ''}" role="status">${bad != null ? '<b>ยังไม่ใช่</b> ไรโบโซมไม่ได้เริ่มจากเบสตัวแรกของ mRNA เสมอ ลองหาโคดอนที่แปลเป็น Met ใน Codon Chart' : 'เปิด Codon Chart ได้ที่ปุ่มมุมขวาบน'}</div></div>`;
+    bar.querySelectorAll('.gxc[data-j]').forEach(c => c.addEventListener('click', () => gxStart(+c.dataset.j)));
+  } else if(ph === 'tl'){
+    if(!GX3 || GX3.m !== MODS.tl) gx3('tl', 7, [0.05, 0.75]);
+    const cods = gxCoding(m).concat([m.slice(24, 27), m.slice(27, 30)]), k = GX.tli, cur = cods[k];
+    const kinds = [...m].map((b, j) => j < 3 ? 'dim' : j >= 27 ? 'dim' : Math.floor((j-3)/3) < k ? 'ok' : Math.floor((j-3)/3) === k ? 'cur' : ((Math.floor((j-3)/3)) % 2 ? 'codB' : 'codA'));
+    const chips = cods.map((c, j) => `<div class="gxcod"><span class="${j < k ? 'ok' : j === k ? 'cur' : j === 8 ? 'dim' : ''}">${c}</span><small>${j < k ? (j < 7 ? GX.chain[j] : 'หยุด') : j === k ? '?' : j === 8 ? 'หลังโคดอนหยุด' : '–'}</small></div>`).join('');
+    const right = CODON_AA[cur], opts = GX.opts && GX.opts.k === k ? GX.opts.v : (GX.opts = { k, v:gxOptions(cur) }).v;
+    const anti = [...cur].map(b => ({ A:'U', U:'A', G:'C', C:'G' })[b]).join('');
+    const bad = GX.tlBad;
+    bar.innerHTML = head(2, 'ขั้นที่ 2 จาก 3', 'แปลรหัส: mRNA → พอลิเพปไทด์', `<span class="gxmeta">แปลแล้ว ${Math.min(k, 7)} จาก 7 กรดอะมิโน${tea ? ' · โหมดครู' : ''}</span>`)
+      + gxRow('mRNA', '5′', [...m].map((b, j) => gxCell(b, kinds[j])), '3′')
+      + `<div class="gxcods"><span class="gxl">โคดอน</span><span class="gxe"></span><div class="gxcodrow"><div class="gxcod pre"><small>ก่อนจุดเริ่ม</small></div>${chips}</div></div>`
+      + `<div class="gxact"><div class="gxchain"><span>N–</span>${GX.chain.map(a => `<i>${a}</i>`).join('<b></b>')}${k < 7 ? '<b></b><i class="q">?</i>' : ''}</div><span class="sp"></span>
+        <span class="gxasite">A site: <b>${cur}</b> · anticodon <b>${anti}</b></span>
+        <div class="gxopts">${opts.map(o => `<button class="gxo${bad === o ? ' bad' : ''}" data-o="${o}">${o}</button>`).join('')}</div></div>`
+      + (bad ? `<div class="gxmsg bad inline" role="status"><b>ยังไม่ตรง</b> ${esc(bad)} ไม่ใช่กรดอะมิโนของโคดอน ${cur} ลองอ่าน Codon Chart อีกครั้ง</div>` : '');
+    bar.querySelectorAll('.gxo').forEach(b => b.addEventListener('click', () => gxPick(b.dataset.o)));
+  } else if(ph === 'sum'){
+    if(!GX3 || GX3.m !== MODS.tl || GX3.k !== 9) gx3('tl', 9, [0.3, 1]);
+    const raw = gxRaw();
+    const qhtml = GX.qids.map((id, n) => {
+      const q = GENE_Q.find(x => x.id === id), a = GX.qs.find(x => x.id === id);
+      const opts = GX.qo && GX.qo[id] || ((GX.qo = GX.qo || {})[id] = shuffle(q.o.slice()));
+      return `<div class="gxq"><b>${n+1}. ${esc(q.q)}</b>${opts.map(o => `<button class="gxqo${a ? (o === q.o[0] ? ' ok' : o === a.pick ? ' bad' : '') : ''}" data-id="${id}" data-o="${esc(o)}" ${a ? 'disabled' : ''}>${esc(o)}</button>`).join('')}${a ? `<small>${esc(q.e)}</small>` : ''}</div>`;
+    }).join('');
+    const all = GX.qs.length === GX.qids.length;
+    bar.innerHTML = head(3, 'ขั้นที่ 3 จาก 3', 'สรุปผลการทดลอง', `<span class="gxmeta">ถอดรหัส ${raw.tx}/30 · แปลรหัส ${raw.aa}/7 · คำถาม ${raw.q}/${GX_NQ}</span>`)
+      + `<div class="gxsumrow"><span class="gxl">พอลิเพปไทด์ที่ได้</span><div class="gxchain"><span>N–</span>${GX.chain.map(a => `<i>${a}</i>`).join('<b></b>')}<span>–C</span></div><span class="sp"></span><span class="gxk">คำถามท้ายการทดลอง · ข้อละ 1 คะแนน</span></div>`
+      + `<div class="gxqs">${qhtml}<div class="gxqgo"><button class="gxbtn${all ? ' on' : ''}" id="gxSend" ${all ? '' : 'disabled'}>ส่งผล ›</button></div></div>`;
+    bar.querySelectorAll('.gxqo:not([disabled])').forEach(b => b.addEventListener('click', () => {
+      const id = b.dataset.id, q = GENE_Q.find(x => x.id === id);
+      GX.qs.push({ id, pick:b.dataset.o, ok:b.dataset.o === q.o[0] }); gxSave(); gxRender();
+    }));
+    if($('gxSend')) $('gxSend').addEventListener('click', gxFinish);
+  }
+  resize();
+}
+function gxOptions(cod){
+  const right = CODON_AA[cod], B = 'UCAG', near = new Set();
+  for(let i=0;i<3;i++) for(const b of B){ const c = cod.slice(0, i) + b + cod.slice(i+1), x = CODON_AA[c]; if(x !== right && x !== 'หยุด') near.add(x); }
+  const pool = shuffle([...near]), all = Object.values(CODON_AA).filter((x, i, a) => a.indexOf(x) === i && x !== right && x !== 'หยุด');
+  const pick = [];
+  for(const x of pool.concat(shuffle(all))) if(!pick.includes(x) && pick.length < (right === 'หยุด' ? 5 : 4)) pick.push(x);
+  return shuffle(right === 'หยุด' ? pick : pick.concat([right])).concat(['หยุด']);
+}
+function gxKeyIn(b){
+  if(GX.phase !== 'tx') return;
+  const i = GX.cur.length, m = GX.mrna;
+  if(b === '⌫'){ if(GX.wrong) GX.wrong = null; gxSave(); gxRender(); return; }
+  if(i >= 30) return;
+  if(GX.tx.length === i) GX.tx += b;                       // first answer of this base is the one that counts
+  if(b === m[i]){ GX.cur += b; GX.wrong = null; if(GX.cur.length === 30){ GX.phase = 'export'; } }
+  else GX.wrong = b;
+  gxSave(); gxRender();
+}
+function gxStart(j){
+  if(j === 3){ GX.phase = 'tl'; GX.tli = 0; GX.startBad = null; GX.tlBad = null; }
+  else { GX.startBad = j; GX.startTries++; }
+  gxSave(); gxRender();
+}
+function gxPick(o){
+  const m = GX.mrna, cods = gxCoding(m).concat([m.slice(24, 27)]), k = GX.tli, right = CODON_AA[cods[k]];
+  if(k < 7 && GX.aa.length === k) GX.aa.push(o);           // first pick of each amino-acid codon counts
+  if(k === 7 && GX.stopPick == null) GX.stopPick = o;
+  if(o === right){
+    GX.tlBad = null;
+    if(k < 7){ GX.chain.push(right); GX.tli++; GX3 && (GX3.p = GX3.loop ? GX3.loop[0] : 0); }
+    else { GX.phase = 'sum'; }
+  } else GX.tlBad = o;
+  gxSave(); gxRender();
+}
+function gxRaw(){
+  const m = GX.mrna, tx = [...m].filter((b, i) => GX.tx[i] === b).length;
+  const aa = gxCoding(m).filter((c, j) => GX.aa[j] === CODON_AA[c]).length;
+  const q = GX.qs.filter(x => x.ok).length;
+  return { tx, aa, q, total:tx + aa + q };
+}
+function gxFinish(){
+  const raw = gxRaw(), tea = ROLE === 'tea';
+  const n = tea ? 0 : koTries('gene').length + 1;
+  const p = tea ? null : saveAttempt({ mode:'ko', topic:'gene', score:raw.total, max:GX_MAX,
+    detail:{ v:2, n, mrna:GX.mrna, tx:GX.tx, aa:GX.aa, stopPick:GX.stopPick, startTries:GX.startTries, qs:GX.qs, secs:Math.round((Date.now() - GX.t0)/1000) } }, STU);
+  GX.saved = true; gxSave();
+  const good = [], more = [];
+  if(raw.tx >= 28) good.push(['จับคู่เบส DNA → RNA ได้แม่นยำ']); else more.push(['ทบทวนการจับคู่เบส: A→U, T→A, G→C, C→G (RNA ไม่มี T)', 'ดูการถอดรหัส', () => { $('sum').hidden = true; go('lesson', 'tx', { mode:'learn', step:4 }); }]);
+  if(GX.startTries === 0) good.push(['หาโคดอนเริ่ม AUG ได้ถูกตั้งแต่ครั้งแรก']); else more.push(['ไรโบโซมเริ่มแปลรหัสที่โคดอนเริ่ม AUG ไม่ใช่เบสตัวแรกของ mRNA', 'ดูการแปลรหัส', () => { $('sum').hidden = true; go('lesson', 'tl', { mode:'learn', step:2 }); }]);
+  if(raw.aa >= 6) good.push(['อ่าน Codon Chart ได้ถูกต้อง']); else more.push(['ฝึกอ่าน Codon Chart: เบสที่ 1 ดูแถว เบสที่ 2 ดูคอลัมน์ เบสที่ 3 ดูบรรทัดในช่อง']);
+  const left = MAX_TRIES - n;
+  showSummary({ title:`ผล Knockout Lab · การแสดงออกของยีน${tea ? '' : ` · ครั้งที่ ${n}`}`, score:fmt2(raw.total/4), max:10,
+    note:tea ? 'โหมดครู ไม่บันทึกคะแนน' : (left > 0 ? `ทำได้อีก ${left} ครั้ง ใช้ครั้งที่ดีที่สุด` : 'ครบ 3 ครั้งแล้ว'), good, more, moreMax:4, save:p,
+    btns:[['กลับเมนู', () => go('menu')], ['Knockout Lab', () => { $('sum').hidden = true; go('ko'); }]] });
+}
+$('gxBack').addEventListener('click', () => go('ko'));
+$('gxChartBtn').addEventListener('click', () => { GX.chart = true; gxSave(); gxRender(); resize(); });
+addEventListener('keydown', e => {
+  if(screen !== 'gx' || !GX || GX.phase !== 'tx' || e.target.closest('input,textarea,select')) return;
+  const k = e.key.toUpperCase();
+  if('AUGCT'.includes(k) && k.length === 1){ e.preventDefault(); gxKeyIn(k); }
+  else if(e.key === 'Backspace'){ e.preventDefault(); gxKeyIn('⌫'); }
+});
+
+/* ================= Build · free mode (not scored) =================
+   Pick a topic, place parts one type at a time, press run. The process runs in 3D until the first missing part;
+   a hint bar names the missing part and where it belongs. */
+const FREE_TOPICS = {
+  rep:{ name:'จำลองดีเอ็นเอ', mod:'rep',
+    parts:[['dna','ดีเอ็นเอแม่แบบ'],['hel','Helicase'],['topo','Topoisomerase'],['ssb','SSB'],['prim','Primase'],['p3','DNA pol III'],['clamp','Sliding clamp'],['p1','DNA pol I'],['lig','DNA ligase']],
+    stages:[
+      ['dna','มีดีเอ็นเอแม่แบบ','ยังไม่มีดีเอ็นเอแม่แบบ','วาง <b>ดีเอ็นเอแม่แบบ</b> ก่อน ทุกเอนไซม์ต้องทำงานบนแม่แบบ'],
+      ['hel','คลายเกลียวและแยกสาย','ดีเอ็นเอยังเป็นเกลียวคู่ fork ไม่เปิด','ขาด <b>Helicase (เฮลิเคส)</b> วางไว้ที่จุดแยกสาย (replication fork) เพื่อคลายเกลียวและแยกสาย'],
+      ['topo','ลดแรงบิดด้านหน้า fork','เกลียวด้านหน้า fork บิดแน่นจนเฮลิเคสไปต่อไม่ได้','ขาด <b>Topoisomerase (โทโพไอโซเมอเรส)</b> วางไว้ด้านหน้า fork เพื่อลดแรงบิด'],
+      ['ssb','รักษาสายเดี่ยวไว้เป็นแม่แบบ','สายเดี่ยวหลังเฮลิเคสกลับมาจับคู่กัน','ขาด <b>SSB (โปรตีนจับดีเอ็นเอสายเดี่ยว)</b> วางบนสายเดี่ยวด้านหลังเฮลิเคส เพื่อเกาะสายไว้ไม่ให้จับคู่กลับ'],
+      ['prim','สร้างไพรเมอร์ RNA','DNA pol III ไม่มีปลาย 3′ ให้เริ่มต่อ ไม่มีสายใหม่ทั้งสองสาย','ขาด <b>Primase (ไพรเมส)</b> วางบนสายแม่แบบใกล้ fork เพื่อสร้างไพรเมอร์ RNA'],
+      ['p3','ต่อสายใหม่ทิศ 5′ → 3′','มีแต่ไพรเมอร์ ไม่มีดีเอ็นเอสายใหม่','ขาด <b>DNA polymerase III</b> วางต่อจากปลาย 3′ ของไพรเมอร์ เพื่อเติมนิวคลีโอไทด์'],
+      ['clamp','ยึด DNA pol III ไว้กับแม่แบบ','DNA pol III หลุดจากแม่แบบ ต่อสายได้ไม่ต่อเนื่อง','ขาด <b>Sliding clamp (วงแหวนยึด)</b> วางคู่กับ DNA pol III เพื่อยึดไว้กับแม่แบบ'],
+      ['p1','แทนที่ไพรเมอร์ด้วยดีเอ็นเอ','ไพรเมอร์ RNA สีแดงค้างอยู่ในสายแลกกิง','ขาด <b>DNA polymerase I</b> วางที่ไพรเมอร์ของแต่ละชิ้นส่วนโอคาซากิ เพื่อแทนที่ RNA ด้วย DNA'],
+      ['lig','เชื่อมรอยขาดระหว่างชิ้น','ชิ้นส่วนโอคาซากิไม่ต่อกัน ยังมีรอยขาด','ขาด <b>DNA ligase (ดีเอ็นเอไลเกส)</b> วางที่รอยขาดระหว่างชิ้นส่วนโอคาซากิ เพื่อเชื่อมให้เป็นสายเดียว']] },
+  tx:{ name:'ถอดรหัส', mod:'tx',
+    parts:[['template','ยีนบนดีเอ็นเอ'],['tf','Transcription factors'],['pol2','RNA polymerase II'],['cleave','โปรตีนตัดสาย RNA'],['cap5','5′ cap'],['polya','หาง poly-A'],['splice','สไปซ์โซม'],['pore','รูนิวเคลียส']],
+    stages:[
+      ['template','มียีนบนดีเอ็นเอ',1,'ยังไม่มีดีเอ็นเอให้ถอดรหัส','วาง <b>ยีนบนดีเอ็นเอ</b> (มีโปรโมเตอร์และกล่อง TATA) ก่อน'],
+      ['tf','Transcription factors จับกล่อง TATA',1,'RNA polymerase II หาจุดเริ่มต้นไม่เจอ','ขาด <b>Transcription factors</b> วางที่กล่อง TATA บนโปรโมเตอร์'],
+      ['pol2','RNA pol II สร้าง RNA',4,'ไม่มีการสร้าง RNA','ขาด <b>RNA polymerase II</b> วางต่อจาก transcription factors ที่โปรโมเตอร์'],
+      ['cleave','ตัดสาย RNA ที่ปลายยีน',5,'RNA ไม่หลุดออกจากดีเอ็นเอที่ปลายยีน','ขาด <b>โปรตีนตัดสาย RNA</b> วางที่ลำดับสัญญาณปลายยีน'],
+      ['cap5','เติม 5′ cap',6,'ปลาย 5′ ของ pre-mRNA ไม่มีหมวก','ขาด <b>5′ cap</b> วางที่ปลาย 5′ ของ pre-mRNA'],
+      ['polya','เติมหาง poly-A',6,'ปลาย 3′ ไม่มีหาง poly-A','ขาด <b>หาง poly-A</b> วางที่ปลาย 3′ ของ pre-mRNA'],
+      ['splice','ตัดอินทรอนออก',7,'อินทรอนยังค้างอยู่ใน pre-mRNA','ขาด <b>สไปซ์โซม</b> วางที่อินทรอนเพื่อตัดออกแล้วเชื่อมเอกซอน'],
+      ['pore','mRNA ออกจากนิวเคลียส',8,'mRNA ออกจากนิวเคลียสไม่ได้','ขาด <b>รูนิวเคลียส</b> mRNA ต้องออกทางรูนิวเคลียสไปไซโทพลาซึม']] },
+  tl:{ name:'แปลรหัส', mod:'tl',
+    parts:[['mrna','mRNA'],['synth','อะมิโนแอซิล-tRNA ซินทีเทส'],['ribo','ไรโบโซม'],['init','tRNA ตัวเริ่มต้น'],['trna','tRNA + กรดอะมิโน'],['rf','Release factor']],
+    stages:[
+      ['mrna','มี mRNA',0,'ไม่มี mRNA ให้แปลรหัส','วาง <b>mRNA</b> ก่อน'],
+      ['synth','เติมกรดอะมิโนให้ tRNA',1,'tRNA ไม่มีกรดอะมิโนติดมา','ขาด <b>อะมิโนแอซิล-tRNA ซินทีเทส</b> ใช้เติมกรดอะมิโนที่ปลาย tRNA'],
+      ['ribo','ไรโบโซมจับ mRNA',2,'ไม่มีที่ให้ tRNA มาจับ mRNA','ขาด <b>ไรโบโซม</b> วางที่ปลาย 5′ ของ mRNA'],
+      ['init','tRNA ตัวเริ่มต้นจับโคดอน AUG',3,'ไรโบโซมเริ่มแปลรหัสไม่ได้','ขาด <b>tRNA ตัวเริ่มต้น</b> (นำ Met) วางที่โคดอนเริ่ม AUG ในห้อง P'],
+      ['trna','tRNA นำกรดอะมิโนมาต่อสาย',7,'สายพอลิเพปไทด์ไม่ยาวขึ้น','ขาด <b>tRNA + กรดอะมิโน</b> วางที่ห้อง A ตามโคดอน'],
+      ['rf','ปล่อยสายที่โคดอนหยุด',9,'ไรโบโซมค้างที่โคดอนหยุด สายพอลิเพปไทด์ไม่หลุด','ขาด <b>Release factor</b> วางที่ห้อง A เมื่อโคดอนหยุดมาถึง']] }
+};
+let FREE = null, FREE_IMG = {};
+function freeThumbs(tp){
+  if(FREE_IMG[tp]) return FREE_IMG[tp];
+  if(tp === 'rep'){
+    const R_ = MODS.rep, po = R_.protOf, one = k => g => { const c = pc(po[k][0]); c.position.set(0,0,0); c.scale.setScalar(1); g.add(c); };
+    FREE_IMG.rep = renderThumbs({
+      dna: g => sTwisted(g, -3.1, 3.1),
+      hel: g => { const c = pc(po.hel[0]); c.position.set(0,0,0); c.rotation.set(0, -0.5, 0); g.add(c); },
+      topo:one('topo'), prim:one('prim'), p3:one('p3'), p1:one('p1'), lig:one('lig'),
+      ssb: g => { for(const [x, y] of [[-0.4,0],[0.4,0],[0,0.55],[1.2,-0.1],[0.8,0.5]]){ const m = new THREE.Mesh(gSphere, new THREE.MeshStandardMaterial({ color:0xc3ccd9, roughness:0.6 })); m.position.set(x, y, 0); m.scale.setScalar(0.42); g.add(m); } },
+      clamp: g => { const c = pc(po.clamp[0]); c.position.set(0,0,0); c.rotation.set(0, -0.6, 0); g.add(c); }
+    });
+  } else {
+    const M_ = MODS[FREE_TOPICS[tp].mod], keys = FREE_TOPICS[tp].parts.map(p => p[0]);
+    FREE_IMG[tp] = renderThumbs(Object.fromEntries(keys.map(k => [k, M_.thumbs[k]])));
+  }
+  return FREE_IMG[tp];
+}
+function openFree(tp){
+  FREE = { topic:tp || (FREE && FREE.topic) || 'rep', placed:{}, sel:null, run:null };
+  QM = null; controls.autoRotate = false;
+  $('freeUI').hidden = false; app.classList.add('free-on');
+  freeShow3D(); freeRender(); resize();
+}
+function closeFree(){ FREE = null; $('freeUI').hidden = true; app.classList.remove('free-on'); resize(); }
+const freeMod = () => MODS[FREE_TOPICS[FREE.topic].mod];
+function freeShow3D(){
+  for(const m of Object.values(MODS)) m.root.visible = false;
+  const T = FREE_TOPICS[FREE.topic], m = freeMod(), base = T.parts[0][0];
+  m.root.visible = !!FREE.placed[base];
+  M = m; autoDist = true; focusOverride = null;
+  freeEval(); const c = freeCam(); placeCam(V3(c.x, c.y || 0, 0), c.d);
+}
+/* state shown while building (or while the run plays) */
+function freeEval(){
+  const tp = FREE.topic, T = FREE_TOPICS[tp], m = freeMod(), P = FREE.placed, run = FREE.run;
+  if(tp === 'rep'){
+    if(run && run.view){ m.koState(run.view, run.t); return; }
+    const d = m._dbg, s = structuredClone(d.SNAP[3]);
+    if(!P.hel){ s.fork = 95.5; s.forkR = 95.5; s.extraA = 1; s.zoom = 1; }
+    s.helA = P.hel ? 1 : 0; s.hel2A = 0; s.topoA = P.topo ? 1 : 0; s.ssbA = P.ssb ? 1 : 0;
+    s.prim.a = P.prim ? 1 : 0; s.prim.str = 0; s.prim.idx = 92.5;
+    s.p3L.a = P.p3 || P.clamp ? 1 : 0; s.p3L.idx = 88; s.p3G.a = 0;
+    s.p1.a = P.p1 ? 1 : 0; s.p1.idx = 84; s.lig.a = P.lig ? 1 : 0; s.lig.idx = 80;
+    d.cur = s; return;
+  }
+  // transcription / translation: the scene advances as parts are placed in working order
+  if(run && run.list){ const k = run.list[Math.min(run.i, run.list.length-1)]; m.evalState(k, run.i >= run.list.length ? 1 : run.p); return; }
+  let k = 0; for(const st of T.stages){ if(P[st[0]]) k = st[2]; else break; }
+  m.evalState(k, 1);
+}
+function freeCam(){
+  const m = freeMod(), run = FREE.run;
+  if(FREE.topic === 'rep'){
+    if(run && run.view){ const c = m.koCam(run.view); return { x:c.x, y:c.y, d:c.d*0.85 }; }
+    return { x:(76 - 57.5)*RISE, y:0, d:30 };
+  }
+  const k = run && run.list ? run.list[Math.min(run.i, run.list.length-1)] : (() => { let k = 0; for(const st of FREE_TOPICS[FREE.topic].stages){ if(FREE.placed[st[0]]) k = st[2]; else break; } return k; })();
+  const c = m.cam(k); return { x:c.x, y:c.y || 0, d:c.d };
+}
+function freeFrame(dt){
+  if(!FREE) return;
+  const run = FREE.run, m = freeMod();
+  if(run){
+    if(run.view){ if(run.t < 1){ run.t = Math.min(1, run.t + dt/m.koDur(run.view)); if(run.t >= 1) freeRunEnd(); } }
+    else if(run.list && run.i < run.list.length){ run.p += dt*2.5/m.steps[run.list[run.i]].dur; if(run.p >= 1){ run.i++; run.p = 0; if(run.i >= run.list.length) freeRunEnd(); } }
+  }
+  freeEval(); m.update();
+  const c = freeCam(), tg = V3(c.x, c.y, 0), before = controls.target.clone();
+  controls.target.lerp(tg, 0.05); camera.position.add(V3().subVectors(controls.target, before));
+  if(autoDist){ const off = camera.position.clone().sub(controls.target); off.setLength(lerp(off.length(), c.d*fitScale(), 0.05)); camera.position.copy(controls.target).add(off); }
+}
+function freeLabels(){ if(FREE && freeMod().root.visible){ const m = freeMod(); if(FREE.topic === 'rep' || FREE.run) m.labels(); } }
+function freeFail(){ const T = FREE_TOPICS[FREE.topic]; return T.stages.findIndex(st => !FREE.placed[st[0]]); }
+function freeRunStart(){
+  const T = FREE_TOPICS[FREE.topic], f = freeFail();
+  FREE.result = null;
+  if(f === 0){ FREE.run = null; FREE.result = { fail:0 }; freeRender(); return; }
+  if(FREE.topic === 'rep'){
+    const miss = f < 0 ? null : T.stages[f][0], view = f < 0 ? 'ctrl' : miss === 'clamp' ? 'p3' : miss;
+    FREE.run = { view, t:0, fail:f };
+  } else {
+    const upto = f < 0 ? T.stages.length : f, list = [...new Set(T.stages.slice(0, upto).map(st => st[2]).filter(k => k > 0))];
+    FREE.run = { list:list.length ? list : [0], i:0, p:0, fail:f };
+  }
+  autoDist = true; freeRender();
+}
+function freeRunEnd(){ if(!FREE || !FREE.run) return; FREE.result = { fail:FREE.run.fail }; freeRender(); }
+function freeRender(){
+  const T = FREE_TOPICS[FREE.topic], img = freeThumbs(FREE.topic), P = FREE.placed, n = Object.keys(P).length;
+  const res = FREE.result, running = FREE.run && !res;
+  $('freeTopics').innerHTML = Object.entries(FREE_TOPICS).map(([k, t]) => `<button data-t="${k}" aria-pressed="${k === FREE.topic}">${t.name}</button>`).join('');
+  $('freeTopics').querySelectorAll('button').forEach(b => b.addEventListener('click', () => { if(b.dataset.t !== FREE.topic) openFree(b.dataset.t); }));
+  const failK = res && res.fail >= 0 ? T.stages[res.fail][0] : null;
+  $('freeCards').innerHTML = T.parts.map(([k, name]) => `<button class="fcard${P[k] ? ' placed' : ''}${FREE.sel === k ? ' sel' : ''}${failK === k ? ' need' : ''}" data-k="${k}">
+      <img src="${img[k] || ''}" alt=""><b>${esc(name)}</b><small>${failK === k ? 'ขาดตัวนี้' : FREE.sel === k ? 'เลือกอยู่ · แตะพื้นที่เพื่อวาง' : P[k] ? 'วางแล้ว ✓ · แตะเพื่อเอาออก' : 'ยังไม่ได้วาง'}</small></button>`).join('');
+  $('freeCards').querySelectorAll('.fcard').forEach(b => b.addEventListener('click', () => freeCard(b.dataset.k)));
+  let rh = '';
+  if(res){
+    const f = res.fail < 0 ? T.stages.length : res.fail;
+    rh = `<div class="fres"><b>ผลการทำงาน · ${res.fail < 0 ? 'ทำงานครบทุกขั้น' : `หยุดที่ขั้น ${f+1} จาก ${T.stages.length}`}</b>${T.stages.map((st, i) => `<span class="${i < f ? 'ok' : i === f ? 'no' : 'nx'}">${i < f ? '✓' : i === f ? '✗' : '–'} ${i+1} ${st[1]}</span>`).join('')}</div>`;
+  } else if(running) rh = `<div class="fres"><b>กำลังทำงาน… ดูภาพด้านซ้าย</b></div>`;
+  $('freeRes').innerHTML = rh;
+  $('freeCount').textContent = `วางแล้ว ${n} จาก ${T.parts.length} ชนิด`;
+  $('freeRun').disabled = running || n === 0;
+  // hint bar
+  const hb = $('freeHint');
+  if(res && res.fail >= 0){
+    const st = T.stages[res.fail], miss = st[0], name = T.parts.find(p => p[0] === miss)[1];
+    const why = FREE.topic === 'rep' ? st[2] : st[3], fix = FREE.topic === 'rep' ? st[3] : st[4];
+    hb.hidden = false; hb.className = 'fhint bad';
+    hb.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l10 18H2z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 10v5M12 18h.01" stroke="currentColor" stroke-width="2"/></svg>
+      <div><b>หยุดที่ขั้น ${res.fail+1}: ${esc(why)}</b><span>${fix}</span></div>${img[miss] ? `<img src="${img[miss]}" alt="">` : ''}<button id="freePickMiss">เลือก ${esc(name)}</button>`;
+    $('freePickMiss').addEventListener('click', () => { FREE.sel = miss; FREE.result = null; FREE.run = null; freeRender(); });
+  } else if(res){
+    hb.hidden = false; hb.className = 'fhint ok';
+    hb.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10" fill="none" stroke="currentColor" stroke-width="2.4"/></svg><div><b>ทำงานได้ครบทุกขั้น</b><span>ส่วนประกอบครบและอยู่ในตำแหน่งที่ทำงานได้ ลองเอาบางชิ้นออกแล้วดูว่าเกิดอะไรขึ้น หรือไปทำภารกิจ</span></div>`;
+  } else if(FREE.sel){
+    const name = T.parts.find(p => p[0] === FREE.sel)[1];
+    hb.hidden = false; hb.className = 'fhint sel';
+    hb.innerHTML = `<div><b>เลือก ${esc(name)} อยู่</b><span>แตะพื้นที่ภาพ 3D เพื่อวาง หรือแตะการ์ดเดิมอีกครั้ง</span></div><button id="freePlace">วางเลย</button>`;
+    $('freePlace').addEventListener('click', () => freePlace());
+  } else hb.hidden = true;
+  $('freeEmpty').hidden = !!P[T.parts[0][0]];
+  $('freeEmpty').textContent = `พื้นที่ว่าง · เริ่มจากวาง “${T.parts[0][1]}” ก่อน`;
+}
+function freeCard(k){
+  if(FREE.run){ FREE.run = null; FREE.result = null; }
+  if(FREE.placed[k]){ delete FREE.placed[k]; FREE.sel = null; }
+  else if(FREE.sel === k) return freePlace();
+  else FREE.sel = k;
+  freeShow3D(); freeRender();
+}
+function freePlace(){
+  if(!FREE || !FREE.sel) return;
+  FREE.placed[FREE.sel] = true; FREE.sel = null; FREE.run = null; FREE.result = null;
+  freeShow3D(); freeRender();
+}
+$('freeRun').addEventListener('click', freeRunStart);
+$('freeClear').addEventListener('click', () => { FREE.placed = {}; FREE.sel = null; FREE.run = null; FREE.result = null; freeShow3D(); freeRender(); });
+$('freeBack').addEventListener('click', () => { closeFree(); showMissionList(); });
+$('freeMissions').addEventListener('click', () => { closeFree(); showMissionList(); });
+canvas.addEventListener('pointerup', e => { if(screen === 'build' && FREE && FREE.sel && downAt && Math.hypot(e.clientX-downAt[0], e.clientY-downAt[1]) <= 6) freePlace(); });
+
+/* start once every part of the app has been defined */
+applyPrefs(); resize(); go('home');
+requestAnimationFrame(frame);
 </script>
 
 </body>
