@@ -1225,7 +1225,7 @@ function setProt(g, a, pos, sel){
   if(pos) g.position.copy(pos);
   g.scale.setScalar(0.65 + 0.35*a);
   const pulse = sel ? 0.35 + 0.25*Math.sin(perfNow*0.006) : 0, fl = g.userData.flash || 0;
-  for(const m of g.userData.mats){ m.opacity = (g.userData.base ?? 1) * a; m.emissiveIntensity = 0.1 + pulse + fl; if(g.userData.solid) m.depthWrite = m.opacity > 0.97; }
+  for(const m of g.userData.mats){ m.opacity = (m.userData.base ?? g.userData.base ?? 1) * a; m.emissiveIntensity = 0.1 + pulse + fl; if(g.userData.solid) m.depthWrite = m.opacity > 0.97; }
   if(g.userData.sprites) for(const s of g.userData.sprites){ s.material.opacity = a; s.visible = showLabels; }
 }
 function pickablesOf(root){ const out = []; root.traverse(o => { if(o.isMesh && !o.isInstancedMesh && o.userData.key) out.push(o); }); return out; }
@@ -1369,7 +1369,7 @@ function makeRep(){
       s.zoom = eph(p,0.62,1);
     } },
   { t:'เฮลิเคสคลายเกลียว และโทโพไอโซเมอเรสลดแรงบิด', dur:7,
-    body:`<p><b>เฮลิเคส</b> <span class="en">(helicase)</span> คลายเกลียวคู่ที่ replication fork และแยกสายทั้งสองออกจากกัน แต่ละสายจึงพร้อมเป็น<b>สายแม่แบบ</b> <span class="en">(template strand)</span></p>
+    body:`<p><b>เฮลิเคส</b> <span class="en">(helicase)</span> คลายเกลียวคู่ที่ replication fork โดย<b>สลายพันธะไฮโดรเจนระหว่างเบสคู่สม</b> ทำให้สายพอลินิวคลีโอไทด์<b>ทั้งสองสาย</b>ของดีเอ็นเอแยกออกจากกัน แต่ละสายยังยาวต่อเนื่องเหมือนเดิม ไม่ได้ถูกตัดขาด และพร้อมเป็น<b>สายแม่แบบ</b> <span class="en">(template strand)</span></p>
     <p>การคลายเกลียวทำให้ดีเอ็นเอด้านหน้า fork บิดแน่นขึ้น <b>โทโพไอโซเมอเรส</b> <span class="en">(topoisomerase)</span> ช่วยลดแรงบิดนี้โดยตัดสายดีเอ็นเอ หมุน แล้วเชื่อมกลับ</p>
     <p>สังเกตดีเอ็นเอช่วงที่โทโพไอโซเมอเรสผ่านไปแล้ว (ระหว่างโทโพไอโซเมอเรสกับ fork) จะคลายตัวเป็นบันไดตรง ไม่มีแรงบิดสะสม ส่วนด้านหน้าโทโพไอโซเมอเรสยังเป็นเกลียว <span class="en">(ภาพวาดอย่างง่าย ของจริงช่วงนี้ยังเป็นเกลียวคู่ปกติ เพียงแต่ไม่บิดแน่นเกินไป)</span></p>`,
     q:'ถ้าไม่มีโทโพไอโซเมอเรส จะเกิดอะไรกับดีเอ็นเอด้านหน้า fork',
@@ -1394,7 +1394,8 @@ function makeRep(){
   { t:'DNA pol III สร้างสายลีดดิง (leading strand)', dur:12,
     body:`<p><b>DNA polymerase III</b> เติมนิวคลีโอไทด์ที่ปลาย 3′ ของไพรเมอร์ทีละตัว โดยเลือกเบสที่เป็นคู่กับแม่แบบ สายใหม่จึงยาวขึ้นในทิศ <b>5′ → 3′ เท่านั้น</b></p>
     <p>บนแม่แบบสายบน ทิศ 5′ → 3′ ของสายใหม่ตรงกับทิศที่ fork เคลื่อนไป DNA pol III จึงสร้างได้ต่อเนื่องตาม fork เรียกว่า <b>สายลีดดิง</b> <span class="en">(leading strand)</span> ใช้ไพรเมอร์เพียงอันเดียว</p>
-    <p>วงแหวน <b>sliding clamp</b> ยึด DNA pol III ไว้กับแม่แบบ นิวคลีโอไทด์ที่เข้ามามีฟอสเฟต 3 หมู่ เมื่อต่อเข้ากับสายจะปล่อยฟอสเฟต 2 หมู่ (ไพโรฟอสเฟต) ออกไปเป็นพลังงานของปฏิกิริยา อัตราประมาณ 500 นิวคลีโอไทด์ต่อวินาทีในแบคทีเรีย และ 50 ในเซลล์มนุษย์</p>`,
+    <p>DNA pol III ทำงานคู่กับ<b>วงแหวน sliding clamp</b> (วงสีเทาอ่อน) ที่โอบดีเอ็นเอสายคู่ที่สร้างใหม่ไว้ ช่วยพา DNA pol III เลื่อนไปตามสายแม่แบบ</p>
+    <p>นิวคลีโอไทด์ที่เข้ามามีฟอสเฟต 3 หมู่ เมื่อต่อเข้ากับสายจะปล่อยฟอสเฟต 2 หมู่ (ไพโรฟอสเฟต) ออกไปเป็นพลังงานของปฏิกิริยา อัตราประมาณ 500 นิวคลีโอไทด์ต่อวินาทีในแบคทีเรีย และ 50 ในเซลล์มนุษย์</p>`,
     q:'DNA pol III เติมได้เฉพาะปลาย 3′ แล้วสายใหม่บนแม่แบบสายล่างจะยาวไปทางไหน',
     a:'ยาวไปทางขวา ออกห่างจาก fork ซึ่งสวนกับทิศที่ fork เคลื่อนไป จึงสร้างต่อเนื่องไม่ได้ (ดูขั้นต่อไป)',
     cam:s=>({i:s.p3L.idx-1, d:22}),
@@ -1496,10 +1497,10 @@ function makeRep(){
     body:`<p>ภาพนี้หยุดเวลาไว้กลางการจำลอง เพื่อให้เห็น<b>ทุกเอนไซม์ทำงานพร้อมกัน</b> ที่ fork เดียว จากนั้นกล้องจะซูมไล่ดูทีละตัวตามลำดับในตาราง</p>
     <table class="sum"><tr><th>ส่วนประกอบ</th><th>หน้าที่</th></tr>
     <tr data-k="topo"><td>โทโพไอโซเมอเรส</td><td>ลดแรงบิดด้านหน้า fork</td></tr>
-    <tr data-k="hel"><td>เฮลิเคส</td><td>คลายเกลียว แยกสายที่ fork</td></tr>
+    <tr data-k="hel"><td>เฮลิเคส</td><td>สลายพันธะไฮโดรเจนระหว่างเบสคู่สม แยกสายที่ fork</td></tr>
     <tr data-k="ssb"><td>SSB</td><td>เกาะสายเดี่ยวไม่ให้จับคู่กลับ</td></tr>
     <tr data-k="prim"><td>ไพรเมส</td><td>สร้างไพรเมอร์ RNA</td></tr>
-    <tr data-k="p3"><td>DNA pol III + clamp</td><td>ต่อสายใหม่ทิศ 5′→3′</td></tr>
+    <tr data-k="p3"><td>DNA pol III</td><td>ต่อสายใหม่ทิศ 5′→3′</td></tr>
     <tr data-k="p1"><td>DNA pol I</td><td>แทนที่ไพรเมอร์ด้วยดีเอ็นเอ</td></tr>
     <tr data-k="lig"><td>DNA ligase</td><td>เชื่อมรอยขาดระหว่างชิ้น</td></tr></table>
     <p>สรุป: สายลีดดิงสร้าง<b>ต่อเนื่อง</b> ใช้ไพรเมอร์อันเดียว สายแลกกิงสร้าง<b>เป็นชิ้น</b> แต่ละชิ้นใช้ไพรเมอร์ของตัวเอง แล้วถูกเชื่อมทันทีจนเป็นสายเดียว</p>`,
@@ -1535,12 +1536,11 @@ function makeRep(){
     } }];
 
   const PARTS = {
-    hel:{n:'เฮลิเคส', en:'Helicase', c:'#4fd17a', g:'โปรตีนและเอนไซม์', d:'คลายเกลียวคู่และแยกสายดีเอ็นเอเดิมออกจากกันที่ replication fork'},
+    hel:{n:'เฮลิเคส', en:'Helicase', c:'#4fd17a', g:'โปรตีนและเอนไซม์', d:'คลายเกลียวคู่ที่ replication fork โดยสลายพันธะไฮโดรเจนระหว่างเบสคู่สม ทำให้สายพอลินิวคลีโอไทด์ทั้งสองสายแยกออกจากกัน (ไม่ได้ตัดสาย)'},
     ssb:{n:'โปรตีนจับดีเอ็นเอสายเดี่ยว', en:'Single-strand binding protein (SSB)', c:'#c3ccd9', g:'โปรตีนและเอนไซม์', d:'เกาะดีเอ็นเอสายเดี่ยวไว้ให้คงตัว ไม่ให้กลับมาจับคู่กันก่อนถูกใช้เป็นแม่แบบ'},
     topo:{n:'โทโพไอโซเมอเรส', en:'Topoisomerase', c:'#5b8cff', g:'โปรตีนและเอนไซม์', d:'ลดแรงบิดเกลียวที่แน่นขึ้นด้านหน้า fork โดยตัดสายดีเอ็นเอ หมุน แล้วเชื่อมกลับ'},
     prim:{n:'ไพรเมส', en:'Primase', c:'#ff5fa2', g:'โปรตีนและเอนไซม์', d:'สร้างไพรเมอร์ RNA ที่ปลาย 5′ ของสายลีดดิง และที่ปลาย 5′ ของชิ้นส่วนโอคาซากิทุกชิ้นบนสายแลกกิง'},
-    p3:{n:'DNA พอลิเมอเรส III', en:'DNA polymerase III', c:'#ff6b5b', g:'โปรตีนและเอนไซม์', d:'ใช้สายเดิมเป็นแม่แบบ สร้างดีเอ็นเอสายใหม่โดยเติมนิวคลีโอไทด์ที่ปลาย 3′ ของไพรเมอร์หรือของสายดีเอ็นเอที่มีอยู่ (ทิศ 5′ → 3′)'},
-    clamp:{n:'Sliding clamp', en:'Sliding clamp', c:'#d9e2ef', g:'โปรตีนและเอนไซม์', d:'โปรตีนรูปวงแหวนที่โอบดีเอ็นเอสายคู่ที่สร้างใหม่ ยึด DNA pol III ให้เคลื่อนไปตามแม่แบบได้โดยไม่หลุด'},
+    p3:{n:'DNA พอลิเมอเรส III', en:'DNA polymerase III', c:'#ff6b5b', g:'โปรตีนและเอนไซม์', d:'ใช้สายเดิมเป็นแม่แบบ สร้างดีเอ็นเอสายใหม่โดยเติมนิวคลีโอไทด์ที่ปลาย 3′ ของไพรเมอร์หรือของสายดีเอ็นเอที่มีอยู่ (ทิศ 5′ → 3′) ทำงานคู่กับวงแหวน sliding clamp ที่ช่วยพาเลื่อนไปตามแม่แบบ'},
     p1:{n:'DNA พอลิเมอเรส I', en:'DNA polymerase I', c:'#ffb347', g:'โปรตีนและเอนไซม์', d:'นำนิวคลีโอไทด์ RNA ของไพรเมอร์ออกจากปลาย 5′ แล้วแทนที่ด้วย DNA โดยเติมที่ปลาย 3′ ของชิ้นที่อยู่ติดกัน'},
     lig:{n:'DNA ไลเกส', en:'DNA ligase', c:'#ffcf33', g:'โปรตีนและเอนไซม์', d:'เชื่อมโครงน้ำตาล-ฟอสเฟตระหว่างชิ้นส่วนโอคาซากิให้เป็นสายต่อเนื่อง และเชื่อมดีเอ็นเอที่แทนไพรเมอร์บนสายลีดดิงเข้ากับสายที่เหลือ'},
     old:{n:'สายแม่แบบ', en:'Parental / template strand', c:'#3a7be0', g:'โครงสร้าง', d:'สายดีเอ็นเอเดิมที่ถูกแยกออก ใช้เป็นแบบในการจับคู่เบสของสายใหม่'},
@@ -1567,12 +1567,17 @@ function makeRep(){
     prim: blob(root, 'prim', PARTS.prim.c, 0.85, [[0,0,0,0.72],[0.55,0.35,0.25,0.52]]),
     p3L: blob(root, 'p3', PARTS.p3.c, 0.55, [[0,0,1.0,1.0,1,1.15,0.75],[0,0,-1.0,1.0,1,1.15,0.75],[0,1.15,0,0.62]]),
     p3G: blob(root, 'p3', PARTS.p3.c, 0.55, [[0,0,1.0,1.0,1,1.15,0.75],[0,0,-1.0,1.0,1,1.15,0.75],[0,-1.15,0,0.62]]),
-    clL: ring(root, 'clamp', PARTS.clamp.c, 0.7, 1.3, 0.2),
-    clG: ring(root, 'clamp', PARTS.clamp.c, 0.7, 1.3, 0.2),
     p1: blob(root, 'p1', PARTS.p1.c, 0.6, [[0,0,0.95,0.85,1.1,1,0.8],[0.45,0.35,-0.8,0.72],[-0.35,-0.7,0.1,0.6]]),
     lig: blob(root, 'lig', PARTS.lig.c, 0.88, [[0,0,0.95,0.85,1.3,0.9,0.85],[0,0,-0.85,0.78,1.2,0.9,0.85]]),
     hel2: ring(root, 'hel', PARTS.hel.c, 0.92, 1.6, 0.42)
   };
+  // sliding clamp: a ring around the new double helix, built into DNA pol III (Campbell Fig. 16.16)
+  const addClamp = (g, dx) => {
+    const mat = new THREE.MeshStandardMaterial({color:'#d9e2ef', roughness:0.4, metalness:0.1, transparent:true, opacity:0.9, depthWrite:false, emissive:new THREE.Color('#d9e2ef'), emissiveIntensity:0.12});
+    const m = new THREE.Mesh(new THREE.TorusGeometry(1.3, 0.3, 16, 44), mat); m.rotation.y = Math.PI/2 - 0.55; m.position.x = dx; m.userData.key = 'p3';
+    mat.userData.base = 0.9; g.add(m); g.userData.mats.push(mat);
+  };
+  addClamp(P.p3L, 1.4*RISE); addClamp(P.p3G, -1.4*RISE);
   for(const g of Object.values(P)) g.visible = false;
 
   let cur = init();
@@ -1672,9 +1677,7 @@ function makeRep(){
     P.topo.rotation.x = Math.sin(perfNow*0.003)*0.35;
     strandAt(cur.prim.str, cur.prim.idx, R*0.4, true, v); v.z += 0.9; setProt(P.prim, cur.prim.a, v, (selKey==='prim' || cur.hi==='prim'));
     setProt(P.p3L, cur.p3L.a, axisAt(0, cur.p3L.idx, v), (selKey==='p3' || cur.hi==='p3'));
-    setProt(P.clL, cur.p3L.a, axisAt(0, cur.p3L.idx + 1.4, v), (selKey==='clamp' || cur.hi==='p3'));
     setProt(P.p3G, cur.p3G.a, axisAt(1, cur.p3G.idx, v), (selKey==='p3' || cur.hi==='p3'));
-    setProt(P.clG, cur.p3G.a, axisAt(1, cur.p3G.idx - 1.4, v), (selKey==='clamp' || cur.hi==='p3'));
     setProt(P.p1, cur.p1.a, axisAt(1, cur.p1.idx, v), (selKey==='p1' || cur.hi==='p1'));
     P.lig.userData.flash = cur.ligFlash*1.4;
     setProt(P.lig, cur.lig.a, axisAt(1, cur.lig.idx, v), (selKey==='lig' || cur.hi==='lig'));
@@ -1699,8 +1702,8 @@ function makeRep(){
         o('hel','r_hel','Helicase (เฮลิเคส)','Helicase', up(P.hel, -2.6).add(V3(W_ ? -2.2 : 0, 0, 0)));
         if(ssbPts.length) o('ssb','r_ssb','SSB (โปรตีนจับดีเอ็นเอสายเดี่ยว)','SSB', v.copy(ssbPts[0]).add(V3(W_ ? 3 : 0, -1.8, 0)));
         o('prim','r_prim','Primase (ไพรเมส)','Primase', up(P.prim, W_ ? -4.4 : -2.2).add(V3(W_ ? 1.5 : 0, 0, 0)));
-        o('p3','r_p3L','DNA polymerase III + clamp (สายลีดดิง)','pol III', up(P.p3L, 2.6).add(V3(W_ ? 2.5 : 0, 0, 0)));
-        o('p3','r_p3G','DNA polymerase III + clamp (สายแลกกิง)','pol III', up(P.p3G, -2.6));
+        o('p3','r_p3L','DNA polymerase III (สายลีดดิง)','pol III', up(P.p3L, 2.6).add(V3(W_ ? 2.5 : 0, 0, 0)));
+        o('p3','r_p3G','DNA polymerase III (สายแลกกิง)','pol III', up(P.p3G, -2.6));
         o('p1','r_p1','DNA polymerase I (ดีเอ็นเอพอลิเมอเรส I)','pol I', up(P.p1, -2.4));
         o('lig','r_lig','DNA ligase (ดีเอ็นเอไลเกส)','Ligase', up(P.lig, W_ ? 2.6 : -2.4));
         return;
@@ -1711,7 +1714,6 @@ function makeRep(){
       if(cur.prim.a > 0.3) tag('r_prim','p','Primase (ไพรเมส)', up(P.prim, cur.prim.str ? -1.9 : 1.9), {key:'prim', a:cur.prim.a});
       if(cur.p3L.a > 0.3) tag('r_p3L','p','DNA polymerase III (ดีเอ็นเอพอลิเมอเรส III)', up(P.p3L, 2.7), {key:'p3', a:cur.p3L.a});
       if(cur.p3G.a > 0.3) tag('r_p3G','p','DNA polymerase III (ดีเอ็นเอพอลิเมอเรส III)', up(P.p3G, -2.7), {key:'p3', a:cur.p3G.a});
-      if(cur.p3L.a > 0.3) tag('r_clL','p','Sliding clamp (วงแหวนยึด)', up(P.clL, -2.1), {key:'clamp', a:cur.p3L.a});
       if(cur.p1.a > 0.3) tag('r_p1','p','DNA polymerase I (ดีเอ็นเอพอลิเมอเรส I)', up(P.p1, -2.5), {key:'p1', a:cur.p1.a});
       if(cur.lig.a > 0.3) tag('r_lig','p','DNA ligase (ดีเอ็นเอไลเกส)', up(P.lig, -2.5), {key:'lig', a:cur.lig.a});
       if(cur.fork < ORI - 1 && cur.fork > 0) tag('r_fork','r','Replication fork (จุดแยกสาย)', v.set(X(cur.fork), -2.2, 0));
@@ -1763,8 +1765,7 @@ function makeRep(){
     ssb: g => { sLine(g, -2.48, 2.48, 0, -1, C.old); [-1.3, 1.2].forEach(x => ssbAt(g, x, -0.25)); },
     topo: g => { sTwisted(g, -3.72, 0); sLine(g, RISE, 3.72, R, -1, C.old); sLine(g, RISE, 3.72, -R, 1, C.old); g.add(pc(P.topo, 0.3)); },
     prim: g => { sLine(g, -2.48, 2.48, R, -1, C.old); sLine(g, -0.62, 1.86, -R, 1, C.new, {rna:() => true}); g.add(pc(P.prim, -1.1, -0.4, 0.9)); },
-    p3: g => { sLine(g, -2.48, 2.48, R, -1, C.old); sLine(g, -0.62, 2.48, -R, 1, C.new, {rna:i => i > 3}); g.add(pc(P.p3L, -0.62)); g.add(pc(P.clL, 0.8)); },
-    clamp: g => { sLine(g, -1.86, 1.86, R, -1, C.old); sLine(g, -1.86, 1.86, -R, 1, C.new); g.add(pc(P.clL)); },
+    p3: g => { sLine(g, -2.48, 2.48, R, -1, C.old); sLine(g, -0.62, 2.48, -R, 1, C.new, {rna:i => i > 3}); g.add(pc(P.p3L, -0.62)); },
     p1: g => { sLine(g, -2.48, 2.48, R, -1, C.old); sLine(g, -2.48, 2.48, -R, 1, C.new, {rna:i => i >= 4 && i <= 6, gaps:new Set([3])}); g.add(pc(P.p1, -0.3)); },
     lig: g => { sLine(g, -2.48, 2.48, R, -1, C.old); sLine(g, -2.48, 2.48, -R, 1, C.new, {gaps:new Set([4])}); g.add(pc(P.lig, 0.31)); },
     old: g => { sLine(g, -4.4, 4.4, 0, -1, C.old); },
@@ -1824,7 +1825,7 @@ function makeRep(){
   return {
     id:'rep', name:'การจำลองดีเอ็นเอ', en:'DNA replication', back:'topics', root, steps:STEPS, parts:PARTS, thumbs, thumbURL:null,
     pickables:pickablesOf(root),
-    protOf:{hel:[P.hel, P.hel2], topo:[P.topo], prim:[P.prim], p3:[P.p3L,P.p3G], clamp:[P.clL,P.clG], p1:[P.p1], lig:[P.lig]},
+    protOf:{hel:[P.hel, P.hel2], topo:[P.topo], prim:[P.prim], p3:[P.p3L,P.p3G], p1:[P.p1], lig:[P.lig]},
     evalState(k, p){ const s = structuredClone(SNAP[k]); reset(s); STEPS[k].run(s, p); cur = s; },
     update, labels,
     cam(k){ const c = STEPS[k].cam(cur); return {x:X(c.i), y:c.y || 0, d:c.d}; },
@@ -3111,14 +3112,14 @@ const TEST_Q = {
 {
 "id": "R6",
 "kind": "คำถาม",
-"q": "Sliding clamp ทำหน้าที่อะไร",
+"q": "DNA pol III เติมนิวคลีโอไทด์ใหม่ที่ส่วนใดของสายที่กำลังสร้าง",
 "o": [
-"ยึด DNA pol III ไว้กับแม่แบบ",
-"คลายเกลียว",
-"สร้างไพรเมอร์",
-"ตัดไพรเมอร์ออก"
+"ปลาย 3′ ของไพรเมอร์หรือสายใหม่",
+"ปลาย 5′ ของไพรเมอร์",
+"ตรงกลางของไพรเมอร์",
+"ปลายใดก็ได้"
 ],
-"e": "วงแหวนโอบดีเอ็นเอทำให้ DNA pol III เคลื่อนไปตามสายได้ไม่หลุด",
+"e": "DNA polymerase เติมนิวคลีโอไทด์ได้เฉพาะที่ปลาย 3′ สายใหม่จึงยาวขึ้นในทิศ 5′ → 3′",
 "cat": "dir"
 },
 {
@@ -5308,7 +5309,7 @@ addEventListener('keydown', e => {
    a hint bar names the missing part and where it belongs. */
 const FREE_TOPICS = {
   rep:{ name:'จำลองดีเอ็นเอ', mod:'rep',
-    parts:[['dna','ดีเอ็นเอแม่แบบ'],['hel','Helicase'],['topo','Topoisomerase'],['ssb','SSB'],['prim','Primase'],['p3','DNA pol III'],['clamp','Sliding clamp'],['p1','DNA pol I'],['lig','DNA ligase']],
+    parts:[['dna','ดีเอ็นเอแม่แบบ'],['hel','Helicase'],['topo','Topoisomerase'],['ssb','SSB'],['prim','Primase'],['p3','DNA pol III'],['p1','DNA pol I'],['lig','DNA ligase']],
     stages:[
       ['dna','มีดีเอ็นเอแม่แบบ','ยังไม่มีดีเอ็นเอแม่แบบ','วาง <b>ดีเอ็นเอแม่แบบ</b> ก่อน ทุกเอนไซม์ต้องทำงานบนแม่แบบ'],
       ['hel','คลายเกลียวและแยกสาย','ดีเอ็นเอยังเป็นเกลียวคู่ fork ไม่เปิด','ขาด <b>Helicase (เฮลิเคส)</b> วางไว้ที่จุดแยกสาย (replication fork) เพื่อคลายเกลียวและแยกสาย'],
@@ -5316,7 +5317,6 @@ const FREE_TOPICS = {
       ['ssb','รักษาสายเดี่ยวไว้เป็นแม่แบบ','สายเดี่ยวหลังเฮลิเคสกลับมาจับคู่กัน','ขาด <b>SSB (โปรตีนจับดีเอ็นเอสายเดี่ยว)</b> วางบนสายเดี่ยวด้านหลังเฮลิเคส เพื่อเกาะสายไว้ไม่ให้จับคู่กลับ'],
       ['prim','สร้างไพรเมอร์ RNA','DNA pol III ไม่มีปลาย 3′ ให้เริ่มต่อ ไม่มีสายใหม่ทั้งสองสาย','ขาด <b>Primase (ไพรเมส)</b> วางบนสายแม่แบบใกล้ fork เพื่อสร้างไพรเมอร์ RNA'],
       ['p3','ต่อสายใหม่ทิศ 5′ → 3′','มีแต่ไพรเมอร์ ไม่มีดีเอ็นเอสายใหม่','ขาด <b>DNA polymerase III</b> วางต่อจากปลาย 3′ ของไพรเมอร์ เพื่อเติมนิวคลีโอไทด์'],
-      ['clamp','ยึด DNA pol III ไว้กับแม่แบบ','DNA pol III หลุดจากแม่แบบ ต่อสายได้ไม่ต่อเนื่อง','ขาด <b>Sliding clamp (วงแหวนยึด)</b> วางคู่กับ DNA pol III เพื่อยึดไว้กับแม่แบบ'],
       ['p1','แทนที่ไพรเมอร์ด้วยดีเอ็นเอ','ไพรเมอร์ RNA สีแดงค้างอยู่ในสายแลกกิง','ขาด <b>DNA polymerase I</b> วางที่ไพรเมอร์ของแต่ละชิ้นส่วนโอคาซากิ เพื่อแทนที่ RNA ด้วย DNA'],
       ['lig','เชื่อมรอยขาดระหว่างชิ้น','ชิ้นส่วนโอคาซากิไม่ต่อกัน ยังมีรอยขาด','ขาด <b>DNA ligase (ดีเอ็นเอไลเกส)</b> วางที่รอยขาดระหว่างชิ้นส่วนโอคาซากิ เพื่อเชื่อมให้เป็นสายเดียว']] },
   tx:{ name:'ถอดรหัส', mod:'tx',
@@ -5350,7 +5350,6 @@ function freeThumbs(tp){
       hel: g => { const c = pc(po.hel[0]); c.position.set(0,0,0); c.rotation.set(0, -0.5, 0); g.add(c); },
       topo:one('topo'), prim:one('prim'), p3:one('p3'), p1:one('p1'), lig:one('lig'),
       ssb: g => { for(const [x, y] of [[-0.4,0],[0.4,0],[0,0.55],[1.2,-0.1],[0.8,0.5]]){ const m = new THREE.Mesh(gSphere, new THREE.MeshStandardMaterial({ color:0xc3ccd9, roughness:0.6 })); m.position.set(x, y, 0); m.scale.setScalar(0.42); g.add(m); } },
-      clamp: g => { const c = pc(po.clamp[0]); c.position.set(0,0,0); c.rotation.set(0, -0.6, 0); g.add(c); }
     });
   } else {
     const M_ = MODS[FREE_TOPICS[tp].mod], keys = FREE_TOPICS[tp].parts.map(p => p[0]);
@@ -5382,7 +5381,7 @@ function freeEval(){
     if(!P.hel){ s.fork = 95.5; s.forkR = 95.5; s.extraA = 1; s.zoom = 1; }
     s.helA = P.hel ? 1 : 0; s.hel2A = 0; s.topoA = P.topo ? 1 : 0; s.ssbA = P.ssb ? 1 : 0;
     s.prim.a = P.prim ? 1 : 0; s.prim.str = 0; s.prim.idx = 92.5;
-    s.p3L.a = P.p3 || P.clamp ? 1 : 0; s.p3L.idx = 88; s.p3G.a = 0;
+    s.p3L.a = P.p3 ? 1 : 0; s.p3L.idx = 88; s.p3G.a = 0;
     s.p1.a = P.p1 ? 1 : 0; s.p1.idx = 84; s.lig.a = P.lig ? 1 : 0; s.lig.idx = 80;
     d.cur = s; return;
   }
@@ -5419,7 +5418,7 @@ function freeRunStart(){
   FREE.result = null;
   if(f === 0){ FREE.run = null; FREE.result = { fail:0 }; freeRender(); return; }
   if(FREE.topic === 'rep'){
-    const miss = f < 0 ? null : T.stages[f][0], view = f < 0 ? 'ctrl' : miss === 'clamp' ? 'p3' : miss;
+    const miss = f < 0 ? null : T.stages[f][0], view = f < 0 ? 'ctrl' : miss;
     FREE.run = { view, t:0, fail:f };
   } else {
     const upto = f < 0 ? T.stages.length : f, list = [...new Set(T.stages.slice(0, upto).map(st => st[2]).filter(k => k > 0))];
