@@ -198,6 +198,9 @@ button{font:inherit;color:inherit}
 .prose table.sum td{padding:6px;border-bottom:1px solid #1d2b47;vertical-align:top}
 .prose table.sum td:first-child{font-weight:600;color:#fff;white-space:nowrap}
 .prose table.sum tr.hi td{background:rgba(255,194,75,.14)}
+.prose table.sum.bi td:first-child{white-space:normal;font-weight:500;color:var(--muted)}
+.prose table.sum.bi td{text-align:center}.prose table.sum.bi td:first-child{text-align:left}
+.prose table.sum.bi th{text-align:center}
 .prose table.sum tr.hi td:first-child{color:var(--accent)}
 /* countdown before a review question */
 .cdcard{text-align:center;align-items:center}
@@ -1293,8 +1296,9 @@ function buildSnaps(init, steps, reset){
 /* ================= MODULE: DNA replication ================= */
 function makeRep(){
   const root = new THREE.Group(); root.visible = false; scene.add(root);
-  // NM = nucleotides used by the left-fork model; the extra 20 to the right of the origin are shown while the bubble opens
-  const NM = 96, NEXTRA = 20, N = NM + NEXTRA, W = 8, SEP0 = 3.0, ORI = 95.5;
+  // NM = nucleotides used by the left-fork model; the extra ones to the right of the origin are shown while the bubble opens
+  // (enough of them that the origin can sit in the middle of the screen)
+  const NM = 96, NEXTRA = 56, N = NM + NEXTRA, W = 8, SEP0 = 3.0, ORI = 95.5;
   const FR = [null,{L:78,R:95},{L:64,R:77},{L:46,R:63},{L:28,R:45},{L:10,R:27},{L:0,R:9}];
   let seed = 7; const rnd = () => (seed = (seed*16807) % 2147483647) / 2147483647;
   const TOP = Array.from({length:N}, () => Math.floor(rnd()*4));
@@ -1305,7 +1309,7 @@ function makeRep(){
   function init(){
     return {
       fork:ORI, forkR:ORI, extraA:1, zoom:0, hel2A:0, nickA:0, sep:SEP0, rewind:0,
-      leadAmt:new Float32Array(N), leadType:new Uint8Array(N),
+      leadAmt:new Float32Array(N), leadType:new Uint8Array(N), leadFrag:new Uint8Array(N),
       lagAmt:new Float32Array(N), lagType:new Uint8Array(N), lagFrag:new Uint8Array(N), lagLig:new Uint8Array(N),
       leadGlow:new Float32Array(N), lagGlow:new Float32Array(N),
       helA:0, topoA:0, ssbA:0,
@@ -1313,7 +1317,7 @@ function makeRep(){
       ligFlash:0, fragA:0
     };
   }
-  function reset(s){ s.leadGlow.fill(0); s.lagGlow.fill(0); s.ligFlash = 0; s.nickA = 0; s.hi = null; s.now = null; s.ov = 0; }
+  function reset(s){ s.leadGlow.fill(0); s.lagGlow.fill(0); s.ligFlash = 0; s.nickA = 0; s.hi = null; s.now = null; s.ov = 0; s.bi = 0; }
   function fill(amt, type, from, to, q, ty, fragArr, frag){
     const dir = to >= from ? 1 : -1, n = Math.abs(to-from)+1, f = q*n;
     for(let k=0;k<n;k++){ const i = from + dir*k, a = clamp(f-k,0,1); if(a > amt[i]){ amt[i] = a; type[i] = ty; if(fragArr) fragArr[i] = frag; } }
@@ -1332,7 +1336,7 @@ function makeRep(){
 
   // frozen mid-replication picture: every enzyme busy at once (used by the summary step)
   function overview(s){
-    s.leadAmt.fill(0); s.lagAmt.fill(0); s.leadType.fill(0); s.lagType.fill(0); s.lagFrag.fill(0); s.lagLig.fill(0);
+    s.leadAmt.fill(0); s.lagAmt.fill(0); s.leadType.fill(0); s.lagType.fill(0); s.lagFrag.fill(0); s.lagLig.fill(0); s.leadFrag.fill(0); s.bi = 0;
     s.fork = 8; s.forkR = N + W + 3; s.extraA = 0; s.sep = SEP0; s.rewind = 0; s.zoom = 1;
     fill(s.leadAmt, s.leadType, 95, 92, 1, 1); fill(s.leadAmt, s.leadType, 91, 10, 1, 2); replace(s.leadType, s.leadGlow, 92, 95, 1, 2);
     for(let k=1;k<=3;k++){ const f = FR[k]; fill(s.lagAmt, s.lagType, f.L, f.L+3, 1, 1, s.lagFrag, k); fill(s.lagAmt, s.lagType, f.L+4, f.R, 1, 2, s.lagFrag, k); }
@@ -1347,6 +1351,26 @@ function makeRep(){
     s.p1.a = 1; s.p1.idx = g + 0.3; s.lig.a = 1; s.lig.idx = 81.5; s.nickA = 0; s.fragA = 1;
   }
 
+  // whole bubble: both forks move away from the origin at once; leading/lagging swap between the two halves
+  function bidir(s, t){
+    for(const a of [s.leadAmt, s.lagAmt, s.leadType, s.lagType, s.lagFrag, s.lagLig, s.leadFrag, s.leadGlow, s.lagGlow]) a.fill(0);
+    const h = 3 + 16.3*t;
+    s.fork = ORI - h; s.forkR = ORI + h; s.extraA = 1; s.sep = SEP0; s.rewind = 0; s.zoom = 1; s.bi = 1; s.ov = 0;
+    // left half: top = leading (grows left, toward the left fork), bottom = lagging
+    fill(s.leadAmt, s.leadType, 95, 92, 1, 1);
+    const l3 = fill(s.leadAmt, s.leadType, 91, 78, t, 2);
+    fill(s.lagAmt, s.lagType, 88, 90, ph(t,0.33,0.4), 1, s.lagFrag, 1); fill(s.lagAmt, s.lagType, 91, 94, ph(t,0.4,0.55), 2, s.lagFrag, 1);
+    fill(s.lagAmt, s.lagType, 80, 82, ph(t,0.8,0.86), 1, s.lagFrag, 2); fill(s.lagAmt, s.lagType, 83, 87, ph(t,0.86,1), 2, s.lagFrag, 2);
+    // right half: bottom = leading (grows right, toward the right fork), top = lagging
+    fill(s.lagAmt, s.lagType, 96, 99, 1, 1, s.lagFrag, 9);
+    const r3 = fill(s.lagAmt, s.lagType, 100, 113, t, 2, s.lagFrag, 9);
+    fill(s.leadAmt, s.leadType, 103, 101, ph(t,0.33,0.4), 1, s.leadFrag, 1); fill(s.leadAmt, s.leadType, 100, 97, ph(t,0.4,0.55), 2, s.leadFrag, 1);
+    fill(s.leadAmt, s.leadType, 111, 109, ph(t,0.8,0.86), 1, s.leadFrag, 2); fill(s.leadAmt, s.leadType, 108, 104, ph(t,0.86,1), 2, s.leadFrag, 2);
+    s.helA = 1; s.hel2A = 1; s.topoA = 0; s.ssbA = 0; s.prim.a = 0; s.p1.a = 0; s.lig.a = 0; s.ligFlash = 0; s.nickA = 0; s.fragA = 0;
+    s.p3L.a = 1; s.p3L.idx = Math.min(91, l3); s.p3G.a = 1; s.p3G.idx = Math.max(100, r3);
+    s.hi = null; s.now = null;
+  }
+
   const STEPS = [
   { t:'ภาพรวม: ดีเอ็นเอก่อนการจำลอง', dur:4,
     body:`<p>ดีเอ็นเอประกอบด้วยพอลินิวคลีโอไทด์ 2 สายพันกันเป็น<b>เกลียวคู่</b> <span class="en">(double helix)</span> ทั้งสองสาย<b>วางตัวสวนทางกัน</b> <span class="en">(antiparallel)</span> สายบนเรียงจาก 5′ ไป 3′ ส่วนสายล่างเรียงจาก 3′ ไป 5′ และเบสจับคู่กันแบบจำเพาะ A กับ T, G กับ C</p>
@@ -1354,14 +1378,14 @@ function makeRep(){
     <p>ลากเพื่อหมุน ถ่างหรือหมุนล้อเมาส์เพื่อซูม แตะป้ายชื่อเพื่ออ่านหน้าที่ของแต่ละส่วน</p>`,
     q:'ถ้าสายหนึ่งมีลำดับเบส 5′-ATGC-3′ สายคู่ของมันเป็นอย่างไร',
     a:'3′-TACG-5′ ซึ่งเขียนตามแบบแผนจากปลาย 5′ ได้เป็น 5′-GCAT-3′',
-    cam:()=>({i:(N-1)/2, d:76}), run(){} },
+    cam:()=>({i:ORI, d:76}), run(){} },
   { t:'จุดเริ่มต้นการจำลอง (origin of replication)', dur:5,
     body:`<p>การจำลองเริ่มที่ตำแหน่งจำเพาะที่มีลำดับนิวคลีโอไทด์เฉพาะ เรียกว่า <b>origin of replication</b> โปรตีนเริ่มต้นจะจดจำลำดับนี้แล้วแยกสายทั้งสองออกจากกัน เกิดเป็น <b>replication bubble</b></p>
     <p>ปลายแต่ละด้านของ bubble เป็นบริเวณรูปตัว Y เรียกว่า <b>replication fork</b> มีเฮลิเคสอยู่ที่ fork ทั้งสองด้าน การจำลองจึงดำเนินไปทั้งสองทิศทางจาก origin จากนั้นแบบจำลองจะซูมเข้าไปที่ fork ด้านซ้าย</p>
     <p>โครโมโซมวงกลมของ <i>E. coli</i> มี origin เพียงจุดเดียว ส่วนโครโมโซมของยูแคริโอตมี origin หลายร้อยถึงหลายพันจุด bubble หลายอันเกิดพร้อมกันแล้วขยายมารวมกัน</p>`,
     q:'ทำไมโครโมโซมของยูแคริโอตจึงต้องมี origin หลายจุด',
     a:'ดีเอ็นเอของยูแคริโอตยาวมาก ถ้ามี origin จุดเดียวจะคัดลอกไม่ทันในระยะ S การมีหลาย bubble ทำงานพร้อมกันจึงช่วยให้จำลองเสร็จเร็วขึ้น',
-    cam:s=>({i:lerp((N-1)/2, 85, s.zoom), d:lerp(76, 25, s.zoom)}),
+    cam:s=>({i:lerp(ORI, 85, s.zoom), d:lerp(76, 25, s.zoom)}),
     run(s,p){
       const o = eph(p,0.12,0.6);
       s.fork = lerp(ORI, 84, o); s.forkR = lerp(ORI, N+W+3, o);
@@ -1493,8 +1517,12 @@ function makeRep(){
       if(p >= 0.88 && p < 0.97) s.now = {k:'p1', f:0, t:'แทนที่ไพรเมอร์ของสายลีดดิงตรง origin'};
       s.fragA = 1 - eph(p,0.92,1);
     } },
-  { t:'ภาพรวมและสรุป: ใครทำอะไรที่ replication fork', dur:24,
-    body:`<p>ภาพนี้หยุดเวลาไว้กลางการจำลอง เพื่อให้เห็น<b>ทุกเอนไซม์ทำงานพร้อมกัน</b> ที่ fork เดียว จากนั้นกล้องจะซูมไล่ดูทีละตัวตามลำดับในตาราง</p>
+  { t:'ภาพรวมและสรุป: ใครทำอะไรที่ replication fork', dur:36,
+    body:`<p><b>เริ่มจากภาพ bubble ทั้งอัน:</b> การจำลองเกิด<b>สองทิศทางพร้อมกัน</b> fork ทั้งสองข้างเคลื่อนออกจาก origin สวนทางกัน แต่ DNA pol III สร้างสายใหม่ได้ทิศ 5′→3′ ทิศเดียว ผลคือ<b>สายลีดดิงกับสายแลกกิงของสองข้างสลับกัน</b></p>
+    <table class="sum bi"><tr><th></th><th>fork ซ้าย</th><th>fork ขวา</th></tr>
+    <tr><td>สายใหม่บนแม่แบบสายบน</td><td>ลีดดิง</td><td>แลกกิง</td></tr>
+    <tr><td>สายใหม่บนแม่แบบสายล่าง</td><td>แลกกิง</td><td>ลีดดิง</td></tr></table>
+    <p>จากนั้นภาพจะหยุดเวลาไว้ที่ <b>fork ด้านซ้าย</b> เพื่อให้เห็นทุกเอนไซม์ทำงานพร้อมกัน แล้วกล้องซูมไล่ดูทีละตัวตามลำดับในตาราง</p>
     <table class="sum"><tr><th>ส่วนประกอบ</th><th>หน้าที่</th></tr>
     <tr data-k="topo"><td>โทโพไอโซเมอเรส</td><td>ลดแรงบิดด้านหน้า fork</td></tr>
     <tr data-k="hel"><td>เฮลิเคส</td><td>สลายพันธะไฮโดรเจนระหว่างเบสคู่สม แยกสายที่ fork</td></tr>
@@ -1509,6 +1537,9 @@ function makeRep(){
     cam:s=>({i:s.camI ?? 46, d:s.camD ?? 76}),
     run(s,p){
       if(snapping) return;   // the snapshot after this step keeps the finished molecule
+      // part 1 (p < 0.33): the whole bubble opening in both directions
+      if(p < 0.33){ bidir(s, ph(p, 0.02, 0.25)); s.camI = ORI; s.camD = 50; return; }
+      p = (p - 0.33)/0.67;
       overview(s);
       // wide shot → visit each enzyme in order → wide shot again
       const T = [[null,46,76],['topo',-2,22],['hel',8,20],['ssb',18,20],['prim',11,18],['p3',40,22],['p1',66,18],['lig',81.5,18],[null,46,76]];
@@ -1631,6 +1662,7 @@ function makeRep(){
         if(i < N-1){
           let ok = true; const a2 = PRES[str][i+1]*(tmpl ? exA(i+1) : 1);
           if(str===3) ok = cur.lagFrag[i]===cur.lagFrag[i+1] || cur.lagLig[i]===1;
+          else if(str===2) ok = cur.leadFrag[i]===cur.leadFrag[i+1];
           const r = ok ? 0.12*Math.min(clamp((a-0.6)/0.4,0,1), clamp((a2-0.6)/0.4,0,1)) : 0;
           const t2 = typeArr ? typeArr[i+1] : 0;
           tmpC.copy(tmpl ? C.old : (ty===1 && t2===1 ? C.rna : C.new));
@@ -1695,7 +1727,17 @@ function makeRep(){
     const v = V3();
     if(showLabels){
       const up = (g, dy) => v.copy(g.position).add(V3(0, dy, 0));
-      if(cur.ov){
+      if(cur.bi){
+        const lab = (id, txt, i, str, a=1) => tag(id, 'r', txt, v.set(X(i), str ? axisY(1,i) + R + 1.1 : axisY(0,i) - R - 1.1, 0), {a});
+        tag('r_origin','r','Origin of replication (จุดเริ่มต้นการจำลอง)', v.set(X(ORI), 4.8, 0));
+        tag('r_fork','r','← fork เคลื่อนไปทางซ้าย', v.set(X(cur.fork) - 3, -4.2, 0));
+        tag('r_forkR','r','fork เคลื่อนไปทางขวา →', v.set(X(cur.forkR) + 3, -4.2, 0));
+        const la = clamp((ORI - cur.fork - 9)/4, 0, 1);
+        if(la > 0.05){
+          lab('r_bLeadL','สายลีดดิง (leading)', 86, 0, la); lab('r_bLagL','สายแลกกิง (lagging)', 88, 1, la);
+          lab('r_bLagR','สายแลกกิง (lagging)', 103, 0, la); lab('r_bLeadR','สายลีดดิง (leading)', 105, 1, la);
+        }
+      } else if(cur.ov){
         const W_ = !cur.hi, o = (key, id, full, short, pos) => tag(id, 'p', W_ ? short : full, pos, {key, a:(W_ || cur.hi === key) ? 1 : 0.35, hi:cur.hi === key});
         o('topo','r_topo','Topoisomerase (โทโพไอโซเมอเรส)','Topo', up(P.topo, 2.4));
         o('hel','r_hel','Helicase (เฮลิเคส)','Helicase', up(P.hel, -2.6).add(V3(W_ ? -2.2 : 0, 0, 0)));
@@ -1707,6 +1749,7 @@ function makeRep(){
         o('lig','r_lig','DNA ligase (ดีเอ็นเอไลเกส)','Ligase', up(P.lig, W_ ? 2.6 : -2.4));
         return;
       }
+      if(!cur.bi){
       if(cur.helA > 0.3 && cur.fork > -2) tag('r_hel','p','Helicase (เฮลิเคส)', up(P.hel, 2.6), {key:'hel', a:cur.helA});
       if(cur.topoA > 0.3 && cur.fork > -2) tag('r_topo','p','Topoisomerase (โทโพไอโซเมอเรส)', up(P.topo, -2.6), {key:'topo', a:cur.topoA});
       if(cur.ssbA > 0.3 && ssbPts.length) tag('r_ssb','p','SSB (โปรตีนจับดีเอ็นเอสายเดี่ยว)', v.copy(ssbPts[0]).add(V3(0, ssbPts[0].y > 0 ? 1.3 : -1.3, 0)), {key:'ssb', a:cur.ssbA});
@@ -1746,13 +1789,14 @@ function makeRep(){
         }
       };
       prim(cur.leadAmt, cur.leadType, 0, 'r_prL'); prim(cur.lagAmt, cur.lagType, 1, 'r_prG');
+      }
     }
     if(showEnds){
       const endTag = (id, txt, str, i, flip, dx) => { strandAt(str, i, R + 0.15, flip, v); v.x += dx; tag(id, 'e', txt, v); };
       const NE = cur.extraA > 0.5 ? N-1 : NM-1;
       endTag('r_t5','5′',0,0,false,-0.75); endTag('r_t3','3′',0,NE,false,0.75);
       endTag('r_b3','3′',1,0,false,-0.75); endTag('r_b5','5′',1,NE,false,0.75);
-      segments(cur.leadAmt, () => true).forEach(([a,b],j) => { endTag('r_l3'+j,'3′',0,a,true,-0.75); endTag('r_l5'+j,'5′',0,b,true,0.75); });
+      segments(cur.leadAmt, i => cur.leadFrag[i]===cur.leadFrag[i+1]).forEach(([a,b],j) => { endTag('r_l3'+j,'3′',0,a,true,-0.75); endTag('r_l5'+j,'5′',0,b,true,0.75); });
       segments(cur.lagAmt, i => cur.lagFrag[i]===cur.lagFrag[i+1] || cur.lagLig[i]===1).forEach(([a,b]) => { endTag('r_g5'+a,'5′',1,a,true,-0.62); endTag('r_g3'+b,'3′',1,b,true,0.62); });
     }
   }
