@@ -229,6 +229,64 @@ small.unm{color:#ffc24b}
 .tool input.typ{height:44px;border-radius:10px;border:1px solid #b9c4d6;background:#fff;color:#14213a;padding:0 12px;font:inherit;font-size:16px;width:100%}
 .tool .scroll{max-height:52vh;overflow:auto;margin:6px 0}
 .sumcard.tool{width:min(760px,96vw)}
+.bmode{border:1.5px dashed rgba(255,194,75,.55)!important;background:linear-gradient(135deg,rgba(255,194,75,.10),rgba(127,227,216,.06))!important}
+.bmode .tagx{background:rgba(127,227,216,.14)!important;color:#9ff0e6!important}
+#bonus{background:var(--ink);color:var(--fg);z-index:5}
+#bonus .bw{max-width:1120px;margin:0 auto;padding:18px 20px 28px}
+#bonus .bh{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+#bonus .bh h2{margin:0;font-size:24px}
+#bonus .pill{padding:5px 12px;border-radius:999px;font-size:13px;font-weight:600}
+#bonus .p1{background:rgba(255,194,75,.16);color:var(--accent);border:1px solid rgba(255,194,75,.4)}
+#bonus .p2{background:rgba(127,227,216,.12);color:#9ff0e6;border:1px solid rgba(127,227,216,.35)}
+#bonus .sub{color:var(--muted);margin:6px 0 12px;font-size:14.5px}
+#bonus .tabs{display:flex;gap:6px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:5px;width:max-content;max-width:100%;margin-bottom:14px}
+#bonus .tabs button{border:0;background:none;font:inherit;cursor:pointer;padding:9px 16px;border-radius:10px;font-weight:600;font-size:15px;color:var(--muted)}
+#bonus .tabs button.on{background:var(--accent);color:var(--accent-ink)}
+#bonus table{width:100%;border-collapse:separate;border-spacing:0;background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;font-size:14.5px}
+#bonus th,#bonus td{padding:9px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+#bonus thead th{background:var(--raise);font-size:14px}
+#bonus thead th.pk{color:#9fd3ff}#bonus thead th.ek{color:#ffb8a3}
+#bonus tr.grp td{background:rgba(255,255,255,.03);color:var(--accent);font-weight:700;font-size:13.5px;letter-spacing:.2px;padding:7px 12px}
+#bonus td.k{color:var(--muted);width:25%}
+#bonus tr.open td{background:rgba(255,194,75,.06)}
+#bonus tr.more td{background:rgba(255,194,75,.06);color:#ffe2a6;font-size:13.5px;padding-top:0}
+#bonus .same{color:#8fe3a8;font-size:12.5px;font-weight:600;margin-left:6px}
+#bonus .src{color:var(--muted);font-size:12.5px;margin-top:8px}
+#bonus .anim{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+#bonus .pane{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:10px 12px}
+#bonus .pane h3{margin:2px 0 6px;font-size:16px}
+#bonus .pane h3 small{color:var(--muted);font-weight:400;font-size:13px}
+#bonus .cap{margin:8px 0 0;font-size:14px;color:#dbe4f5;min-height:40px}
+#bonus .ctl{display:flex;align-items:center;gap:10px;margin-top:12px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:10px 14px}
+#bonus .ctl .btn{height:38px}
+#bonus .dots{display:flex;gap:6px}#bonus .dots i{width:28px;height:6px;border-radius:3px;background:var(--line)}#bonus .dots i.on{background:var(--accent)}
+#bonus .sortpool{display:flex;flex-wrap:wrap;gap:8px;background:var(--panel);border:1px dashed var(--line);border-radius:14px;padding:10px;margin-bottom:12px;min-height:54px}
+#bonus .bcard{padding:8px 12px;border-radius:10px;background:var(--raise);border:1px solid var(--line);font-size:14px}
+#bonus .bcard.drag{transform:rotate(-2deg);box-shadow:0 8px 20px rgba(0,0,0,.45);border-color:var(--accent)}
+#bonus .cols{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+#bonus .col{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:10px;min-height:250px;display:flex;flex-direction:column;gap:8px}
+#bonus .col h4{margin:0 0 4px;font-size:15px}
+#bonus .bcard.ok{border-color:#3fbf72;background:rgba(63,191,114,.12)}
+#bonus .bcard.no{border-color:#ff7b7b;background:rgba(255,123,123,.12)}
+#bonus .bcard .why{display:block;font-size:12.5px;color:#ffb3b3;margin-top:3px}
+#bonus .res{display:flex;align-items:center;gap:12px;margin-top:12px}
+#bonus .bw{padding-top:0}
+#bonus tbody tr.row{cursor:pointer}
+#bonus tbody tr.row:hover td{background:rgba(255,255,255,.025)}
+#bonus tr.row td.k::after{content:" ›";color:var(--line)}
+#bonus tr.row.open td.k::after{content:" ⌄";color:var(--accent)}
+#bonus .bcard{cursor:grab;user-select:none;-webkit-user-select:none;touch-action:none;line-height:1.4}
+#bonus .bcard.sel{border-color:var(--accent);box-shadow:0 0 0 2px rgba(255,194,75,.35)}
+#bonus .bcard.float{position:fixed;z-index:99;pointer-events:none;transform:rotate(-2deg);box-shadow:0 10px 24px rgba(0,0,0,.5);border-color:var(--accent);max-width:320px}
+#bonus .bcard.ghost{opacity:.3}
+#bonus .col.hot,#bonus .sortpool.hot{border-color:var(--accent);background:rgba(255,194,75,.06)}
+#bonus .col{cursor:pointer}
+#bonus .dots button{width:34px;height:8px;border-radius:4px;background:var(--line);border:0;padding:0;cursor:pointer}
+#bonus .dots button.on{background:var(--accent)}
+#bonus .dots{align-items:center;gap:6px}
+#bonus .anim svg{display:block;width:100%;height:auto}
+#bonus .stepname{color:var(--fg);font-weight:600;font-size:14.5px}
+@media (max-width:820px){#bonus .anim{grid-template-columns:1fr}#bonus .cols{grid-template-columns:1fr}#bonus .col{min-height:120px}#bonus td.k{width:30%}}
 .syncnote{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:60;background:rgba(14,22,40,.92);border:1px solid rgba(255,194,75,.5);color:#ffe2a6;padding:8px 16px;border-radius:999px;font-size:14px;box-shadow:0 6px 20px rgba(0,0,0,.35)}
 .prose table.sum tr.hi td:first-child{color:var(--accent)}
 /* countdown before a review question */
@@ -939,9 +997,21 @@ button.bt{cursor:pointer}
           <button class="mode" id="mKO"><svg viewBox="0 0 24 24"><path d="M9 3h6M10 3v6L4 19a1.5 1.5 0 0 0 1.3 2h13.4a1.5 1.5 0 0 0 1.3-2L14 9V3"/></svg><h3>Knockout Lab</h3><p>ปิดเอนไซม์ทีละตัว ตั้งสมมติฐาน แล้วดูผลที่เกิดขึ้น</p><span class="tagx">เก็บคะแนน 20 · ครูตรวจ</span></button>
           <button class="mode" id="mBuild"><svg viewBox="0 0 24 24"><path d="M4 7h7v7H4zM13 10h7v7h-7z"/></svg><h3>Build</h3><p>ประกอบกระบวนการเองทีละจุด 6 ภารกิจ มีคำใบ้จุดละ 1 ข้อ</p><span class="tagx">เก็บคะแนน 30</span></button>
           <button class="mode" id="mTest"><svg viewBox="0 0 24 24"><path d="M9 11l2 2 4-4"/><rect x="4" y="3" width="16" height="18" rx="2"/></svg><h3>Test</h3><p>แบบฝึก 10 ข้อ มีทั้งคำถามและสถานการณ์สมมติ เฉลยทันที</p><span class="tagx" id="mTestTag"></span></button>
+          <button class="mode wide bmode" id="mBonus"><svg viewBox="0 0 24 24"><path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.9z"/></svg><div><h3>โบนัสพิเศษ: โพรแคริโอต vs ยูแคริโอต</h3><p>เทียบความต่างของแบคทีเรียกับเซลล์ของเรา · ตาราง ภาพเคลื่อนไหว และเกมคัดแยก</p></div><span class="tagx">ไม่คิดคะแนน</span></button>
           <button class="mode wide" id="mMine" hidden><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><div><h3>คะแนนของฉัน</h3><p>สรุปคะแนน Test, Knockout Lab และ Build ทั้งหมด พร้อมจุดดีและจุดที่ต้องอ่านเพิ่ม</p></div></button>
           <button class="mode wide" id="mDash" hidden><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><div><h3>สรุปคะแนนนักเรียน</h3><p>รายห้อง รายคน และข้อที่นักเรียนตอบผิดมากที่สุด ดาวน์โหลดเป็น Excel ได้</p></div></button>
         </div>
+      </div>
+    </section>
+
+    <section class="ov" id="bonus" hidden>
+      <div class="bw">
+        <div class="bh"><button class="back" id="bxBack">‹ เลือกโหมด</button><h2>โบนัสพิเศษ: โพรแคริโอต vs ยูแคริโอต</h2><span class="pill p1">ไม่คิดคะแนน</span><span class="pill p2">เนื้อหาเสริม</span></div>
+        <p class="sub">เทียบการจำลองดีเอ็นเอ การถอดรหัส และการแปลรหัส ในแบคทีเรีย (โพรแคริโอต) กับเซลล์ของเรา (ยูแคริโอต) · ในโหมดเรียนรู้เป็นแบบยูแคริโอต</p>
+        <div class="tabs" id="bxTabs"><button data-t="0" class="on">1. ตารางเปรียบเทียบ</button><button data-t="1">2. ภาพเคลื่อนไหว</button><button data-t="2">3. เกมคัดแยก</button></div>
+        <div id="bxT0"></div>
+        <div id="bxT1" hidden></div>
+        <div id="bxT2" hidden></div>
       </div>
     </section>
 
@@ -4154,7 +4224,7 @@ let screen = 'home', step = 0, prog = 0, playing = false, speed = 1;
 let autoDist = true, focusOverride = null, camAtStart = null, hubTouched = false;
 let LMODE = 'teach';                     // 'teach' (teacher) | 'learn' (student, no questions) | 'check' (student review: pop-up questions, not scored)
 const DIR0 = V3(0, 0.32, 1).normalize();
-const OVS = ['home','reg','login','menu','topics','hub','quiz','ko','build','dash','rev','gx'];
+const OVS = ['home','reg','login','menu','topics','hub','quiz','ko','build','dash','rev','gx','bonus'];
 
 /* layout preferences */
 let capOff = false;
@@ -6042,6 +6112,258 @@ $('freeClear').addEventListener('click', () => { FREE.placed = {}; FREE.sel = nu
 $('freeBack').addEventListener('click', () => { closeFree(); showMissionList(); });
 $('freeMissions').addEventListener('click', () => { closeFree(); showMissionList(); });
 canvas.addEventListener('pointerup', e => { if(screen === 'build' && FREE && FREE.sel && downAt && Math.hypot(e.clientX-downAt[0], e.clientY-downAt[1]) <= 6) freePlace(); });
+/* ================= Bonus: prokaryote vs eukaryote (not scored) =================
+   Content checked against Campbell Biology 13th ed., chapters 16–17. */
+const BX = { tab:0, T:0, play:true, last:0, raf:0, built:false, game:null };
+
+const BX_ROWS = [
+  ['การจำลองดีเอ็นเอ'],
+  ['ลักษณะดีเอ็นเอ', 'วงกลม อยู่ในบริเวณนิวคลีออยด์ ไม่มีเยื่อหุ้ม', 'เส้นตรง อยู่ในนิวเคลียส', 'ยูแคริโอตมีโครโมโซมหลายแท่ง แต่ละแท่งเป็นดีเอ็นเอเส้นตรง 1 โมเลกุลที่พันอยู่กับโปรตีน'],
+  ['จุดเริ่มต้นของการจำลอง', '1 จุด', 'หลายร้อยถึงหลายพันจุด', 'ทั้งสองแบบจำลองไปสองทิศทางจากจุดเริ่มต้น ยูแคริโอตมีดีเอ็นเอยาวมาก จึงต้องเริ่มหลายจุดพร้อมกันเพื่อให้เสร็จทันในระยะ S'],
+  ['ความเร็วในการจำลอง', 'ประมาณ 500 นิวคลีโอไทด์ต่อวินาที', 'ประมาณ 50 นิวคลีโอไทด์ต่อวินาที (เซลล์คน)', 'ยูแคริโอตต่อสายช้ากว่า แต่ชดเชยด้วยการเริ่มจำลองหลายจุดพร้อมกัน'],
+  ['ปลายโครโมโซม', 'ไม่มีปัญหาปลายสั้นลง (ดีเอ็นเอเป็นวง)', 'มีเทโลเมียร์ ปลายสั้นลงทุกครั้งที่จำลอง', 'แลกกิงสแตรนด์สร้างส่วนปลายสุดไม่ได้ ดีเอ็นเอเส้นตรงจึงสั้นลงทุกรอบ เทโลเมียร์เป็นลำดับเบสซ้ำ ๆ ที่ไม่มียีน ช่วยกันไม่ให้ยีนที่สำคัญหายไป'],
+  ['ลีดดิงสแตรนด์และแลกกิงสแตรนด์', 'มี', 'มี', 'ดีเอ็นเอพอลิเมอเรสต่อสายใหม่ได้ในทิศ 5′ → 3′ เท่านั้นในทั้งสองแบบ', 1],
+  ['การถอดรหัส'],
+  ['เกิดที่', 'ไซโทพลาซึม', 'นิวเคลียส', 'แบคทีเรียไม่มีนิวเคลียส ดีเอ็นเอกับไรโบโซมอยู่ในที่เดียวกัน'],
+  ['อาร์เอ็นเอพอลิเมอเรส', '1 ชนิด จับโพรโมเตอร์ได้เอง', 'อย่างน้อย 3 ชนิด ต้องมีโปรตีนช่วยจับโพรโมเตอร์', 'ในยูแคริโอต ชนิดที่สร้าง pre-mRNA คือ RNA polymerase II และต้องมีโปรตีนกลุ่ม transcription factor ช่วยนำมาจับที่โพรโมเตอร์ (เช่น บริเวณ TATA box)'],
+  ['การสิ้นสุด', 'หยุดที่ terminator', 'ถอดรหัสผ่านสัญญาณ AAUAAA แล้วสาย RNA ถูกตัดออก', 'ในยูแคริโอต โปรตีนจะตัดสาย RNA ห่างจาก AAUAAA ไปประมาณ 10–35 นิวคลีโอไทด์ แล้วปล่อย pre-mRNA ออกมา'],
+  ['ผลผลิต', 'mRNA ใช้แปลรหัสได้ทันที', 'pre-mRNA ต้องตัดแต่งก่อน', 'ในแบคทีเรีย สาย RNA ที่ได้ใช้เป็น mRNA ได้เลย ไม่ต้องดัดแปลง'],
+  ['การตัดแต่งอาร์เอ็นเอ'],
+  ['เติม 5′ cap และหาง poly A', 'ไม่มี', 'มี', 'ช่วยป้องกัน mRNA ไม่ให้ถูกย่อย ช่วยให้ออกจากนิวเคลียสได้ และช่วยให้ไรโบโซมเข้าจับ'],
+  ['อินทรอน', 'ไม่มี', 'ตัดอินทรอนออก แล้วต่อเอกซอนเข้าด้วยกัน', 'ยีนของยูแคริโอตมีอินทรอนแทรกอยู่ ต้องตัดออกก่อน mRNA จะออกจากนิวเคลียส'],
+  ['การแปลรหัส'],
+  ['ไรโบโซมหา AUG', 'จับลำดับเบสก่อน AUG ได้เลย', 'จับที่ 5′ cap แล้วเลื่อนไปหา AUG', 'ในแบคทีเรีย หน่วยเล็กจับ mRNA และ tRNA ตัวเริ่มต้นในลำดับใดก่อนก็ได้ ส่วนในยูแคริโอต หน่วยเล็กที่มี tRNA ตัวเริ่มต้นอยู่แล้วจับที่ 5′ cap แล้วเลื่อนไปจนพบ AUG'],
+  ['ถอดรหัสกับแปลรหัส', 'เกิดพร้อมกันได้', 'แยกกัน (นิวเคลียส → ไซโทพลาซึม)', 'รูปพอลิโซมในหนังสือเรียน (รูป 4.22) เป็นภาพของแบคทีเรียที่ถอดรหัสและแปลรหัสพร้อมกัน'],
+  ['เริ่มที่ AUG · tRNA นำเมไทโอนีน · หน่วยใหญ่มาทีหลัง · หยุดที่รหัสหยุด', 'เหมือนกัน', 'เหมือนกัน', 'กลไกพื้นฐานเหมือนกัน ความต่างหลักคือการตัดแต่งอาร์เอ็นเอในนิวเคลียสของยูแคริโอต', 1],
+  ['พอลิโซม (ไรโบโซมหลายตัวบน mRNA สายเดียว)', 'มี', 'มี', 'ทั้งสองแบบผลิตพอลิเพปไทด์ได้หลายสายจาก mRNA สายเดียวพร้อมกัน', 1]
+];
+
+const BX_CARDS = [
+  ['ดีเอ็นเอเป็นวงกลม', 'P', 'แบคทีเรียมีดีเอ็นเอเป็นวง ส่วนยูแคริโอตเป็นเส้นตรง'],
+  ['มีจุดเริ่มต้นการจำลองเพียง 1 จุด', 'P', 'แบคทีเรียมี 1 จุด ยูแคริโอตมีหลายร้อยถึงหลายพันจุด'],
+  ['ถอดรหัสและแปลรหัสเกิดพร้อมกันได้', 'P', 'แบคทีเรียไม่มีเยื่อหุ้มนิวเคลียสกั้น ไรโบโซมจึงจับ mRNA ได้ทันที'],
+  ['หยุดถอดรหัสที่ terminator', 'P', 'terminator เป็นของแบคทีเรีย ยูแคริโอตตัดสาย RNA หลังสัญญาณ AAUAAA'],
+  ['ได้ mRNA ที่แปลรหัสได้ทันที', 'P', 'แบคทีเรียไม่มีการตัดแต่งอาร์เอ็นเอ'],
+  ['มีจุดเริ่มต้นการจำลองหลายจุด', 'E', 'ดีเอ็นเอของยูแคริโอตยาวมาก จึงเริ่มจำลองหลายจุดพร้อมกัน'],
+  ['ถอดรหัสในนิวเคลียส', 'E', 'แบคทีเรียไม่มีนิวเคลียส'],
+  ['ได้ pre-mRNA ที่ต้องตัดแต่ง', 'E', 'pre-mRNA มีเฉพาะในยูแคริโอต'],
+  ['มีการเติม 5′ cap และหาง poly A', 'E', 'การตัดแต่งอาร์เอ็นเอเกิดในนิวเคลียสของยูแคริโอตเท่านั้น'],
+  ['ตัดอินทรอนออก', 'E', 'ยีนของยูแคริโอตมีอินทรอน ต้องตัดออกก่อนแปลรหัส'],
+  ['ไรโบโซมจับที่ 5′ cap แล้วเลื่อนหา AUG', 'E', 'แบคทีเรียไม่มี 5′ cap ไรโบโซมจับลำดับเบสก่อน AUG ได้เลย'],
+  ['ปลายโครโมโซมมีเทโลเมียร์', 'E', 'ดีเอ็นเอเส้นตรงของยูแคริโอตมีปลาย จึงต้องมีเทโลเมียร์'],
+  ['จำลองดีเอ็นเอไปสองทิศทางจากจุดเริ่มต้น', 'B', 'ทั้งสองแบบจำลองไปสองทิศทาง'],
+  ['มีลีดดิงสแตรนด์และแลกกิงสแตรนด์', 'B', 'ดีเอ็นเอพอลิเมอเรสต่อสายได้ทิศ 5′ → 3′ เท่านั้นในทั้งสองแบบ'],
+  ['ใช้อาร์เอ็นเอพอลิเมอเรสถอดรหัส', 'B', 'ทั้งสองแบบใช้อาร์เอ็นเอพอลิเมอเรส'],
+  ['เริ่มแปลรหัสที่ AUG', 'B', 'AUG เป็นรหัสเริ่มต้นในทั้งสองแบบ'],
+  ['tRNA ใช้แอนติโคดอนจับกับโคดอน', 'B', 'ทั้งสองแบบใช้รหัสพันธุกรรมชุดเดียวกัน'],
+  ['หน่วยใหญ่ของไรโบโซมมาประกอบหลังหน่วยเล็ก', 'B', 'ทั้งสองแบบประกอบไรโบโซมแบบนี้'],
+  ['หยุดแปลรหัสที่รหัสหยุด', 'B', 'UAA UAG UGA เป็นรหัสหยุดในทั้งสองแบบ'],
+  ['มีพอลิโซม (ไรโบโซมหลายตัวบน mRNA สายเดียว)', 'B', 'พบทั้งในแบคทีเรียและยูแคริโอต']
+];
+const BX_COL = { P:'โพรแคริโอต', E:'ยูแคริโอต', B:'ทั้งสองแบบ' };
+
+// keep Thai technical terms on one line (the browser's Thai line breaking splits words it does not know)
+const BX_WORDS = ['ลีดดิงสแตรนด์','แลกกิงสแตรนด์','อาร์เอ็นเอพอลิเมอเรส','ดีเอ็นเอพอลิเมอเรส','โพรโมเตอร์','นิวคลีโอไทด์','นิวคลีออยด์','เทโลเมียร์','ไซโทพลาซึม','เมไทโอนีน','พอลิเพปไทด์','พอลิโซม','อินทรอน','เอกซอน','ยูแคริโอต','โพรแคริโอต','แบคทีเรีย','นิวเคลียส','ไรโบโซม','แอนติโคดอน','โครโมโซม','ดีเอ็นเอ','อาร์เอ็นเอ'];
+const BX_RE = new RegExp(BX_WORDS.join('|'), 'g');
+const nb = t => String(t).replace(BX_RE, w => `<span style="white-space:nowrap">${w}</span>`);
+
+/* ---------- tab 1: table ---------- */
+function bxTable(){
+  let html = '<table><thead><tr><th></th><th class="pk">โพรแคริโอต (แบคทีเรีย)</th><th class="ek">ยูแคริโอต (เซลล์คน พืช สัตว์)</th></tr></thead><tbody>';
+  BX_ROWS.forEach((r, i) => {
+    if(r.length === 1){ html += `<tr class="grp"><td colspan="3">${r[0]}</td></tr>`; return; }
+    const same = r[4] ? ' <span class="same">✓ ทั้งสองแบบ</span>' : '';
+    html += `<tr class="row" data-i="${i}"><td class="k">${nb(r[0])}</td><td>${nb(r[1])}${same}</td><td>${nb(r[2])}${same}</td></tr><tr class="more" data-m="${i}" hidden><td></td><td colspan="2">${nb(r[3])}</td></tr>`;
+  });
+  html += '</tbody></table><p class="src">แตะแถวเพื่อดูคำอธิบาย · อ้างอิง Campbell Biology 13th ed. บทที่ 16–17</p>';
+  $('bxT0').innerHTML = html;
+  $('bxT0').querySelectorAll('tr.row').forEach(tr => tr.addEventListener('click', () => {
+    const m = $('bxT0').querySelector(`tr[data-m="${tr.dataset.i}"]`);
+    m.hidden = !m.hidden; tr.classList.toggle('open', !m.hidden);
+  }));
+}
+
+/* ---------- tab 2: side-by-side animation (2D) ---------- */
+const BX_STEPS = ['ถอดรหัส', 'ตัดแต่ง', 'ออกจากนิวเคลียส', 'แปลรหัส'];
+const BX_CAP = [
+  ['อาร์เอ็นเอพอลิเมอเรสถอดรหัส แล้ว<b>ไรโบโซมเข้าจับปลาย 5′ ของ mRNA ทันที</b> ทั้งที่ยังถอดรหัสไม่เสร็จ', 'อาร์เอ็นเอพอลิเมอเรสถอดรหัสใน<b>นิวเคลียส</b> ได้ <b>pre-mRNA</b> ที่มีทั้งเอกซอนและอินทรอน'],
+  ['<b>ไม่มีขั้นตัดแต่ง</b> ไรโบโซมแปลรหัสต่อไปพร้อมกับการถอดรหัส', '<b>ตัดแต่ง pre-mRNA</b>: เติม 5′ cap เติมหาง poly A และตัดอินทรอนออก ได้ mRNA'],
+  ['ไม่มีเยื่อหุ้มนิวเคลียส mRNA จึง<b>ไม่ต้องเดินทาง</b>ไปไหน', 'mRNA <b>ออกจากนิวเคลียสทางรูนิวเคลียส</b> ไปยังไซโทพลาซึม'],
+  ['ไรโบโซมหลายตัวแปลรหัส mRNA สายเดียวกัน (<b>พอลิโซม</b>) ได้พอลิเพปไทด์หลายสาย', 'หน่วยเล็กจับที่ <b>5′ cap</b> เลื่อนไปหา <b>AUG</b> แล้วหน่วยใหญ่มาประกอบ เริ่มแปลรหัส']
+];
+const BXC = { mr:'#ff7350', rib:'#c98a74', rib2:'#e0b39f', pol:'#7fe3d8', dna:'#9fb6e0', cap:'#ffd84d', intr:'#6b7a96', aa:'#9b8cf0' };
+const bxCl = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
+const bxE = t => t < .5 ? 2*t*t : 1 - Math.pow(-2*t + 2, 2)/2;
+function bxRibo(x, y, small = 1, large = 1, k = 1){
+  return (large ? `<ellipse cx="${x}" cy="${y-6*k}" rx="${13*k}" ry="${9*k}" fill="${BXC.rib}" opacity="${large}"/>` : '') + (small ? `<ellipse cx="${x}" cy="${y+6*k}" rx="${10*k}" ry="${6*k}" fill="${BXC.rib2}" opacity="${small}"/>` : '');
+}
+function bxBeads(x, y, n, dx = -9, dy = -4){ let s = ''; for(let i=0;i<n;i++) s += `<circle cx="${(x - 15 + dx*i).toFixed(1)}" cy="${(y - 14 + dy*i).toFixed(1)}" r="4" fill="${BXC.aa}"/>`; return s; }
+function bxLeft(T){
+  // bacterium: three RNA polymerases on the DNA; mRNA grows down from each, ribosomes ride along it from the 5′ end
+  let s = `<rect x="8" y="8" width="504" height="284" rx="60" fill="rgba(159,211,255,.06)" stroke="#9fd3ff" stroke-width="2"/>
+    <path d="M40 70 Q 120 60 200 70 T 360 70 T 490 70" stroke="${BXC.dna}" stroke-width="5" fill="none"/><path d="M40 78 Q 120 68 200 78 T 360 78 T 490 78" stroke="${BXC.dna}" stroke-width="3" fill="none" opacity=".6"/>
+    <text x="44" y="56" fill="#cfe0ff" font-size="15">DNA</text><text x="30" y="276" fill="#9aabc8" font-size="13">ไม่มีเยื่อหุ้มนิวเคลียส</text>`;
+  const pt = (x, d) => [x + 9*Math.sin(d/28), 86 + d];
+  [130, 250, 370].forEach((x, i) => {
+    const t0 = i*0.55, L = bxCl((T - t0)*42, 0, 168);
+    if(L <= 0) return;
+    let p = ''; for(let d=0; d<=L; d+=4){ const [px, py] = pt(x, d); p += (d ? 'L' : 'M') + px.toFixed(1) + ' ' + py.toFixed(1); }
+    s += `<path d="${p}" stroke="${BXC.mr}" stroke-width="4" fill="none"/>`;
+    for(let k=0;k<3;k++){
+      const tk = t0 + 0.5 + k*1.0; if(T < tk) continue;
+      const dist = bxCl((T - tk)*26, 0, L - 18); const [rx, ry] = pt(x, L - dist);
+      s += bxRibo(rx, ry, 1, 1, .78) + bxBeads(rx + 3, ry + 3, Math.min(6, 1 + Math.floor(dist/14)), -7, -2);
+    }
+    s += `<ellipse cx="${x}" cy="74" rx="16" ry="12" fill="${BXC.pol}"/>`;
+  });
+  return s + `<text x="398" y="50" fill="${BXC.pol}" font-size="14">RNA polymerase</text><text x="420" y="276" fill="${BXC.rib2}" font-size="14">ไรโบโซม</text>`;
+}
+function bxMRNA(x, y, a, introns, cap, tail){
+  // exons (orange) with introns (grey) that shrink to zero as a goes 0→1
+  const ex = 34, inW = 26*(1 - a); let s = '', cx = x;
+  for(let i=0;i<3;i++){
+    s += `<rect x="${cx.toFixed(1)}" y="${y}" width="${ex}" height="8" fill="${BXC.mr}"/>`; cx += ex;
+    if(i < 2 && introns && inW > 0.5){ s += `<rect x="${cx.toFixed(1)}" y="${y}" width="${inW.toFixed(1)}" height="8" fill="${BXC.intr}"/>`; cx += inW; }
+  }
+  if(cap) s += `<circle cx="${x - 7}" cy="${y + 4}" r="7" fill="${BXC.cap}" opacity="${cap}"/>`;
+  if(tail) s += `<text x="${cx + 4}" y="${y + 9}" fill="#f2c14e" font-size="13" font-weight="700" opacity="${tail}">AAAA</text>`;
+  return { s, end:cx };
+}
+function bxRight(T){
+  let s = `<rect x="8" y="8" width="504" height="284" rx="40" fill="rgba(255,184,163,.05)" stroke="#ffb8a3" stroke-width="2"/>
+    <ellipse cx="150" cy="150" rx="125" ry="115" fill="rgba(155,140,240,.10)" stroke="#9b8cf0" stroke-width="2.5"/>
+    <rect x="268" y="140" width="10" height="22" fill="#0a1120" stroke="#9b8cf0"/>
+    <path d="M50 95 Q 110 85 170 95 T 250 95" stroke="${BXC.dna}" stroke-width="5" fill="none"/>
+    <text x="120" y="60" fill="#c9c0ff" font-size="14">นิวเคลียส</text><text x="208" y="80" fill="#cfe0ff" font-size="14">DNA</text>
+    <text x="340" y="42" fill="#ffb8a3" font-size="14">ไซโทพลาซึม</text><text x="290" y="132" fill="#9aabc8" font-size="12">รูนิวเคลียส</text>`;
+  const st = Math.min(3, Math.floor(T)), f = T - st;
+  if(st === 0){
+    // transcription inside the nucleus: polymerase moves along the DNA, pre-mRNA grows behind it
+    const a = bxE(bxCl(f/0.9)), px = 60 + 165*a;
+    const full = 34*3 + 26*2, w = full*a;
+    s += `<clipPath id="bxclip"><rect x="60" y="130" width="${w.toFixed(1)}" height="20"/></clipPath><g clip-path="url(#bxclip)">${bxMRNA(60, 136, 0, 1, 0, 0).s}</g>`;
+    s += `<ellipse cx="${px.toFixed(1)}" cy="96" rx="16" ry="12" fill="${BXC.pol}"/><path d="M${px.toFixed(1)} 108 L${px.toFixed(1)} 132" stroke="${BXC.mr}" stroke-width="3"/>`;
+    s += `<text x="60" y="124" fill="#c9c0ff" font-size="13">pre-mRNA</text><text x="62" y="170" fill="#9aabc8" font-size="12.5"><tspan fill="${BXC.mr}">■</tspan> เอกซอน  <tspan fill="${BXC.intr}">■</tspan> อินทรอน</text>`;
+  } else if(st === 1){
+    // processing: cap, tail, then introns removed
+    const cap = bxCl(f/0.25), tail = bxCl((f - 0.25)/0.25), cut = bxE(bxCl((f - 0.5)/0.45));
+    s += bxMRNA(70, 136, cut, 1, cap, tail).s;
+    s += `<text x="60" y="124" fill="#c9c0ff" font-size="13">${cut > 0.95 ? 'mRNA' : 'pre-mRNA'}</text>`;
+    if(cap > 0.5) s += `<text x="46" y="172" fill="#ffe2a6" font-size="12.5">5′ cap</text>`;
+    if(tail > 0.5) s += `<text x="150" y="190" fill="#f2c14e" font-size="12.5">หาง poly A</text>`;
+    if(f > 0.5 && f < 0.97) s += `<text x="96" y="172" fill="#9aabc8" font-size="12.5">ตัดอินทรอนออก ✂</text>`;
+  } else {
+    // export through the pore, then translation in the cytoplasm
+    const a = st === 2 ? bxE(bxCl(f/0.9)) : 1;
+    const path = [[70,136],[262,150],[300,206]];
+    const seg = a < 0.6 ? 0 : 1, u = seg ? (a - 0.6)/0.4 : a/0.6;
+    const x = path[seg][0] + (path[seg+1][0] - path[seg][0])*u, y = path[seg][1] + (path[seg+1][1] - path[seg][1])*u;
+    const m = bxMRNA(x, y, 1, 0, 1, 1); s += m.s;
+    if(st === 2) s += `<path d="M220 150 C 250 150 262 150 290 170" stroke="#ffffff55" stroke-width="2" stroke-dasharray="4 4" fill="none"/>`;
+    if(st === 3){
+      const scan = bxE(bxCl(f/0.35)), join = bxCl((f - 0.35)/0.15), go = bxCl((f - 0.5)/0.5);
+      const rx = x - 2 + 26*scan + 60*go;
+      s += bxRibo(rx, y + 4, 1, join) + (go > 0 ? bxBeads(rx, y + 4, Math.floor(go*5) + 1) : '');
+      s += `<text x="${x + 18}" y="${y + 30}" fill="#9aabc8" font-size="12">AUG</text><text x="392" y="250" fill="${BXC.rib2}" font-size="14">ไรโบโซม</text>`;
+    }
+  }
+  return s;
+}
+function bxBuildAnim(){
+  $('bxT1').innerHTML = `<div class="anim"><div class="pane"><h3>โพรแคริโอต <small>แบคทีเรีย</small></h3><svg id="bxL" viewBox="0 0 520 300"></svg><p class="cap" id="bxCapL"></p></div>
+    <div class="pane"><h3>ยูแคริโอต <small>เซลล์ของเรา</small></h3><svg id="bxR" viewBox="0 0 520 300"></svg><p class="cap" id="bxCapR"></p></div></div>
+    <div class="ctl"><button class="btn" id="bxPlay">⏸ หยุด</button><button class="btn" id="bxRe">↻ เริ่มใหม่</button><span class="dots" id="bxDots">${BX_STEPS.map((n, i) => `<button data-s="${i}" title="${n}"></button>`).join('')}</span><span class="stepname" id="bxStep"></span><span style="flex:1"></span><span style="color:var(--muted);font-size:13.5px">แตะแถบขั้นเพื่อดูซ้ำ · ทั้งสองฝั่งเล่นพร้อมกัน</span></div>`;
+  $('bxPlay').onclick = () => { if(BX.T >= 3.999){ BX.T = 0; } BX.play = !BX.play; bxDraw(); };
+  $('bxRe').onclick = () => { BX.T = 0; BX.play = true; bxDraw(); };
+  $('bxDots').querySelectorAll('button').forEach(b => b.onclick = () => { BX.T = +b.dataset.s; BX.play = true; bxDraw(); });
+}
+function bxDraw(){
+  const st = Math.min(3, Math.floor(BX.T));
+  $('bxL').innerHTML = bxLeft(BX.T); $('bxR').innerHTML = bxRight(Math.min(BX.T, 3.999));
+  $('bxCapL').innerHTML = nb(BX_CAP[st][0]); $('bxCapR').innerHTML = nb(BX_CAP[st][1]);
+  $('bxStep').textContent = `ขั้นที่ ${st + 1}/4 · ${BX_STEPS[st]}`;
+  $('bxDots').querySelectorAll('button').forEach((b, i) => b.classList.toggle('on', i <= st));
+  $('bxPlay').textContent = BX.play ? '⏸ หยุด' : '▶ เล่น';
+}
+function bxLoop(now){
+  BX.raf = 0;
+  if(screen !== 'bonus' || BX.tab !== 1) return;
+  const dt = BX.last ? Math.min(0.1, (now - BX.last)/1000) : 0; BX.last = now;
+  if(BX.play){ BX.T = Math.min(4, BX.T + dt/5); if(BX.T >= 4){ BX.T = 3.999; BX.play = false; } bxDraw(); }
+  BX.raf = requestAnimationFrame(bxLoop);
+}
+function bxStartAnim(){ BX.last = 0; bxDraw(); if(!BX.raf) BX.raf = requestAnimationFrame(bxLoop); }
+
+/* ---------- tab 3: sorting game ---------- */
+function bxNewGame(){
+  const pick = k => BX_CARDS.map((c, i) => [c, i]).filter(x => x[0][1] === k).sort(() => Math.random() - .5).slice(0, 4);
+  const cards = [...pick('P'), ...pick('E'), ...pick('B')].sort(() => Math.random() - .5).map(([c, i]) => ({ id:i, t:c[0], a:c[1], why:c[2], at:'pool', res:null }));
+  BX.game = { cards, sel:null, msg:'' };
+  bxRenderGame();
+}
+function bxRenderGame(){
+  const g = BX.game;
+  const card = c => `<span class="bcard ${c.res || ''}${g.sel === c.id ? ' sel' : ''}" data-id="${c.id}">${nb(c.t)}${c.res === 'no' ? `<span class="why">${nb(c.why)}</span>` : ''}</span>`;
+  const col = k => `<div class="col" data-at="${k}"><h4 style="color:${k === 'P' ? '#9fd3ff' : k === 'E' ? '#ffb8a3' : '#8fe3a8'}">${BX_COL[k]}</h4>${g.cards.filter(c => c.at === k).map(card).join('')}</div>`;
+  const left = g.cards.filter(c => c.at === 'pool').length;
+  $('bxT2').innerHTML = `<p class="sub" style="margin-top:0">ลากข้อความไปวางในช่องที่ถูกต้อง (หรือแตะข้อความ แล้วแตะช่อง) แล้วกด "ตรวจคำตอบ" ทำซ้ำได้ไม่จำกัด</p>
+    <div class="sortpool" data-at="pool">${g.cards.filter(c => c.at === 'pool').map(card).join('') || '<span style="color:var(--muted);font-size:14px;align-self:center">วางครบแล้ว กด "ตรวจคำตอบ"</span>'}</div>
+    <div class="cols">${col('P')}${col('E')}${col('B')}</div>
+    <div class="res"><button class="btn primary" id="bxCheck">ตรวจคำตอบ</button><button class="btn" id="bxNew">เริ่มใหม่ (สุ่มข้อความชุดใหม่)</button><span style="font-size:15px" id="bxMsg">${g.msg || `เหลือ ${left} ใบ`}</span><span class="pill p1" style="margin-left:auto">ไม่คิดคะแนน</span></div>`;
+  $('bxCheck').onclick = () => {
+    const placed = g.cards.filter(c => c.at !== 'pool');
+    placed.forEach(c => { c.res = c.at === c.a ? 'ok' : 'no'; });
+    const ok = placed.filter(c => c.res === 'ok').length, rest = g.cards.length - placed.length;
+    g.msg = !placed.length ? 'ยังไม่ได้วางข้อความ' : (ok === g.cards.length ? '<b style="color:#8fe3a8">ถูกครบทั้ง 12 ข้อ เยี่ยมมาก!</b>' : `ถูก <b style="color:#8fe3a8">${ok}</b> จาก ${placed.length} ที่วางแล้ว` + (rest ? ` · เหลืออีก ${rest} ใบ` : ' · ย้ายใบที่ผิดแล้วตรวจอีกครั้ง'));
+    bxRenderGame();
+  };
+  $('bxNew').onclick = bxNewGame;
+}
+function bxMove(id, at){ const c = BX.game.cards.find(x => x.id === id); if(!c || !at) return; c.at = at; c.res = null; BX.game.sel = null; BX.game.msg = ''; bxRenderGame(); }
+(function bxDrag(){
+  let st = null;
+  const zoneAt = (x, y) => { const el = document.elementFromPoint(x, y); const z = el && el.closest('#bxT2 .col, #bxT2 .sortpool'); return z ? z.dataset.at : null; };
+  const hot = at => $('bxT2').querySelectorAll('.col,.sortpool').forEach(z => z.classList.toggle('hot', z.dataset.at === at));
+  $('bxT2').addEventListener('pointerdown', e => {
+    const c = e.target.closest('.bcard'); if(!c) return;
+    st = { id:+c.dataset.id, x:e.clientX, y:e.clientY, el:c, fl:null }; c.setPointerCapture && c.setPointerCapture(e.pointerId);
+  });
+  $('bxT2').addEventListener('pointermove', e => {
+    if(!st) return;
+    if(!st.fl && Math.hypot(e.clientX - st.x, e.clientY - st.y) > 6){
+      const r = st.el.getBoundingClientRect(); st.fl = st.el.cloneNode(true); st.fl.classList.add('float'); st.fl.classList.remove('sel','ok','no');
+      st.fl.querySelectorAll('.why').forEach(w => w.remove()); st.fl.style.width = r.width + 'px'; st.dx = st.x - r.left; st.dy = st.y - r.top;
+      $('bonus').appendChild(st.fl); st.el.classList.add('ghost');
+    }
+    if(st.fl){ st.fl.style.left = (e.clientX - st.dx) + 'px'; st.fl.style.top = (e.clientY - st.dy) + 'px'; hot(zoneAt(e.clientX, e.clientY)); e.preventDefault(); }
+  });
+  const end = e => {
+    if(!st) return; const s = st; st = null;
+    if(s.fl){ s.fl.remove(); hot(null); const at = zoneAt(e.clientX, e.clientY); if(at) bxMove(s.id, at); else bxRenderGame(); return; }
+    BX.game.sel = BX.game.sel === s.id ? null : s.id; bxRenderGame();
+  };
+  $('bxT2').addEventListener('pointerup', end);
+  $('bxT2').addEventListener('pointercancel', e => { if(st && st.fl) st.fl.remove(); st = null; hot(null); bxRenderGame(); });
+  $('bxT2').addEventListener('click', e => {
+    if(BX.game.sel == null || e.target.closest('.bcard,button')) return;
+    const z = e.target.closest('.col,.sortpool'); if(z) bxMove(BX.game.sel, z.dataset.at);
+  });
+})();
+
+/* ---------- tabs / entry ---------- */
+function bxTab(t){
+  BX.tab = t;
+  $('bxTabs').querySelectorAll('button').forEach(b => b.classList.toggle('on', +b.dataset.t === t));
+  [0, 1, 2].forEach(i => { $('bxT' + i).hidden = i !== t; });
+  if(t === 1) bxStartAnim();
+}
+$('bxTabs').addEventListener('click', e => { const b = e.target.closest('button'); if(b) bxTab(+b.dataset.t); });
+$('bxBack').addEventListener('click', () => go('menu'));
+$('mBonus').addEventListener('click', () => {
+  if(!BX.built){ bxTable(); bxBuildAnim(); bxNewGame(); BX.built = true; }
+  go('bonus'); bxTab(BX.tab);
+});
+if(location.hostname === 'page') window.__bx = { BX, bxRenderGame };   // test hook (local test server only)
 
 /* start once every part of the app has been defined */
 applyPrefs(); resize(); go('home');
