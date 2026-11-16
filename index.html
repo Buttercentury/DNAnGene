@@ -201,6 +201,35 @@ button{font:inherit;color:inherit}
 .prose table.sum.bi td:first-child{white-space:normal;font-weight:500;color:var(--muted)}
 .prose table.sum.bi td{text-align:center}.prose table.sum.bi td:first-child{text-align:left}
 .prose table.sum.bi th{text-align:center}
+#menu.syncing .menu{pointer-events:none;opacity:.45;transition:opacity .2s}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips button{min-width:50px;height:40px;padding:0 10px;border-radius:10px;border:1px solid var(--line);background:var(--ink);color:var(--fg);font:inherit;font-size:15px;font-weight:600;cursor:pointer}
+.chips.rooms button{min-width:40px}
+.chips button.on{background:var(--accent);border-color:var(--accent);color:#0b1222}
+.formcard p.formnote{padding:8px 10px;border-radius:10px;background:rgba(255,194,75,.12);border:1px solid rgba(255,194,75,.35);color:#ffe2a6;font-size:13.5px}
+.formcard{max-height:calc(100vh - 24px);overflow:auto}
+.revhd #rvDel{margin-left:auto}
+.btn.danger{border-color:rgba(255,120,120,.55);color:#ffb3b3}
+.dupwarn{margin:0;padding:8px 12px;border-radius:10px;background:rgba(255,194,75,.12);border:1px solid rgba(255,194,75,.4);color:#ffe2a6;font-size:14px}
+.warnno{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;background:#ffc24b;color:#1c1405;font-weight:700;font-size:12px}
+small.snno,small.unm{display:block;font-size:11.5px;color:var(--muted)}
+small.unm{color:#ffc24b}
+.tool h3{margin:0 0 6px;font-size:17px}
+.tool .grp{display:flex;flex-wrap:wrap;gap:6px 14px;margin:4px 0 10px}
+.tool label.ck{display:flex;align-items:center;gap:6px;font-size:14.5px;cursor:pointer;color:#14213a;font-weight:500}
+.tool label.ck input{width:18px;height:18px;accent-color:#2b5fd9}
+.tool b{color:#14213a}
+.tool .mt{width:100%;border-collapse:collapse;font-size:13.5px}
+.tool .mt td,.tool .mt th{padding:6px 6px;border-bottom:1px solid #cfd8e6;text-align:left;vertical-align:middle}
+.tool .dnote{color:#46546e}
+.tool small{color:#5a6886}
+.tool .mt select{max-width:100%;height:36px;border-radius:8px;border:1px solid #b9c4d6;background:#fff;color:#14213a;font:inherit;font-size:13.5px}
+.tool .ok,.tool small.ok{color:#1d7a3e}.tool .wn,.tool small.wn{color:#a35b00}
+.pbtn.danger{background:#b3261e}.pbtn:disabled{opacity:.45;cursor:default}
+.tool input.typ{height:44px;border-radius:10px;border:1px solid #b9c4d6;background:#fff;color:#14213a;padding:0 12px;font:inherit;font-size:16px;width:100%}
+.tool .scroll{max-height:52vh;overflow:auto;margin:6px 0}
+.sumcard.tool{width:min(760px,96vw)}
+.syncnote{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:60;background:rgba(14,22,40,.92);border:1px solid rgba(255,194,75,.5);color:#ffe2a6;padding:8px 16px;border-radius:999px;font-size:14px;box-shadow:0 6px 20px rgba(0,0,0,.35)}
 .prose table.sum tr.hi td:first-child{color:var(--accent)}
 /* countdown before a review question */
 .cdcard{text-align:center;align-items:center}
@@ -868,13 +897,16 @@ button.bt{cursor:pointer}
     <section class="ov center" id="reg" hidden>
       <form class="formcard" id="regForm" novalidate>
         <h2>ข้อมูลนักเรียน</h2>
-        <p>ใช้บันทึกคะแนนให้ครู กรอกครั้งเดียว เครื่องนี้จะจำไว้</p>
-        <div class="field"><label for="fName">ชื่อ-นามสกุล</label><input id="fName" autocomplete="name" maxlength="70" required></div>
+        <p>ใช้บันทึกคะแนนให้ครู ใช้เลขประจำตัวเดิมแล้วทำงานต่อได้ทุกเครื่อง</p>
+        <div class="field"><label for="fName">ชื่อ-นามสกุล</label><input id="fName" autocomplete="name" maxlength="70" placeholder="เช่น สมชาย ใจดี" required></div>
+        <div class="field"><label>ชั้น</label><div class="chips" id="fLv"><button type="button" data-v="1">ม.1</button><button type="button" data-v="2">ม.2</button><button type="button" data-v="3">ม.3</button><button type="button" data-v="4">ม.4</button><button type="button" data-v="5">ม.5</button><button type="button" data-v="6">ม.6</button></div></div>
+        <div class="field"><label>ห้อง</label><div class="chips rooms" id="fRm"><button type="button" data-v="1">1</button><button type="button" data-v="2">2</button><button type="button" data-v="3">3</button><button type="button" data-v="4">4</button><button type="button" data-v="5">5</button><button type="button" data-v="6">6</button><button type="button" data-v="7">7</button><button type="button" data-v="8">8</button><button type="button" data-v="9">9</button><button type="button" data-v="10">10</button><button type="button" data-v="11">11</button><button type="button" data-v="12">12</button></div></div>
         <div class="frow">
-          <div class="field"><label for="fRoom">ชั้น</label><input id="fRoom" list="roomList" placeholder="ม.4/1" maxlength="12" required></div>
+          <div class="field"><label for="fSn">เลขประจำตัวนักเรียน</label><input id="fSn" inputmode="numeric" maxlength="8" autocomplete="off" required></div>
           <div class="field"><label for="fNo">เลขที่</label><input id="fNo" inputmode="numeric" maxlength="3" required></div>
         </div>
-        <datalist id="roomList"><option value="ม.4/1"><option value="ม.4/2"><option value="ม.4/3"><option value="ม.4/4"><option value="ม.4/5"><option value="ม.4/6"></datalist>
+        <div class="field"><label for="fSn2">พิมพ์เลขประจำตัวนักเรียนอีกครั้ง</label><input id="fSn2" inputmode="numeric" maxlength="8" autocomplete="off" required></div>
+        <p class="formnote" id="regNote" hidden></p>
         <p class="formerr" id="regErr" hidden></p>
         <div class="formbtns"><button type="button" class="back" id="regBack">‹ ย้อนกลับ</button><button type="submit" class="cta">เข้าสู่บทเรียน</button></div>
       </form>
@@ -892,6 +924,7 @@ button.bt{cursor:pointer}
     </section>
 
     <section class="ov" id="menu" hidden>
+      <div class="syncnote" id="syncNote" hidden></div>
       <div class="menu">
         <div class="whohd">
           <div class="who"><span class="av" id="whoAv">?</span><div><b id="whoName"></b><small id="whoSub"></small></div></div>
@@ -996,9 +1029,12 @@ button.bt{cursor:pointer}
           <h2>สรุปคะแนนนักเรียน</h2>
           <button class="btn" id="dashReload">โหลดใหม่</button>
           <button class="btn primary" id="dashCsv">ดาวน์โหลด Excel (.csv)</button>
+          <button class="btn" id="dashMatch">จับคู่รายชื่อ (.xls)</button><input type="file" id="dashFile" accept=".xls,.xlsx,.html,.htm,.csv" multiple hidden>
+          <button class="btn danger" id="dashWipe">ลบข้อมูลทั้งหมด</button>
         </div>
         <div class="rooms" id="dashRooms"></div>
         <p class="dnote" id="dashNote"></p>
+        <p class="dupwarn" id="dashDup" hidden></p>
         <div class="tblwrap"><table class="sc" id="dashTbl"></table></div>
         <div class="dgrid">
           <div class="dbox"><h3>ข้อที่ห้องนี้ตอบผิดมากที่สุด</h3><ol id="dashMiss"></ol></div>
@@ -1016,7 +1052,7 @@ button.bt{cursor:pointer}
 
     <section class="ov" id="rev" hidden>
       <div class="revwrap">
-        <header class="revhd"><button class="back" id="rvBack">‹ Dashboard</button><h2>ตรวจคำตอบนักเรียน</h2></header>
+        <header class="revhd"><button class="back" id="rvBack">‹ Dashboard</button><h2>ตรวจคำตอบนักเรียน</h2><button class="btn danger" id="rvDel">ลบประวัติ…</button></header>
         <div class="revmain">
           <aside class="revlist"><div class="rvl" id="rvList"></div></aside>
           <main class="revcol">
@@ -3677,7 +3713,16 @@ const DB = { ready:false, err:null, user:null, isTeacher:false, onChange:null };
 let fbAuthM, fbFsM, fbAuth, fbDb;
 
 function lsGet(k, d){ try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch(e){ return d; } }
-function lsSet(k, v){ try { if(v == null) localStorage.removeItem(k); else localStorage.setItem(k, JSON.stringify(v)); } catch(e){} }
+function lsSet(k, v){ try { if(v == null) localStorage.removeItem(k); else localStorage.setItem(k, JSON.stringify(v)); } catch(e){} if(typeof cloudTouch === 'function') cloudTouch(k); }
+
+/* ---------- student identity ----------
+   New registrations carry the student ID number (sn) and are identified by it. Older records (no sn) are
+   identified by class + name with titles/spaces removed, until the teacher matches them to a class list. */
+function normRoom(r){ const s = String(r || '').replace(/\s+/g, ''); const m = s.match(/(\d+)\/(\d+)/); return m ? `ม.${m[1]}/${m[2]}` : s; }
+function nameKey(n){ return String(n || '').normalize('NFC').replace(/[​-‍﻿]/g, '').replace(/ํา/g, 'ำ').replace(/\s+/g, '')
+  .replace(/^(นางสาว|นาง|นาย|น\.ส\.|เด็กชาย|เด็กหญิง|ด\.ช\.|ด\.ญ\.|ดช\.|ดญ\.)/, ''); }
+const legacyId = s => s ? `${normRoom(s.room)}|${nameKey(s.name)}` : '';
+function stuId(s){ return !s ? '' : s.sn ? 'sn:' + s.sn : legacyId(s); }
 
 const dbReady = (async () => {
   try {
@@ -3708,7 +3753,7 @@ function pendingCount(){ return lsGet(QKEY, []).length; }
 const LOGKEY = 'g3d-log-v1';      // every attempt made on this device (attempt limits and resume work offline too)
 function saveAttempt(rec, stu){
   const q = lsGet(QKEY, []);
-  const r = { name:stu.name, room:stu.room, no:stu.no, mode:rec.mode, topic:rec.topic, score:rec.score, max:rec.max,
+  const r = { name:stu.name, room:stu.room, no:stu.no, sn:stu.sn || '', mode:rec.mode, topic:rec.topic, score:rec.score, max:rec.max,
               detail:Object.assign({ at:Date.now() }, rec.detail || {}) };
   q.push(r); lsSet(QKEY, q);
   const log = lsGet(LOGKEY, []); log.push(r); lsSet(LOGKEY, log.slice(-600));
@@ -3757,6 +3802,173 @@ async function loadMine(){
   const snap = await fbFsM.getDocs(q);
   return snap.docs.map(d => Object.assign({ id:d.id }, d.data()));
 }
+/* ---------- cloud copy of a student's work ----------
+   Everything a student has started (Test session, Knockout, Build, gene lab, lesson questions) and the log of
+   finished attempts is kept in progress/{hash of student ID}. It comes back on another iPad, after private
+   browsing, or after logging out and in again. When the teacher deletes history, a "wipe" mark is left in the
+   same document (and config/wipe for "delete everything") so a device cannot bring the deleted work back. */
+const CLOUD = { pid:null, id:null, timer:null, ready:false };
+// localStorage keys that belong to one student (unfinished work + lesson progress)
+function ownKey(k, id, kind){
+  if(!k || !id) return false;
+  const is = {
+    test:k.startsWith('g3d-test-' + id + '-') && /^(rep|tx|tl|all)$/.test(k.slice(('g3d-test-' + id + '-').length)),
+    ko:k === 'g3d-ko-' + id, build:k === 'g3d-build-' + id, gx:k === 'g3d-gx-' + id,
+    ls:k.startsWith('g3d-ls-') && k.endsWith('|' + id), done:k === 'geneflow-progress-v1|' + id
+  };
+  return kind ? !!is[kind] : Object.values(is).some(Boolean);
+}
+function cloudMine(k){ return ownKey(k, CLOUD.id); }
+function cloudTouch(k){
+  if(!CLOUD.ready || !(cloudMine(k) || k === LOGKEY)) return;
+  clearTimeout(CLOUD.timer); CLOUD.timer = setTimeout(cloudPush, 1200);
+}
+// 64-hex key from the student ID (same on every device; works without a secure context)
+function cyrb53(str, seed){
+  let h1 = 0xdeadbeef ^ seed, h2 = 0x41c6ce57 ^ seed;
+  for(let i=0;i<str.length;i++){ const ch = str.charCodeAt(i); h1 = Math.imul(h1 ^ ch, 2654435761); h2 = Math.imul(h2 ^ ch, 1597334677); }
+  h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+  h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+  return (4294967296 * (2097151 & h2) + (h1 >>> 0)).toString(16).padStart(16, '0');
+}
+function pidOf(sn){ const t = 'g3d|sn:' + sn; return [1, 2, 3, 4].map(k => cyrb53(t, k*7919)).join(''); }
+const logKeyOf = r => `${r.mode}|${r.topic}|${(r.detail && r.detail.at) || 0}`;
+const mineLog = () => lsGet(LOGKEY, []).filter(r => stuId(r) === CLOUD.id || (typeof STU !== 'undefined' && STU && !r.sn && legacyId(r) === legacyId(STU)));
+const encK = k => k.split('.').join('·'), decK = k => k.split('·').join('.');
+async function cloudPush(){
+  clearTimeout(CLOUD.timer); CLOUD.timer = null;
+  if(!CLOUD.ready || !CLOUD.pid || !DB.ready || DB.isTeacher || typeof STU === 'undefined' || !STU || !STU.sn) return false;
+  const data = {};
+  for(let i=0;i<localStorage.length;i++){ const k = localStorage.key(i); if(cloudMine(k)) data[encK(k)] = localStorage.getItem(k); }
+  const at = Date.now();
+  try {
+    await fbFsM.setDoc(fbFsM.doc(fbDb, 'progress', CLOUD.pid),
+      { name:STU.name, room:normRoom(STU.room), no:String(+STU.no), sn:STU.sn, data, log:JSON.stringify(mineLog().slice(-300)), at },
+      { mergeFields:['name','room','no','sn','data','log','at'] });   // never touches the teacher's fields (wipe, tlog)
+    try { localStorage.setItem('g3d-syncat|' + CLOUD.id, JSON.stringify(at)); } catch(e){}
+    return true;
+  } catch(e){ console.warn('cloud save failed', e); return false; }
+}
+/* remove what the teacher deleted (marks: {all, 'test|rep', 'ko|gene', 'build|B3', …} → time of deletion) */
+function applyWipes(marks){
+  const id = CLOUD.id, doneKey = 'g3d-wiped|' + id, done = lsGet(doneKey, {});
+  let changed = false;
+  const partOf = r => `${r.mode}|${r.mode === 'ko' && r.topic !== 'gene' ? 'rep' : r.topic}`;
+  const log = lsGet(LOGKEY, []);
+  const keep = log.filter(r => {
+    const mine = stuId(r) === id || (STU && !r.sn && legacyId(r) === legacyId(STU));
+    if(!mine) return true;
+    const at = (r.detail && r.detail.at) || 0, t = Math.max(marks.all || 0, marks[partOf(r)] || 0);
+    return !(t && at < t);
+  });
+  if(keep.length !== log.length){ try { localStorage.setItem(LOGKEY, JSON.stringify(keep)); } catch(e){} changed = true; }
+  const q = lsGet(QKEY, []), q2 = q.filter(r => !(stuId(r) === id && ((r.detail && r.detail.at) || 0) < Math.max(marks.all || 0, marks[partOf(r)] || 0)));
+  if(q2.length !== q.length){ try { localStorage.setItem(QKEY, JSON.stringify(q2)); } catch(e){} }
+  // unfinished work of a deleted part (only once per deletion)
+  const drop = test => { for(let i=localStorage.length-1;i>=0;i--){ const k = localStorage.key(i); if(test(k)){ localStorage.removeItem(k); changed = true; } } };
+  for(const [m, t] of Object.entries(marks)){
+    if(!t || (done[m] || 0) >= t) continue;
+    if(m === 'all') drop(k => ownKey(k, id));
+    else if(m.startsWith('test|')) drop(k => k === 'g3d-test-' + id + '-' + m.slice(5));
+    else if(m === 'ko|rep') drop(k => ownKey(k, id, 'ko'));
+    else if(m === 'ko|gene') drop(k => ownKey(k, id, 'gx'));
+    else if(m.startsWith('build|')) drop(k => ownKey(k, id, 'build'));
+    done[m] = t;
+  }
+  try { localStorage.setItem(doneKey, JSON.stringify(done)); } catch(e){}
+  return changed;
+}
+// the latest deletion that covers one saved key
+function wipeFor(k, marks){
+  const id = CLOUD.id, m = /^g3d-test-.*-(rep|tx|tl|all)$/.exec(k);
+  let t = marks.all || 0;
+  if(m) t = Math.max(t, marks['test|' + m[1]] || 0);
+  else if(ownKey(k, id, 'ko')) t = Math.max(t, marks['ko|rep'] || 0);
+  else if(ownKey(k, id, 'gx')) t = Math.max(t, marks['ko|gene'] || 0);
+  else if(ownKey(k, id, 'build')) for(const [p, v] of Object.entries(marks)) if(p.startsWith('build|')) t = Math.max(t, v);
+  return t;
+}
+/* call after a student logs in: bring back what they did elsewhere, then keep the cloud copy up to date */
+async function cloudStart(stu){
+  CLOUD.ready = false; CLOUD.id = stuId(stu); CLOUD.pid = null;
+  await dbReady;
+  if(!DB.ready || DB.isTeacher || !stu.sn) return false;
+  let applied = false;
+  try {
+    CLOUD.pid = pidOf(stu.sn);
+    const [snap, cfg] = await Promise.all([
+      fbFsM.getDoc(fbFsM.doc(fbDb, 'progress', CLOUD.pid)),
+      fbFsM.getDoc(fbFsM.doc(fbDb, 'config', 'wipe')).catch(() => null)
+    ]);
+    const c = snap.exists() ? snap.data() : null;
+    const marks = Object.assign({}, (c && c.wipe) || {});
+    const g = cfg && cfg.exists() ? (cfg.data().at || 0) : 0; if(g > (marks.all || 0)) marks.all = g;
+    if(applyWipes(marks)) applied = true;
+    if(c){
+      // attempt log: merge both ways (attempt limits must hold on every device)
+      const log = lsGet(LOGKEY, []), have = new Set(log.map(logKeyOf));
+      let cl = []; try { cl = JSON.parse(c.log || '[]').concat(JSON.parse(c.tlog || '[]')); } catch(e){}
+      const cut = r => { const at = (r.detail && r.detail.at) || 0, p = `${r.mode}|${r.mode === 'ko' && r.topic !== 'gene' ? 'rep' : r.topic}`; return at < Math.max(marks.all || 0, marks[p] || 0); };
+      for(const r of cl) if(!have.has(logKeyOf(r)) && !cut(r)){ log.push(r); applied = true; }
+      log.sort((a, b) => ((a.detail && a.detail.at) || 0) - ((b.detail && b.detail.at) || 0));
+      try { localStorage.setItem(LOGKEY, JSON.stringify(log.slice(-600))); } catch(e){}
+      // unfinished work: take the cloud copy when it is newer than what this device last synced
+      const mine = lsGet('g3d-syncat|' + CLOUD.id, 0);
+      if((c.at || 0) > mine){
+        for(const [k0, v] of Object.entries(c.data || {})){
+          const k = decK(k0);
+          if((c.at || 0) < wipeFor(k, marks)) continue;     // saved before the teacher deleted that part
+          try { localStorage.setItem(k, v); applied = true; } catch(e){}
+        }
+        try { localStorage.setItem('g3d-syncat|' + CLOUD.id, JSON.stringify(c.at)); } catch(e){}
+        applyWipes(marks);
+      }
+    }
+  } catch(e){ console.warn('cloud load failed', e); }
+  CLOUD.ready = !!CLOUD.pid;
+  if(CLOUD.ready) cloudPush();
+  return applied;
+}
+function cloudStop(){ if(CLOUD.timer) cloudPush(); CLOUD.ready = false; CLOUD.id = null; CLOUD.pid = null; }
+addEventListener('visibilitychange', () => { if(document.visibilityState === 'hidden' && CLOUD.timer) cloudPush(); });
+addEventListener('pagehide', () => { if(CLOUD.timer) cloudPush(); });
+
+/* ---------- teacher: progress documents, matching old records, deleting history ---------- */
+// records the teacher matched to a student ID: stored in tlog so the student's other devices know about them
+async function tAddLog(sn, recs){
+  const ref = fbFsM.doc(fbDb, 'progress', pidOf(sn)), snap = await fbFsM.getDoc(ref);
+  let t = []; try { t = JSON.parse((snap.exists() && snap.data().tlog) || '[]'); } catch(e){}
+  const have = new Set(t.map(logKeyOf));
+  for(const r of recs){ const x = Object.assign({}, r); delete x.id; delete x.createdAt; delete x.uid; x.sn = sn; if(!have.has(logKeyOf(x))){ t.push(x); have.add(logKeyOf(x)); } }
+  await fbFsM.setDoc(ref, { tlog:JSON.stringify(t.slice(-300)) }, { merge:true });
+}
+// "delete history": parts = ['all'] or e.g. ['test|rep', 'ko|gene', 'build|B3']
+async function tMarkWipe(sn, parts){
+  const now = Date.now(), wipe = {}; for(const p of parts) wipe[p] = now;
+  const ref = fbFsM.doc(fbDb, 'progress', pidOf(sn)), snap = await fbFsM.getDoc(ref);
+  const patch = { wipe };
+  if(snap.exists() && snap.data().data){
+    const sid = 'sn:' + sn, keep = {}, all = parts.includes('all');
+    const hit = k => all || parts.some(p => p.startsWith('test|') ? k === `g3d-test-${sid}-${p.slice(5)}` : p === 'ko|rep' ? ownKey(k, sid, 'ko') : p === 'ko|gene' ? ownKey(k, sid, 'gx') : p.startsWith('build|') ? ownKey(k, sid, 'build') : false);
+    for(const [k, v] of Object.entries(snap.data().data)) if(!hit(decK(k))) keep[k] = v;
+    patch.data = keep;
+  }
+  if(snap.exists() && snap.data().tlog){
+    let t = []; try { t = JSON.parse(snap.data().tlog); } catch(e){}
+    const partOf = r => `${r.mode}|${r.mode === 'ko' && r.topic !== 'gene' ? 'rep' : r.topic}`;
+    patch.tlog = JSON.stringify(parts.includes('all') ? [] : t.filter(r => !parts.includes(partOf(r))));
+  }
+  const prev = (snap.exists() && snap.data().wipe) || {};
+  patch.wipe = Object.assign({}, prev, wipe);
+  await fbFsM.setDoc(ref, patch, { mergeFields:Object.keys(patch) });
+}
+async function tDeleteAttempt(id){ await fbFsM.deleteDoc(fbFsM.doc(fbDb, 'attempts', id)); }
+async function tWipeAll(){
+  await fbFsM.setDoc(fbFsM.doc(fbDb, 'config', 'wipe'), { at:Date.now() });
+  const ps = await fbFsM.getDocs(fbFsM.collection(fbDb, 'progress'));
+  for(const d of ps.docs) await fbFsM.deleteDoc(fbFsM.doc(fbDb, 'progress', d.id));
+}
+
 async function updateAttempt(id, patch){
   await fbFsM.updateDoc(fbFsM.doc(fbDb, 'attempts', id), patch);
 }
@@ -3902,13 +4114,41 @@ const LETTERS = ['ก','ข','ค','ง','จ'];
 
 /* progress (per viewer, this browser only) */
 const KEY = 'geneflow-progress-v1';
+const doneKey = () => (ROLE === 'stu' && STU) ? KEY + '|' + sid() : KEY;
 let done = lsGet(KEY, {}) || {};
-function markDone(id){ if(done[id]) return; done[id] = true; lsSet(KEY, done); }
+function loadDone(){ done = lsGet(doneKey(), null) || lsGet(KEY, {}) || {}; }
+function markDone(id){ if(done[id]) return; done[id] = true; lsSet(doneKey(), done); }
 const txLocked = () => false;
 
 /* who is using the app */
 let ROLE = null;                         // 'stu' | 'tea'
-let STU = lsGet('g3d-student', null);    // {name, room, no}
+let STU = lsGet('g3d-student', null);    // {name, room, no, sn}; older versions have no sn and must confirm once
+/* Older versions saved work under the class|number|name exactly as typed. When a student registers with their
+   student ID, copy every piece of saved work on this device that belongs to the same class + name to the new key
+   (nothing is deleted), and stamp the ID on this device's attempt log so the records follow the student. */
+function migrateTo(stu){
+  const now = stuId(stu), want = legacyId(stu);
+  const rawMatch = raw => { const m = /^(.*?)\|(\d*)\|(.*)$/.exec(raw || ''); return !!m && legacyId({ room:m[1], name:m[3] }) === want; };
+  try {
+    const ks = []; for(let i=0;i<localStorage.length;i++) ks.push(localStorage.key(i));
+    const put = (k, v) => { if(localStorage.getItem(k) == null) localStorage.setItem(k, v); };
+    for(const k of ks){
+      let m;
+      if((m = /^g3d-test-(.*)-(rep|tx|tl|all)$/.exec(k)) && m[1] !== now && (rawMatch(m[1]) || m[1] === want)) put(`g3d-test-${now}-${m[2]}`, localStorage.getItem(k));
+      else if((m = /^g3d-(ko|build|gx)-(.*)$/.exec(k)) && m[2] !== now && m[2] !== 'teacher' && (rawMatch(m[2]) || m[2] === want)) put(`g3d-${m[1]}-${now}`, localStorage.getItem(k));
+      else if((m = /^g3d-ls-(rep|tx|tl)$/.exec(k))){
+        const v = lsGet(k, null);
+        if(v && (rawMatch(v.sid) || v.sid === want)){ v.sid = now; put(`g3d-ls-${m[1]}|${now}`, JSON.stringify(v)); }
+      }
+    }
+    for(const key of [LOGKEY, QKEY]){
+      const log = lsGet(key, []); let ch = false;
+      for(const r of log) if(!r.sn && legacyId(r) === want){ r.sn = stu.sn; ch = true; }
+      if(ch) localStorage.setItem(key, JSON.stringify(log));
+    }
+    if(lsGet(KEY + '|' + now, null) == null && lsGet(KEY, null)) localStorage.setItem(KEY + '|' + now, localStorage.getItem(KEY));
+  } catch(e){ console.warn('migrate', e); }
+}
 
 let screen = 'home', step = 0, prog = 0, playing = false, speed = 1;
 let autoDist = true, focusOverride = null, camAtStart = null, hubTouched = false;
@@ -3973,7 +4213,7 @@ function dbStatus(){
 }
 DB.onChange = () => { dbStatus(); if(screen === 'menu') refreshMenu(); };
 function refreshHome(){
-  $('roleStuSub').textContent = STU ? `เข้าเรียนต่อในชื่อ ${STU.name} (${STU.room} เลขที่ ${STU.no})` : 'กรอกชื่อ ชั้น เลขที่ แล้วเริ่มเรียน';
+  $('roleStuSub').textContent = STU && STU.sn ? `เข้าเรียนต่อในชื่อ ${STU.name} (${STU.room} เลขที่ ${STU.no})` : STU ? `${STU.name} · ยืนยันเลขประจำตัวนักเรียนก่อนเรียนต่อ` : 'กรอกชื่อ ชั้น เลขประจำตัว แล้วเริ่มเรียน';
   dbStatus();
 }
 function refreshMenu(){
@@ -3990,7 +4230,37 @@ function refreshMenu(){
   $('mTestTag').textContent = tea ? 'ครูทดลองทำได้ ไม่บันทึกคะแนน' : 'บันทึกคะแนนให้ครู';
   dbStatus();
 }
-$('roleStu').addEventListener('click', () => { ROLE = 'stu'; if(STU) go('menu'); else { go('reg'); setTimeout(() => $('fName').focus(), 50); } });
+$('roleStu').addEventListener('click', () => { ROLE = 'stu'; if(STU && STU.sn){ stuIn(); go('menu'); } else openReg(STU); });
+/* registration: class and room are buttons; the student ID (typed twice) is what identifies the student */
+const REG = { lv:'', rm:'' };
+function regPick(box, key, v){ REG[key] = v; $(box).querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.v === v)); }
+$('fLv').addEventListener('click', e => { const b = e.target.closest('button'); if(b) regPick('fLv', 'lv', b.dataset.v); });
+$('fRm').addEventListener('click', e => { const b = e.target.closest('button'); if(b) regPick('fRm', 'rm', b.dataset.v); });
+for(const id of ['fSn','fSn2','fNo']) $(id).addEventListener('input', () => { const el = $(id), v = el.value.replace(/[๐-๙]/g, c => '๐๑๒๓๔๕๖๗๘๙'.indexOf(c)).replace(/\D/g, ''); if(v !== el.value) el.value = v; });
+function openReg(old){
+  go('reg'); $('regErr').hidden = true;
+  const m = old ? /(\d+)\/(\d+)/.exec(normRoom(old.room)) : null;
+  $('fName').value = old ? old.name : ''; $('fNo').value = old ? old.no : ''; $('fSn').value = ''; $('fSn2').value = '';
+  regPick('fLv', 'lv', m ? m[1] : ''); regPick('fRm', 'rm', m ? m[2] : '');
+  const note = $('regNote');
+  note.hidden = !old;
+  if(old) note.textContent = 'ระบบใหม่ใช้เลขประจำตัวนักเรียนเพื่อเก็บงานไว้ทำต่อได้ทุกเครื่อง ตรวจชื่อ ชั้น ห้อง แล้วใส่เลขประจำตัวนักเรียน 2 ครั้ง งานที่ทำไว้ในเครื่องนี้จะยังอยู่';
+  setTimeout(() => $(old ? 'fSn' : 'fName').focus(), 50);
+}
+/* a student is in: load their own lesson progress and bring back unfinished work from the cloud */
+function stuIn(){
+  loadDone();
+  const box = $('syncNote'), menu = $('menu');
+  if(box){ box.hidden = false; box.textContent = 'กำลังดึงงานที่ทำค้างไว้… รอสักครู่'; }
+  menu.classList.add('syncing');
+  const limit = new Promise(res => setTimeout(() => res(false), 7000));   // never block longer than 7 s (offline)
+  Promise.race([cloudStart(STU), limit]).catch(e => { console.warn('sync', e); return false; }).then(applied => {
+    menu.classList.remove('syncing');
+    loadDone();
+    if(box){ box.textContent = applied ? 'ดึงงานที่ทำค้างไว้กลับมาแล้ว' : 'งานจะถูกบันทึกไว้ ทำต่อเครื่องไหนก็ได้'; setTimeout(() => { box.hidden = true; }, 2600); }
+    if(applied && screen === 'menu') go('menu');
+  });
+}
 $('roleTea').addEventListener('click', () => {
   if(DB.isTeacher){ ROLE = 'tea'; go('menu'); return; }
   go('login'); $('loginErr').hidden = true; $('fPw').value = ''; pwCheck(); setTimeout(() => $('fPw').focus(), 50);
@@ -3999,13 +4269,19 @@ $('regBack').addEventListener('click', () => go('home'));
 $('loginBack').addEventListener('click', () => go('home'));
 $('regForm').addEventListener('submit', e => {
   e.preventDefault();
-  const name = $('fName').value.replace(/\s+/g, ' ').trim(), room = $('fRoom').value.replace(/\s+/g, '').trim(), no = $('fNo').value.trim();
-  const err = msg => { $('regErr').textContent = msg; $('regErr').hidden = false; };
-  if(name.length < 3) return err('กรอกชื่อ-นามสกุล');
-  if(!room) return err('กรอกชั้น เช่น ม.4/1');
-  if(!/^\d{1,3}$/.test(no)) return err('เลขที่ต้องเป็นตัวเลข');
-  STU = { name, room, no:String(+no) }; lsSet('g3d-student', STU); ROLE = 'stu';
-  $('regErr').hidden = true; go('menu');
+  const name = $('fName').value.replace(/\s+/g, ' ').trim(), no = $('fNo').value.trim(), sn = $('fSn').value.trim(), sn2 = $('fSn2').value.trim();
+  const err = (msg, f) => { $('regErr').textContent = msg; $('regErr').hidden = false; if(f) $(f).focus(); };
+  if(nameKey(name).length < 3) return err('กรอกชื่อ-นามสกุล', 'fName');
+  if(/[A-Za-z]/.test(name) || !/[\u0E00-\u0E7F]/.test(name)) return err('กรอกชื่อ-นามสกุลเป็นภาษาไทย', 'fName');
+  if(!REG.lv) return err('เลือกชั้น ม.1–ม.6');
+  if(!REG.rm) return err('เลือกห้อง');
+  if(!/^\d{3,8}$/.test(sn)) return err('เลขประจำตัวนักเรียนต้องเป็นตัวเลข', 'fSn');
+  if(sn !== sn2) return err('เลขประจำตัวนักเรียน 2 ช่องไม่ตรงกัน ตรวจอีกครั้ง', 'fSn2');
+  if(!/^\d{1,3}$/.test(no) || +no < 1) return err('เลขที่ต้องเป็นตัวเลข', 'fNo');
+  STU = { name, room:`ม.${REG.lv}/${REG.rm}`, no:String(+no), sn };
+  migrateTo(STU);
+  lsSet('g3d-student', STU); ROLE = 'stu';
+  $('regErr').hidden = true; stuIn(); go('menu');
 });
 /* password helpers: warn when the keyboard is in Thai or Caps Lock is on, and let the teacher see what was typed */
 let capsOn = false;
@@ -4034,7 +4310,7 @@ $('loginForm').addEventListener('submit', async e => {
 });
 $('btnLogout').addEventListener('click', async () => {
   if(ROLE === 'tea'){ try { await teacherLogout(); } catch(e){} ROLE = null; go('home'); return; }
-  STU = null; lsSet('g3d-student', null); ROLE = null; go('home');
+  cloudStop(); STU = null; lsSet('g3d-student', null); ROLE = null; loadDone(); go('home');
 });
 $('mTeach').addEventListener('click', () => { LMODE = ROLE === 'tea' ? 'teach' : 'learn'; go('topics'); });
 $('mCheck').addEventListener('click', () => { LMODE = 'check'; go('topics'); });
@@ -4055,8 +4331,8 @@ $('bBack').addEventListener('click', () => go(M.back === 'hub' ? 'hub' : 'topics
 let LS = null;      // {sid, id, ans:{stepIdx:'c'|'w'|'t'}, played:{}, saved}
 const asking = () => ROLE === 'stu' && LMODE === 'check';
 const qOf = k => (TEACH_Q[M.id] || []).find(q => q.step === k+1);
-function lsKey(){ return 'g3d-ls-' + M.id; }
-function sid(){ return STU ? `${STU.room}|${STU.no}|${STU.name}` : ''; }
+function lsKey(){ return 'g3d-ls-' + M.id + '|' + sid(); }
+function sid(){ return stuId(STU); }
 function startSession(){
   LS = null;
   if(!asking()) return;
@@ -4858,8 +5134,9 @@ const MAX_TRIES = 3;
 const r2 = x => Math.round(x*100)/100;
 const fmt2 = x => String(r2(x));
 const atOf = r => (r.detail && r.detail.at) || tms(r) || 0;
-const stuKey = r => `${r.room}|${r.no}|${(r.name||'').trim()}`;
-const isMine = r => !!STU && r.name === STU.name && r.room === STU.room && String(r.no) === String(STU.no);
+const stuKey = r => stuId(r);
+const isMine = r => !!STU && (r.sn ? r.sn === STU.sn : legacyId(r) === legacyId(STU));
+const partOf = r => `${r.mode}|${r.mode === 'ko' && r.topic !== 'gene' ? 'rep' : r.topic}`;
 const isKoRep = r => r.mode === 'ko' && r.topic !== 'gene';
 const isTest2 = r => r.mode === 'test' && r.max === 1 && r.detail && r.detail.qid;
 
@@ -4997,7 +5274,7 @@ function summarize(recs){
 let DASH = { rows:[], room:null };
 async function loadDash(){
   $('dashNote').textContent = 'กำลังโหลดคะแนน…'; $('dashTbl').innerHTML = ''; $('dashMiss').innerHTML = ''; $('dashRooms').innerHTML = '';
-  try { DASH.rows = await loadAttempts(); }
+  try { DASH.rows = (await loadAttempts()).map(r => Object.assign(r, { room:normRoom(r.room) })); }
   catch(e){ $('dashNote').textContent = DB.isTeacher ? 'โหลดคะแนนไม่สำเร็จ ตรวจอินเทอร์เน็ตแล้วกด "โหลดใหม่"' : 'ต้องเข้าสู่ระบบครูก่อน'; return; }
   const rooms = [...new Set(DASH.rows.map(r => r.room))].sort((a, b) => a.localeCompare(b, 'th', { numeric:true }));
   if(!rooms.includes(DASH.room)) DASH.room = rooms[0] || null;
@@ -5010,9 +5287,12 @@ function studentList(room){
   for(const r of DASH.rows){
     if(room && r.room !== room) continue;
     if(r.mode === 'teach') continue;
-    const k = stuKey(r); (G[k] = G[k] || { key:k, name:r.name, room:r.room, no:r.no, recs:[] }).recs.push(r);
+    const k = stuKey(r); (G[k] = G[k] || { key:k, sn:r.sn || '', recs:[] }).recs.push(r);
   }
-  return Object.values(G).map(s => Object.assign(s, { S:summarize(s.recs), last:Math.max(...s.recs.map(atOf)) }))
+  return Object.values(G).map(s => {
+    const nw = s.recs.reduce((a, b) => atOf(b) >= atOf(a) ? b : a);   // newest record gives the name / class / number shown
+    return Object.assign(s, { name:nw.name, room:nw.room, no:nw.no, S:summarize(s.recs), last:atOf(nw) });
+  })
     .sort((a, b) => (+a.no || 999) - (+b.no || 999) || a.name.localeCompare(b.name, 'th'));
 }
 function renderDash(){
@@ -5022,7 +5302,15 @@ function renderDash(){
   $('dashNote').textContent = DASH.rows.length ? `${DASH.room || ''} · นักเรียน ${list.length} คน · ทั้งหมด ${DASH.rows.length} รายการ · แตะชื่อเพื่อดูคำตอบและแก้คะแนน` : 'ยังไม่มีคะแนนนักเรียน';
   const th = `<thead><tr><th>เลขที่</th><th class="l">ชื่อ</th><th class="grp2">Test DNA<small>/10</small></th><th>ถอดรหัส<small>/10</small></th><th>แปลรหัส<small>/10</small></th>
     <th class="grp2">KO จำลอง<small>/10</small></th><th>KO ยีน<small>/10</small></th><th class="grp2">Build<small>/30</small></th><th class="grp2">รวม<small>/80</small></th><th class="grp2">ครูแก้</th><th class="grp2 l">ล่าสุด</th></tr></thead>`;
-  const body = list.map(s => `<tr><td>${esc(s.no)}</td><td class="l"><button class="kobtn" data-k="${esc(s.key)}" title="ดูคำตอบและแก้คะแนน">${esc(s.name)}</button></td>
+  // the same number used by two different students (ignore an unmatched old record of the same person)
+  const byNo = {}; for(const x of list) (byNo[+x.no] = byNo[+x.no] || []).push(x);
+  const dup = Object.values(byNo).filter(g => g.length > 1 && new Set(g.map(x => nameKey(x.name))).size > 1);
+  const dupSet = new Set(dup.flat().map(x => x.key));
+  $('dashDup').hidden = !dup.length;
+  $('dashDup').innerHTML = dup.length ? '<b>เลขที่ซ้ำกัน</b> ตรวจกับนักเรียนว่าใครใส่เลขที่ผิด: ' + dup.map(g => `เลขที่ ${esc(g[0].no)} (${g.map(x => esc(x.name)).join(', ')})`).join(' · ') : '';
+  const nUn = list.filter(x => !x.sn).length;
+  if(nUn) $('dashNote').textContent += ` · ${nUn} คนยังไม่ได้จับคู่กับเลขประจำตัว (กด "จับคู่รายชื่อ")`;
+  const body = list.map(s => `<tr><td>${esc(s.no)}${dupSet.has(s.key) ? ' <span class="warnno" title="เลขที่ซ้ำ">!</span>' : ''}</td><td class="l"><button class="kobtn" data-k="${esc(s.key)}" title="ดูคำตอบและแก้คะแนน">${esc(s.name)}</button>${s.sn ? `<small class="snno">${esc(s.sn)}</small>` : '<small class="unm">ยังไม่จับคู่</small>'}</td>
       <td class="grp2">${t(s.S, 'rep')}</td><td>${t(s.S, 'tx')}</td><td>${t(s.S, 'tl')}</td>
       <td class="grp2">${ko(s.S.ko.rep)}</td><td>${ko(s.S.ko.gene)}</td>
       <td class="grp2">${Object.keys(s.S.build.per).length ? fmt2(s.S.build.total) + `<small> · ${Object.keys(s.S.build.per).length}/6</small>` : '–'}</td>
@@ -5044,11 +5332,11 @@ function renderDash(){
   $('dashMiss').innerHTML = top.length ? top.map(m => `<li>${m.q}<br><small>${m.where} · ไม่ได้คะแนน ${m.bad} จาก ${m.n} ครั้ง</small></li>`).join('') : '<li><small>ยังไม่มีข้อมูล</small></li>';
 }
 function csvDash(){
-  const rows = [['ชั้น','เลขที่','ชื่อ','Test DNA (10)','Test ถอดรหัส (10)','Test แปลรหัส (10)','Knockout จำลองดีเอ็นเอ (10)','Knockout การแสดงออกของยีน (10)','Build (30)','รวม (80)','ข้อที่ครูแก้']];
+  const rows = [['ชั้น','เลขที่','เลขประจำตัว','ชื่อ','Test DNA (10)','Test ถอดรหัส (10)','Test แปลรหัส (10)','Knockout จำลองดีเอ็นเอ (10)','Knockout การแสดงออกของยีน (10)','Build (30)','รวม (80)','ข้อที่ครูแก้']];
   const v = x => x == null ? '' : fmt2(x);
   for(const s of studentList(null).sort((a, b) => a.room.localeCompare(b.room, 'th', { numeric:true }) || (+a.no) - (+b.no))){
     const S = s.S;
-    rows.push([s.room, s.no, s.name, v(S.test.rep && S.test.rep.score), v(S.test.tx && S.test.tx.score), v(S.test.tl && S.test.tl.score),
+    rows.push([s.room, s.no, s.sn, s.name, v(S.test.rep && S.test.rep.score), v(S.test.tx && S.test.tx.score), v(S.test.tl && S.test.tl.score),
       v(S.ko.rep && S.ko.rep.conv), v(S.ko.gene && S.ko.gene.conv), Object.keys(S.build.per).length ? v(S.build.total) : '', v(S.total), S.edited || '']);
   }
   const csv = '﻿' + rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\r\n');
@@ -5058,6 +5346,150 @@ function csvDash(){
 $('dashBack').addEventListener('click', () => go('menu'));
 $('dashReload').addEventListener('click', loadDash);
 $('dashCsv').addEventListener('click', () => { if(DASH.rows.length) csvDash(); });
+
+/* ---------- teacher tools: a small dialog in the #sum modal ---------- */
+function toolBox(html){ const c = $('sumCard'); c.classList.add('tool'); c.innerHTML = html; $('sum').hidden = false; return c; }
+function toolClose(){ $('sum').hidden = true; $('sumCard').classList.remove('tool'); }
+const toolBusy = (c, txt) => { const p = c.querySelector('.tmsg'); if(p) p.textContent = txt; c.querySelectorAll('button,input,select').forEach(b => b.disabled = true); };
+
+/* ---------- match old records (typed before the student ID was asked) to the school's class lists ----------
+   The class lists are read from the files the teacher picks; they are not stored in the app. */
+function parseRoster(text, fname){
+  const out = [], doc = new DOMParser().parseFromString(text, 'text/html');
+  let room = '';
+  const fromTitle = t => { const m = /ม\.?\s*(\d)\s*\/\s*(\d{1,2})/.exec(t || ''); return m ? `ม.${m[1]}/${m[2]}` : ''; };
+  const rows = [...doc.querySelectorAll('tr')].map(tr => [...tr.querySelectorAll('td,th')].map(td => td.textContent.replace(/\s+/g, ' ').trim()));
+  if(!rows.length) text.split(/\r?\n/).forEach(l => rows.push(l.split(/,|\t/).map(x => x.replace(/^"|"$/g, '').trim())));
+  for(const r of rows){
+    const t = fromTitle(r.join(' ')); if(t && !/^\d+$/.test(r[0] || '')){ room = t; continue; }
+    const i = r.findIndex(x => /^\d{3,8}$/.test(x));
+    if(/^\d{1,3}$/.test(r[0] || '') && i > 0 && r[i+1] && /[฀-๿]/.test(r[i+1])) out.push({ room, no:String(+r[0]), sn:r[i], name:r[i+1] });
+  }
+  if(!room) room = fromTitle(fname);
+  out.forEach(x => { if(!x.room) x.room = room; });
+  return out;
+}
+function readRosterFile(f){
+  return f.arrayBuffer().then(buf => {
+    let t = new TextDecoder('utf-8').decode(buf);
+    const cs = /charset\s*=\s*["']?([\w-]+)/i.exec(t.slice(0, 2000));
+    if(cs && !/utf-?8/i.test(cs[1])) try { t = new TextDecoder(/874|tis|thai/i.test(cs[1]) ? 'windows-874' : cs[1]).decode(buf); } catch(e){}
+    else if(t.includes('�')) try { t = new TextDecoder('windows-874').decode(buf); } catch(e){}
+    return parseRoster(t, f.name);
+  });
+}
+function lev(a, b){
+  const d = Array.from({ length:a.length+1 }, (_, i) => [i]);
+  for(let j=1;j<=b.length;j++) d[0][j] = j;
+  for(let i=1;i<=a.length;i++) for(let j=1;j<=b.length;j++) d[i][j] = Math.min(d[i-1][j]+1, d[i][j-1]+1, d[i-1][j-1] + (a[i-1] === b[j-1] ? 0 : 1));
+  return d[a.length][b.length];
+}
+async function openMatch(files){
+  let roster = [];
+  for(const f of files) roster = roster.concat(await readRosterFile(f));
+  const bad = roster.filter(x => !x.room);
+  if(!roster.length || bad.length){ toolBox(`<h3>อ่านไฟล์รายชื่อไม่ได้</h3><p class="dnote">${!roster.length ? 'ไม่พบตาราง เลขที่ · เลขประจำตัว · ชื่อ ในไฟล์' : 'ไม่พบชื่อห้องในไฟล์ (เช่น "ชั้น ม.4/1")'} ลองเปิดไฟล์ใน Excel แล้วบันทึกเป็น .csv หรือ .html</p><div class="qbtns"><span></span><button class="pbtn" id="tX">ปิด</button></div>`); $('tX').onclick = toolClose; return; }
+  const bySn = new Map(roster.map(x => [x.sn, x]));
+  const groups = studentList(null);
+  const old = groups.filter(g => !g.sn), wrong = groups.filter(g => g.sn && !bySn.has(g.sn));
+  const pick = g => {
+    const k = nameKey(g.name), same = roster.filter(x => x.room === g.room);
+    let x = same.find(x => nameKey(x.name) === k); if(x) return [x, 'ok', 'ตรงกัน'];
+    x = roster.find(x => nameKey(x.name) === k); if(x) return [x, 'wn', `ชื่อตรง แต่พิมพ์ห้องเป็น ${g.room}`];
+    const near = (same.length ? same : roster).map(x => [x, lev(nameKey(x.name), k)]).sort((a, b) => a[1] - b[1])[0];
+    if(near && near[1] <= Math.max(2, Math.round(k.length*0.15))) return [near[0], 'wn', 'ชื่อใกล้เคียง ตรวจอีกครั้ง'];
+    const first = k.slice(0, 4), byFirst = roster.filter(x => nameKey(x.name).startsWith(first));
+    if(byFirst.length === 1) return [byFirst[0], 'wn', 'ชื่อต้นตรง ตรวจอีกครั้ง'];
+    return [null, 'wn', 'หาไม่พบ เลือกเอง'];
+  };
+  const rooms = [...new Set(roster.map(x => x.room))].sort((a, b) => a.localeCompare(b, 'th', { numeric:true }));
+  const opts = sel => '<option value="">— ไม่จับคู่ —</option>' + rooms.map(rm => `<optgroup label="${esc(rm)}">${roster.filter(x => x.room === rm).map(x => `<option value="${esc(x.sn)}"${sel && sel.sn === x.sn ? ' selected' : ''}>${esc(x.no)}. ${esc(x.name)} (${esc(x.sn)})</option>`).join('')}</optgroup>`).join('');
+  const rowsH = old.map((g, i) => { const [x, c, why] = pick(g); return `<tr><td><b>${esc(g.name)}</b><br><small>${esc(g.room)} เลขที่ ${esc(g.no)} · ${g.recs.length} รายการ</small></td><td><select data-i="${i}">${opts(x)}</select><br><small class="${c}">${why}</small></td></tr>`; }).join('');
+  const c = toolBox(`<h3>จับคู่ข้อมูลเก่ากับเลขประจำตัวนักเรียน</h3>
+    <p class="dnote">อ่านรายชื่อได้ ${roster.length} คน (${rooms.join(', ')}) · ข้อมูลที่นักเรียนกรอกก่อนมีช่องเลขประจำตัว ${old.length} คน · ตรวจช่องสีเหลืองก่อนบันทึก</p>
+    ${old.length ? `<div class="scroll"><table class="mt"><thead><tr><th>ที่นักเรียนกรอก</th><th>ตรงกับนักเรียนในรายชื่อ</th></tr></thead><tbody>${rowsH}</tbody></table></div>` : '<p class="dnote ok">ไม่มีข้อมูลเก่าที่ต้องจับคู่</p>'}
+    ${wrong.length ? `<p class="dnote wn">เลขประจำตัวที่ไม่อยู่ในรายชื่อ (นักเรียนอาจพิมพ์ผิด ให้กด "เปลี่ยนผู้ใช้" แล้วกรอกใหม่): ${wrong.map(g => `${esc(g.name)} ${esc(g.room)} · ${esc(g.sn)}`).join(' · ')}</p>` : ''}
+    <p class="dnote tmsg"></p>
+    <div class="qbtns"><button class="gbtn" id="tX">ยกเลิก</button>${old.length ? '<button class="pbtn" id="tGo">บันทึกการจับคู่</button>' : ''}</div>`);
+  $('tX').onclick = toolClose;
+  if(!old.length) return;
+  $('tGo').onclick = async () => {
+    const pairs = [...c.querySelectorAll('select[data-i]')].map(s => [old[+s.dataset.i], bySn.get(s.value)]).filter(p => p[1]);
+    const used = {}; for(const [, x] of pairs) used[x.sn] = (used[x.sn] || 0) + 1;
+    const twice = pairs.filter(p => used[p[1].sn] > 1 && new Set(pairs.filter(q => q[1].sn === p[1].sn).map(q => nameKey(q[0].name))).size > 1);
+    if(twice.length && !confirm(`มีนักเรียนในรายชื่อถูกเลือกให้ข้อมูลหลายชุดที่ชื่อต่างกัน: ${[...new Set(twice.map(p => p[1].name))].join(', ')}\nต้องการบันทึกต่อหรือไม่`)) return;
+    let n = 0, fail = 0;
+    toolBusy(c, 'กำลังบันทึก…');
+    for(const [g, x] of pairs){
+      const patch = { sn:x.sn, room:x.room, no:x.no, name:x.name };
+      for(const r of g.recs){ try { await updateAttempt(r.id, patch); Object.assign(r, patch); n++; } catch(e){ fail++; } }
+      try { await tAddLog(x.sn, g.recs); } catch(e){ fail++; }
+      c.querySelector('.tmsg').textContent = `กำลังบันทึก… ${n} รายการ`;
+    }
+    c.querySelector('.tmsg').textContent = fail ? `บันทึกแล้ว ${n} รายการ · ไม่สำเร็จ ${fail} (กดจับคู่อีกครั้งเพื่อลองใหม่)` : `จับคู่แล้ว ${pairs.length} คน (${n} รายการ)`;
+    setTimeout(() => { toolClose(); loadDash(); }, 1400);
+  };
+}
+$('dashMatch').addEventListener('click', () => { if(!DB.isTeacher) return; $('dashFile').value = ''; $('dashFile').click(); });
+$('dashFile').addEventListener('change', e => { const fs = [...e.target.files]; if(fs.length) openMatch(fs); });
+
+/* ---------- delete history: parts of one student, all of one student, or everything ---------- */
+const DEL_PARTS = [
+  ['Test', [['test|rep','การจำลองดีเอ็นเอ'], ['test|tx','การถอดรหัส'], ['test|tl','การแปลรหัส']]],
+  ['Knockout', [['ko|rep','การจำลองดีเอ็นเอ'], ['ko|gene','การแสดงออกของยีน']]],
+  ['Build', MISSIONS.map(m => ['build|' + m.id, m.id])]
+];
+function openDelete(){
+  const s = rvStudent(); if(!s) return;
+  const has = p => s.recs.some(r => partOf(r) === p);
+  const c = toolBox(`<h3>ลบประวัติ · ${esc(s.name)} <small style="font-weight:400;color:var(--muted)">${esc(s.room)} เลขที่ ${esc(s.no)}</small></h3>
+    <p class="dnote">เลือกส่วนที่จะลบ นักเรียนจะทำส่วนนั้นใหม่ได้ (นับครั้งใหม่) · ลบแล้วกู้คืนไม่ได้ ดาวน์โหลด .csv เก็บไว้ก่อน</p>
+    ${DEL_PARTS.map(([g, ps]) => `<div><b>${g}</b><div class="grp">${ps.map(([k, n]) => `<label class="ck"><input type="checkbox" data-p="${k}">${n}${has(k) ? '' : ' <small style="color:var(--muted)">(ยังไม่มี)</small>'}</label>`).join('')}</div></div>`).join('')}
+    <label class="ck" style="margin-top:4px"><input type="checkbox" id="dAll"><b>ลบทั้งหมดของนักเรียนคนนี้</b></label>
+    ${s.sn ? '' : '<p class="dnote wn">นักเรียนคนนี้ยังไม่ได้จับคู่กับเลขประจำตัว: ลบในฐานข้อมูลได้ แต่ถ้าเครื่องของนักเรียนยังเก็บงานเก่าไว้ อาจกลับมานับครั้งเดิม ควรจับคู่รายชื่อก่อน</p>'}
+    <p class="dnote tmsg"></p>
+    <div class="qbtns"><button class="gbtn" id="tX">ยกเลิก</button><button class="pbtn danger" id="tGo" disabled>ลบ</button></div>`);
+  const sel = () => $('dAll').checked ? ['all'] : [...c.querySelectorAll('input[data-p]:checked')].map(x => x.dataset.p);
+  const upd = () => { c.querySelectorAll('input[data-p]').forEach(x => { x.disabled = $('dAll').checked; }); $('tGo').disabled = !sel().length; };
+  c.querySelectorAll('input').forEach(x => x.addEventListener('change', upd));
+  $('tX').onclick = toolClose;
+  $('tGo').onclick = async () => {
+    const parts = sel(), all = parts.includes('all');
+    const names = all ? 'ทั้งหมด' : parts.map(p => { for(const [g, ps] of DEL_PARTS) for(const [k, n] of ps) if(k === p) return `${g} ${n}`; return p; }).join(', ');
+    if(!confirm(`ลบประวัติของ ${s.name}\n${names}\nลบแล้วกู้คืนไม่ได้`)) return;
+    toolBusy(c, 'กำลังลบ…');
+    const recs = s.recs.filter(r => all || parts.includes(partOf(r)));
+    let fail = 0;
+    try { if(s.sn) await tMarkWipe(s.sn, parts); } catch(e){ fail++; }
+    for(const r of recs){ try { await tDeleteAttempt(r.id); } catch(e){ fail++; } }
+    c.querySelector('.tmsg').textContent = fail ? `ลบไม่สำเร็จบางรายการ (${fail}) ตรวจอินเทอร์เน็ตแล้วลองใหม่` : `ลบแล้ว ${recs.length} รายการ`;
+    await loadDash();
+    setTimeout(() => { toolClose(); if(rvStudent()) renderReview(); else go('dash'); }, 1100);
+  };
+}
+$('rvDel').addEventListener('click', () => { if(rvDirty() && !confirm('ยังไม่ได้บันทึกคะแนนที่แก้ ต้องการทิ้งการแก้ไขหรือไม่')) return; RV.edit = {}; openDelete(); });
+function openWipeAll(){
+  const c = toolBox(`<h3>ลบข้อมูลนักเรียนทั้งหมด</h3>
+    <p class="dnote">ลบคะแนน คำตอบ และงานที่ทำค้างไว้ของนักเรียน<b>ทุกคนทุกห้อง</b> นักเรียนทุกคนจะเริ่มใหม่ได้ · กู้คืนไม่ได้ ดาวน์โหลด .csv เก็บไว้ก่อน</p>
+    <p class="dnote">พิมพ์คำว่า <b>ลบทั้งหมด</b> เพื่อยืนยัน</p><input class="typ" id="wTyp" autocomplete="off">
+    <p class="dnote tmsg"></p>
+    <div class="qbtns"><button class="gbtn" id="tX">ยกเลิก</button><button class="pbtn danger" id="tGo" disabled>ลบทั้งหมด</button></div>`);
+  $('wTyp').addEventListener('input', () => { $('tGo').disabled = $('wTyp').value.replace(/\s+/g, '') !== 'ลบทั้งหมด'; });
+  $('tX').onclick = toolClose;
+  setTimeout(() => $('wTyp').focus(), 50);
+  $('tGo').onclick = async () => {
+    toolBusy(c, 'กำลังลบ…');
+    let n = 0, fail = 0;
+    try {
+      await tWipeAll();
+      const rows = await loadAttempts();
+      for(const r of rows){ try { await tDeleteAttempt(r.id); n++; } catch(e){ fail++; } if(n % 20 === 0) c.querySelector('.tmsg').textContent = `กำลังลบ… ${n}/${rows.length}`; }
+    } catch(e){ fail++; }
+    c.querySelector('.tmsg').textContent = fail ? `ลบแล้ว ${n} รายการ · ไม่สำเร็จ ${fail} กดลบทั้งหมดอีกครั้ง` : `ลบแล้ว ${n} รายการ`;
+    setTimeout(() => { toolClose(); loadDash(); }, 1400);
+  };
+}
+$('dashWipe').addEventListener('click', () => { if(DB.isTeacher) openWipeAll(); });
 
 /* ---------- teacher review page: every answer, how the system scored it, change any point ---------- */
 const RV_TABS = [['koRep','Knockout: จำลองดีเอ็นเอ'], ['koGene','Knockout: การแสดงออกของยีน'], ['build','Build'], ['test','Test']];
