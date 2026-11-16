@@ -356,7 +356,9 @@ select{background:var(--raise);border:1px solid var(--line);border-radius:8px;co
 .formcard p{margin:0;color:var(--muted);font-size:14px}
 .field{display:flex;flex-direction:column;gap:4px}
 .field label{font-size:13.5px;font-weight:600;color:#c9d5ea}
-.field input{height:46px;border-radius:10px;border:1px solid var(--line);background:var(--ink);color:var(--fg);padding:0 12px;font:inherit;font-size:16px}
+.field input,.field select{height:46px;border-radius:10px;border:1px solid var(--line);background:var(--ink);color:var(--fg);padding:0 12px;font:inherit;font-size:16px}
+.field select{appearance:none;-webkit-appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:calc(100% - 20px) 50%,calc(100% - 14px) 50%;background-size:6px 6px;background-repeat:no-repeat;padding-right:36px}
+.field select:invalid{color:var(--muted)}
 .field input:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:transparent}
 .frow{display:grid;grid-template-columns:minmax(0,1fr) 110px;gap:10px}
 .formerr{color:#ff9a9a !important;font-size:13.5px}
@@ -957,8 +959,7 @@ button.bt{cursor:pointer}
         <h2>ข้อมูลนักเรียน</h2>
         <p>ใช้บันทึกคะแนนให้ครู ใช้เลขประจำตัวเดิมแล้วทำงานต่อได้ทุกเครื่อง</p>
         <div class="field"><label for="fName">ชื่อ-นามสกุล</label><input id="fName" autocomplete="name" maxlength="70" placeholder="เช่น สมชาย ใจดี" required></div>
-        <div class="field"><label>ชั้น</label><div class="chips" id="fLv"><button type="button" data-v="1">ม.1</button><button type="button" data-v="2">ม.2</button><button type="button" data-v="3">ม.3</button><button type="button" data-v="4">ม.4</button><button type="button" data-v="5">ม.5</button><button type="button" data-v="6">ม.6</button></div></div>
-        <div class="field"><label>ห้อง</label><div class="chips rooms" id="fRm"><button type="button" data-v="1">1</button><button type="button" data-v="2">2</button><button type="button" data-v="3">3</button><button type="button" data-v="4">4</button><button type="button" data-v="5">5</button><button type="button" data-v="6">6</button><button type="button" data-v="7">7</button><button type="button" data-v="8">8</button><button type="button" data-v="9">9</button><button type="button" data-v="10">10</button><button type="button" data-v="11">11</button><button type="button" data-v="12">12</button></div></div>
+        <div class="field"><label for="fRoom">ชั้น / ห้อง</label><select id="fRoom" required><option value="" disabled selected>เลือกห้อง</option><option value="1">ม.4/1</option><option value="2">ม.4/2</option><option value="3">ม.4/3</option><option value="4">ม.4/4</option><option value="5">ม.4/5</option></select></div>
         <div class="frow">
           <div class="field"><label for="fSn">เลขประจำตัวนักเรียน</label><input id="fSn" inputmode="numeric" maxlength="8" autocomplete="off" required></div>
           <div class="field"><label for="fNo">เลขที่</label><input id="fNo" inputmode="numeric" maxlength="3" required></div>
@@ -4301,17 +4302,13 @@ function refreshMenu(){
   dbStatus();
 }
 $('roleStu').addEventListener('click', () => { ROLE = 'stu'; if(STU && STU.sn){ stuIn(); go('menu'); } else openReg(STU); });
-/* registration: class and room are buttons; the student ID (typed twice) is what identifies the student */
-const REG = { lv:'', rm:'' };
-function regPick(box, key, v){ REG[key] = v; $(box).querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.v === v)); }
-$('fLv').addEventListener('click', e => { const b = e.target.closest('button'); if(b) regPick('fLv', 'lv', b.dataset.v); });
-$('fRm').addEventListener('click', e => { const b = e.target.closest('button'); if(b) regPick('fRm', 'rm', b.dataset.v); });
+/* registration: the app is used only in ม.4, so the room is a drop-down; the student ID (typed twice) is what identifies the student */
 for(const id of ['fSn','fSn2','fNo']) $(id).addEventListener('input', () => { const el = $(id), v = el.value.replace(/[๐-๙]/g, c => '๐๑๒๓๔๕๖๗๘๙'.indexOf(c)).replace(/\D/g, ''); if(v !== el.value) el.value = v; });
 function openReg(old){
   go('reg'); $('regErr').hidden = true;
   const m = old ? /(\d+)\/(\d+)/.exec(normRoom(old.room)) : null;
   $('fName').value = old ? old.name : ''; $('fNo').value = old ? old.no : ''; $('fSn').value = ''; $('fSn2').value = '';
-  regPick('fLv', 'lv', m ? m[1] : ''); regPick('fRm', 'rm', m ? m[2] : '');
+  $('fRoom').value = m && m[1] === '4' && $('fRoom').querySelector(`option[value="${+m[2]}"]`) ? String(+m[2]) : '';
   const note = $('regNote');
   note.hidden = !old;
   if(old) note.textContent = 'ระบบใหม่ใช้เลขประจำตัวนักเรียนเพื่อเก็บงานไว้ทำต่อได้ทุกเครื่อง ตรวจชื่อ ชั้น ห้อง แล้วใส่เลขประจำตัวนักเรียน 2 ครั้ง งานที่ทำไว้ในเครื่องนี้จะยังอยู่';
@@ -4343,12 +4340,11 @@ $('regForm').addEventListener('submit', e => {
   const err = (msg, f) => { $('regErr').textContent = msg; $('regErr').hidden = false; if(f) $(f).focus(); };
   if(nameKey(name).length < 3) return err('กรอกชื่อ-นามสกุล', 'fName');
   if(/[A-Za-z]/.test(name) || !/[\u0E00-\u0E7F]/.test(name)) return err('กรอกชื่อ-นามสกุลเป็นภาษาไทย', 'fName');
-  if(!REG.lv) return err('เลือกชั้น ม.1–ม.6');
-  if(!REG.rm) return err('เลือกห้อง');
+  if(!$('fRoom').value) return err('เลือกห้อง', 'fRoom');
   if(!/^\d{3,8}$/.test(sn)) return err('เลขประจำตัวนักเรียนต้องเป็นตัวเลข', 'fSn');
   if(sn !== sn2) return err('เลขประจำตัวนักเรียน 2 ช่องไม่ตรงกัน ตรวจอีกครั้ง', 'fSn2');
   if(!/^\d{1,3}$/.test(no) || +no < 1) return err('เลขที่ต้องเป็นตัวเลข', 'fNo');
-  STU = { name, room:`ม.${REG.lv}/${REG.rm}`, no:String(+no), sn };
+  STU = { name, room:`ม.4/${$('fRoom').value}`, no:String(+no), sn };
   migrateTo(STU);
   lsSet('g3d-student', STU); ROLE = 'stu';
   $('regErr').hidden = true; stuIn(); go('menu');
